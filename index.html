@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AETHER H-1 • Digital Smart Helmet | Real-Time Interactive 3D & Component Explorer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>AETHER H-1 • Digital Smart Helmet | Real-Time 3D & Guardian Alarm System</title>
+  <meta name="description" content="Official AETHER H-1 Cybernetic Digital Smart Helmet featuring 360-degree interactive 3D WebGL explorer, CAD exploded view, Guardian Anti-Theft Alarm, eCall SOS, and Live Visor HUD simulator.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
-  <!-- Local & Fallback CDN Three.js Libraries -->
+  <!-- Local Three.js Libraries -->
   <script src="assets/three.min.js"></script>
   <script src="assets/OrbitControls.js"></script>
   <script src="assets/GLTFLoader.js"></script>
@@ -18,8 +19,8 @@
     :root {
       --bg-dark: #07090f;
       --bg-surface: #0e121e;
-      --bg-card: rgba(15, 20, 34, 0.85);
-      --bg-card-hover: rgba(24, 32, 54, 0.95);
+      --bg-card: rgba(15, 20, 34, 0.88);
+      --bg-card-hover: rgba(24, 32, 54, 0.96);
       --border-subtle: rgba(255, 255, 255, 0.08);
       --border-glow: rgba(0, 242, 254, 0.35);
       --accent-cyan: #00f2fe;
@@ -33,12 +34,19 @@
       --font-display: 'Orbitron', -apple-system, sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+
+      /* Alarm State Colors */
+      --alarm-safe: #00ff88;
+      --alarm-warn: #ffaa00;
+      --alarm-danger: #ff1744;
+      --alarm-glow-danger: rgba(255, 23, 68, 0.5);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent;
     }
 
     html {
@@ -48,10 +56,10 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 10% 15%, rgba(0, 242, 254, 0.07) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.07) 0%, transparent 45%),
-        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        radial-gradient(circle at 10% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.08) 0%, transparent 45%),
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
       background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
       color: var(--text-main);
       font-family: var(--font-body);
@@ -62,8 +70,8 @@
 
     /* Custom Scrollbar */
     ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
       background: var(--bg-dark);
@@ -76,30 +84,34 @@
       background: var(--accent-cyan);
     }
 
-    /* Navigation */
+    /* =========================================================================
+       NAVIGATION BAR & HEADER
+       ========================================================================= */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.1rem 2.5rem;
+      padding: 1rem 2.5rem;
       border-bottom: 1px solid var(--border-subtle);
       backdrop-filter: blur(16px);
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7, 9, 15, 0.88);
+      background: rgba(7, 9, 15, 0.9);
+      transition: all 0.3s ease;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       text-decoration: none;
+      flex-shrink: 0;
     }
 
     .brand-logo {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       border-radius: 10px;
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
       display: flex;
@@ -107,9 +119,9 @@
       justify-content: center;
       font-family: var(--font-display);
       font-weight: 900;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       color: #07090f;
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
       border: 1px solid rgba(255, 255, 255, 0.4);
     }
 
@@ -121,15 +133,15 @@
     .brand-title {
       font-family: var(--font-display);
       font-weight: 800;
-      letter-spacing: 1.5px;
-      font-size: 1.15rem;
+      letter-spacing: 1.2px;
+      font-size: 1.1rem;
       background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .brand-sub {
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-family: var(--font-mono);
       color: var(--text-muted);
       letter-spacing: 0.5px;
@@ -137,22 +149,24 @@
 
     .nav-links {
       display: flex;
-      gap: 0.8rem;
+      gap: 0.6rem;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .nav-links a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 600;
       transition: all 0.25s ease;
-      padding: 7px 15px;
+      padding: 6px 14px;
       border-radius: 8px;
       border: 1px solid transparent;
       display: flex;
       align-items: center;
       gap: 6px;
+      white-space: nowrap;
     }
 
     .nav-links a:hover, .nav-links a.active {
@@ -162,23 +176,45 @@
       box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
     }
 
+    /* Alarm Header Pill */
+    .alarm-pill-nav {
+      background: rgba(0, 255, 136, 0.1) !important;
+      border-color: rgba(0, 255, 136, 0.35) !important;
+      color: var(--accent-green) !important;
+      font-family: var(--font-mono);
+      font-size: 0.8rem !important;
+      cursor: pointer;
+    }
+    .alarm-pill-nav.alarm-triggered {
+      background: rgba(255, 23, 68, 0.25) !important;
+      border-color: var(--alarm-danger) !important;
+      color: #fff !important;
+      animation: navAlarmPulse 0.8s infinite alternate;
+    }
+    @keyframes navAlarmPulse {
+      from { box-shadow: 0 0 5px rgba(255, 23, 68, 0.5); }
+      to { box-shadow: 0 0 20px rgba(255, 23, 68, 1); }
+    }
+
     .nav-btn-highlight {
       background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2)) !important;
       border-color: var(--accent-cyan) !important;
       color: #fff !important;
     }
 
-    /* Container */
+    /* =========================================================================
+       CONTAINER & LAYOUT
+       ========================================================================= */
     .container {
       max-width: 1440px;
       margin: 0 auto;
-      padding: 2.5rem 2rem 5rem;
+      padding: 2.2rem 2rem 4rem;
     }
 
     /* Hero Section */
     .hero {
       text-align: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.8rem;
     }
 
     .badge {
@@ -190,127 +226,141 @@
       background: rgba(0, 242, 254, 0.1);
       border: 1px solid rgba(0, 242, 254, 0.35);
       color: var(--accent-cyan);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-family: var(--font-mono);
       text-transform: uppercase;
       letter-spacing: 1px;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
     }
 
     .badge-pulse {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--accent-cyan);
       box-shadow: 0 0 10px var(--accent-cyan);
       animation: pulse 1.8s infinite;
     }
-
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.35; transform: scale(0.7); }
+      0% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.3); }
+      100% { opacity: 0.3; transform: scale(0.9); }
     }
 
-    .hero h1 {
+    h1 {
       font-family: var(--font-display);
-      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       line-height: 1.15;
-      margin-bottom: 1rem;
-      background: linear-gradient(135deg, #ffffff 30%, #4facfe 75%, #00f2fe 100%);
+      margin-bottom: 0.8rem;
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 80%, var(--accent-blue) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    .hero p.subtitle {
-      max-width: 820px;
-      margin: 0 auto 1.8rem;
-      font-size: 1.05rem;
+    .subtitle {
       color: var(--text-muted);
-      font-weight: 400;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      max-width: 820px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
     }
 
-    /* View Switcher Carousel / Tab Controls */
+    /* View Switcher Controls (Horizontally scrollable with touch snap) */
     .view-switcher-bar {
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 1.8rem;
-      background: rgba(14, 18, 30, 0.7);
-      padding: 8px;
-      border-radius: 14px;
-      border: 1px solid var(--border-subtle);
+      margin: 1.2rem auto 2rem;
+      flex-wrap: wrap;
       max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;
     }
 
     .switch-btn {
-      background: transparent;
-      border: 1px solid transparent;
+      background: rgba(16, 22, 38, 0.85);
+      border: 1px solid var(--border-subtle);
       color: var(--text-muted);
       padding: 9px 16px;
       border-radius: 10px;
       font-family: var(--font-mono);
       font-size: 0.82rem;
       cursor: pointer;
+      transition: all 0.25s ease;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      transition: all 0.25s ease;
+      gap: 7px;
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
     }
 
     .switch-btn:hover {
+      border-color: var(--accent-cyan);
       color: var(--text-main);
-      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.15);
     }
 
     .switch-btn.active {
       background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(79, 172, 254, 0.18));
-      color: var(--accent-cyan);
-      border-color: rgba(0, 242, 254, 0.5);
+      border-color: var(--accent-cyan);
+      color: #ffffff;
       font-weight: 700;
-      box-shadow: 0 0 16px rgba(0, 242, 254, 0.2);
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
     }
 
-    /* Primary Showcase Stage */
+    /* =========================================================================
+       SHOWCASE STAGE (3D & PHOTOGRAPHIC VIEWS)
+       ========================================================================= */
     .showcase-stage {
       position: relative;
-      border-radius: 20px;
+      background: radial-gradient(circle at center, #11172a 0%, #07090f 85%);
       border: 1px solid var(--border-glow);
-      background: radial-gradient(circle at center, #101525 0%, #080a12 85%);
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 242, 254, 0.12);
+      border-radius: 20px;
       overflow: hidden;
-      margin-bottom: 3.5rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.12);
+      margin-bottom: 2.5rem;
+      transition: border-color 0.3s;
+    }
+
+    /* Perimeter Alarm Strobe on 3D Viewport */
+    .showcase-stage.alarm-strobe-active {
+      border-color: var(--alarm-danger) !important;
+      box-shadow: 0 0 50px rgba(255, 23, 68, 0.6), inset 0 0 30px rgba(255, 23, 68, 0.3) !important;
+      animation: stageBorderFlash 0.6s infinite alternate;
+    }
+    @keyframes stageBorderFlash {
+      from { border-color: rgba(255, 23, 68, 0.4); }
+      to { border-color: rgba(255, 23, 68, 1); }
     }
 
     .showcase-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.9rem 1.8rem;
-      background: rgba(10, 14, 24, 0.9);
+      padding: 12px 20px;
       border-bottom: 1px solid var(--border-subtle);
-      z-index: 10;
-      position: relative;
+      background: rgba(10, 14, 25, 0.9);
+      backdrop-filter: blur(12px);
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
     .stage-title {
       font-family: var(--font-display);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       color: var(--accent-cyan);
       letter-spacing: 1px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .stage-actions {
       display: flex;
       gap: 8px;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .stage-btn {
@@ -319,34 +369,23 @@
       color: var(--text-muted);
       padding: 5px 12px;
       border-radius: 6px;
-      font-size: 0.75rem;
       font-family: var(--font-mono);
+      font-size: 0.74rem;
       cursor: pointer;
       transition: all 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
     }
 
     .stage-btn:hover {
-      color: var(--text-main);
       border-color: var(--accent-cyan);
-      background: rgba(0, 242, 254, 0.1);
+      color: #fff;
     }
 
-    .stage-btn.active {
-      background: rgba(0, 242, 254, 0.2);
-      color: var(--accent-cyan);
-      border-color: var(--accent-cyan);
-    }
-
-    /* 3D WebGL Canvas Stage */
+    /* 3D Viewport Container */
     .viewport-3d-wrapper {
       position: relative;
       width: 100%;
-      height: 600px;
-      display: block;
-      background: radial-gradient(circle at 50% 40%, #131a2e 0%, #070912 85%);
+      height: clamp(400px, 58vh, 660px);
+      background: transparent;
       overflow: hidden;
     }
 
@@ -361,18 +400,18 @@
       cursor: grabbing;
     }
 
-    /* 3D Interaction Hints Overlay */
+    /* Interaction Hint Overlay */
     .hint-pill {
       position: absolute;
-      top: 16px;
+      top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(10, 16, 28, 0.8);
+      background: rgba(10, 16, 28, 0.85);
       border: 1px solid rgba(0, 242, 254, 0.3);
-      padding: 6px 16px;
+      padding: 5px 14px;
       border-radius: 20px;
       font-family: var(--font-mono);
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--accent-cyan);
       pointer-events: none;
       backdrop-filter: blur(8px);
@@ -380,54 +419,58 @@
       letter-spacing: 0.5px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      white-space: nowrap;
     }
 
-    /* 3D Interactive Floating Toolbar */
+    /* Floating 3D Toolbar */
     .floating-3d-toolbar {
       position: absolute;
-      bottom: 20px;
+      bottom: 16px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: rgba(12, 16, 28, 0.88);
+      gap: 10px;
+      background: rgba(12, 16, 28, 0.92);
       border: 1px solid var(--border-glow);
-      padding: 10px 18px;
-      border-radius: 16px;
+      padding: 8px 16px;
+      border-radius: 14px;
       backdrop-filter: blur(16px);
       z-index: 10;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
       flex-wrap: wrap;
       justify-content: center;
+      max-width: 95%;
     }
 
     .tool-group {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
+      flex-wrap: wrap;
     }
 
     .tool-label {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-family: var(--font-mono);
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-right: 4px;
+      margin-right: 3px;
     }
 
     .tool-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--text-main);
-      padding: 6px 12px;
-      border-radius: 8px;
+      padding: 5px 10px;
+      border-radius: 7px;
       font-family: var(--font-mono);
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       cursor: pointer;
       transition: all 0.2s;
+      white-space: nowrap;
     }
 
     .tool-btn:hover {
@@ -446,30 +489,28 @@
     .slider-container {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
 
     .slider-range {
       -webkit-appearance: none;
       width: 100px;
-      height: 4px;
-      border-radius: 2px;
-      background: rgba(255, 255, 255, 0.2);
+      height: 6px;
+      border-radius: 3px;
+      background: #1c263c;
       outline: none;
     }
-
     .slider-range::-webkit-slider-thumb {
       -webkit-appearance: none;
-      appearance: none;
-      width: 14px;
-      height: 14px;
+      width: 15px;
+      height: 15px;
       border-radius: 50%;
       background: var(--accent-cyan);
       cursor: pointer;
       box-shadow: 0 0 10px var(--accent-cyan);
     }
 
-    /* 3D Hotspot Dots on the Canvas */
+    /* 3D Hotspot Coordinates Layer */
     #hotspots-layer {
       position: absolute;
       top: 0;
@@ -482,31 +523,37 @@
 
     .hotspot-point {
       position: absolute;
+      transform: translate(-50%, -50%);
       pointer-events: auto;
       cursor: pointer;
-      transform: translate(-50%, -50%);
       display: flex;
       align-items: center;
-      gap: 8px;
-      transition: transform 0.2s;
+      gap: 7px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
     .hotspot-point:hover {
       transform: translate(-50%, -50%) scale(1.1);
+      z-index: 20;
     }
 
     .hotspot-dot {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       background: var(--accent-cyan);
-      box-shadow: 0 0 15px var(--accent-cyan), 0 0 30px var(--accent-cyan);
-      border: 2px solid #fff;
-      animation: pulse 1.6s infinite;
+      box-shadow: 0 0 15px var(--accent-cyan);
+      border: 2px solid #ffffff;
+      animation: hotspotPulse 2s infinite;
+      flex-shrink: 0;
+    }
+    @keyframes hotspotPulse {
+      0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(0, 242, 254, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
     }
 
     .hotspot-bubble {
-      background: rgba(10, 16, 28, 0.9);
+      background: rgba(10, 16, 28, 0.92);
       border: 1px solid var(--accent-cyan);
       padding: 4px 10px;
       border-radius: 6px;
@@ -514,295 +561,607 @@
       font-size: 0.72rem;
       color: #fff;
       white-space: nowrap;
-      pointer-events: none;
+      backdrop-filter: blur(8px);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
     }
 
-    /* Image Viewport (Secondary Views) */
+    /* 2D Static Image Viewport */
     .showcase-viewport-img {
       display: none;
-      position: relative;
-      min-height: 560px;
-      align-items: center;
+      width: 100%;
+      height: clamp(380px, 55vh, 620px);
       justify-content: center;
-      padding: 2rem;
+      align-items: center;
+      position: relative;
+      background: #090c16;
     }
 
-    .showcase-img {
+    .showcase-viewport-img img {
       max-width: 100%;
-      max-height: 560px;
+      max-height: 100%;
       object-fit: contain;
-      border-radius: 12px;
-      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.8));
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.8));
     }
 
-    .showcase-img:hover {
-      transform: scale(1.02);
-    }
-
-    /* Thumbnail Strip */
+    /* Thumbnails Strip */
     .thumb-strip {
       display: flex;
-      gap: 12px;
-      padding: 1rem 1.8rem;
-      background: rgba(8, 10, 18, 0.95);
+      gap: 10px;
+      padding: 12px 20px;
+      background: rgba(8, 11, 20, 0.95);
       border-top: 1px solid var(--border-subtle);
       overflow-x: auto;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
     }
 
     .thumb-item {
-      flex: 0 0 110px;
-      height: 70px;
+      flex: 0 0 100px;
+      height: 64px;
       border-radius: 8px;
       border: 2px solid transparent;
-      cursor: pointer;
       overflow: hidden;
-      background: #141a29;
+      cursor: pointer;
       position: relative;
-      transition: all 0.25s ease;
+      transition: all 0.25s;
+      background: #111624;
     }
 
     .thumb-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      opacity: 0.65;
-      transition: opacity 0.25s;
     }
 
-    .thumb-item:hover img, .thumb-item.active img {
-      opacity: 1;
-    }
-
-    .thumb-item.active {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 14px rgba(0, 242, 254, 0.4);
-    }
-
-    .thumb-label {
+    .thumb-item .thumb-label {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(7, 9, 15, 0.85);
-      font-size: 0.62rem;
+      background: rgba(0, 0, 0, 0.85);
+      font-size: 0.6rem;
       font-family: var(--font-mono);
-      text-align: center;
+      color: var(--text-muted);
       padding: 2px 4px;
-      color: #fff;
+      text-align: center;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* Live HUD Simulator Mode */
-    .hud-simulator {
-      display: none;
-      width: 100%;
-      height: 560px;
-      position: relative;
-      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05) 0%, rgba(5, 7, 12, 0.95) 85%);
-      overflow: hidden;
-      font-family: var(--font-mono);
-      color: var(--accent-cyan);
-      border-radius: 12px;
+    .thumb-item:hover, .thumb-item.active {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
     }
 
-    .hud-simulator.active {
+    /* =========================================================================
+       LIVE VISOR HUD SIMULATOR
+       ========================================================================= */
+    .hud-stage {
+      display: none;
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08) 0%, rgba(5, 7, 12, 0.96) 85%);
+      color: var(--accent-cyan);
+      overflow: hidden;
+      padding: 2rem;
+    }
+    .hud-stage.active {
       display: block;
     }
 
-    .hud-reticle {
+    .hud-visor-frame {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 240px;
-      height: 240px;
-      border: 1px dashed rgba(0, 242, 254, 0.4);
-      border-radius: 50%;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 20px;
       pointer-events: none;
+      box-shadow: inset 0 0 40px rgba(0, 242, 254, 0.06);
     }
 
-    .hud-reticle::before, .hud-reticle::after {
-      content: '';
-      position: absolute;
-      background: var(--accent-cyan);
-    }
-    .hud-reticle::before { top: 50%; left: -15px; width: 30px; height: 1px; }
-    .hud-reticle::after { top: -15px; left: 50%; width: 1px; height: 30px; }
-
-    .hud-center-cross {
+    .hud-reticle-center {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 18px;
-      height: 18px;
+      pointer-events: none;
+      opacity: 0.75;
     }
-    .hud-center-cross::before, .hud-center-cross::after {
-      content: '';
-      position: absolute;
-      background: var(--accent-red);
-    }
-    .hud-center-cross::before { top: 8px; left: 0; width: 18px; height: 2px; }
-    .hud-center-cross::after { top: 0; left: 8px; width: 2px; height: 18px; }
 
-    .hud-speedometer {
-      position: absolute;
-      top: 48%;
-      left: 50%;
-      transform: translate(-50%, 60px);
+    .hud-grid-widgets {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      z-index: 10;
+    }
+
+    .hud-card {
+      background: rgba(12, 18, 32, 0.75);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      border-radius: 12px;
+      padding: 1.2rem;
+      backdrop-filter: blur(12px);
+    }
+
+    .hud-card-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      opacity: 0.8;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .hud-speed-big {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1;
+      color: #fff;
+    }
+    .hud-unit {
+      font-size: 0.9rem;
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+      margin-left: 4px;
+    }
+
+    .hud-mode-pills {
+      display: flex;
+      gap: 8px;
+      margin-top: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .hud-mode-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+    .hud-mode-pill.active {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.2);
+      color: #fff;
+      font-weight: bold;
+    }
+
+    /* =========================================================================
+       🚨 GUARDIAN ALARM & SECURITY COMMAND CENTER (NEW SECTION)
+       ========================================================================= */
+    .alarm-section {
+      background: radial-gradient(circle at 80% 20%, rgba(255, 23, 68, 0.08) 0%, rgba(13, 17, 30, 0.95) 70%);
+      border: 1px solid rgba(255, 23, 68, 0.25);
+      border-radius: 20px;
+      padding: 2.2rem 2rem;
+      margin-bottom: 3.5rem;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .alarm-badge-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-red);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .alarm-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+
+    .alarm-subtitle {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      max-width: 780px;
+      margin-bottom: 1.8rem;
+    }
+
+    .alarm-dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .alarm-card {
+      background: rgba(10, 14, 25, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .alarm-status-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .alarm-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .status-safe {
+      background: rgba(0, 255, 136, 0.12);
+      border: 1px solid rgba(0, 255, 136, 0.4);
+      color: var(--accent-green);
+    }
+    .status-triggered {
+      background: rgba(255, 23, 68, 0.25);
+      border: 1px solid var(--alarm-danger);
+      color: #fff;
+      animation: alertPulse 0.7s infinite alternate;
+    }
+    @keyframes alertPulse {
+      from { box-shadow: 0 0 5px rgba(255, 23, 68, 0.4); }
+      to { box-shadow: 0 0 25px rgba(255, 23, 68, 0.9); }
+    }
+
+    .telemetry-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.85rem;
+    }
+    .telemetry-row .label {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    .telemetry-row .val {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .alarm-actions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-top: 1rem;
+    }
+
+    .alarm-btn {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1px solid transparent;
+    }
+    .btn-arm {
+      background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 242, 254, 0.2));
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+    .btn-arm:hover {
+      background: rgba(0, 255, 136, 0.3);
+      box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+    }
+
+    .btn-tamper {
+      background: linear-gradient(135deg, rgba(255, 170, 0, 0.2), rgba(255, 51, 102, 0.2));
+      border-color: var(--accent-amber);
+      color: var(--accent-amber);
+    }
+    .btn-tamper:hover {
+      background: rgba(255, 170, 0, 0.3);
+      box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+    }
+
+    .btn-crash {
+      background: linear-gradient(135deg, rgba(255, 23, 68, 0.3), rgba(255, 51, 102, 0.3));
+      border-color: var(--alarm-danger);
+      color: #fff;
+    }
+    .btn-crash:hover {
+      background: rgba(255, 23, 68, 0.5);
+      box-shadow: 0 0 20px rgba(255, 23, 68, 0.7);
+    }
+
+    .btn-silence {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--border-subtle);
+      color: var(--text-muted);
+    }
+    .btn-silence:hover {
+      border-color: #fff;
+      color: #fff;
+    }
+
+    /* Security Log Console */
+    .alarm-log-terminal {
+      background: #05070d;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      max-height: 140px;
+      overflow-y: auto;
+      line-height: 1.5;
+    }
+    .log-entry {
+      margin-bottom: 4px;
+      opacity: 0.9;
+    }
+    .log-warn {
+      color: var(--accent-amber);
+    }
+    .log-alert {
+      color: var(--alarm-danger);
+      font-weight: bold;
+    }
+
+    /* Emergency SOS Modal */
+    .sos-modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(4, 6, 12, 0.88);
+      backdrop-filter: blur(12px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .sos-modal-backdrop.active {
+      display: flex;
+    }
+
+    .sos-modal-card {
+      background: #0e121e;
+      border: 2px solid var(--alarm-danger);
+      border-radius: 20px;
+      max-width: 480px;
+      width: 100%;
+      padding: 2.2rem;
       text-align: center;
-      text-shadow: 0 0 15px var(--accent-cyan);
+      box-shadow: 0 0 50px rgba(255, 23, 68, 0.5);
+      animation: modalDrop 0.3s ease-out;
+    }
+    @keyframes modalDrop {
+      from { transform: scale(0.9) translateY(20px); opacity: 0; }
+      to { transform: scale(1) translateY(0); opacity: 1; }
     }
 
-    .hud-speed {
+    .sos-icon {
+      font-size: 3rem;
+      margin-bottom: 0.8rem;
+      animation: alertPulse 0.5s infinite alternate;
+    }
+
+    .sos-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .sos-timer-circle {
       font-family: var(--font-display);
       font-size: 3.5rem;
       font-weight: 900;
-      color: #fff;
+      color: var(--alarm-danger);
+      margin: 1rem 0;
       line-height: 1;
     }
 
-    .hud-unit {
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      color: var(--accent-cyan);
-    }
-
-    .hud-widget {
-      position: absolute;
-      background: rgba(10, 16, 28, 0.75);
-      border: 1px solid rgba(0, 242, 254, 0.3);
-      padding: 14px 18px;
-      border-radius: 10px;
-      backdrop-filter: blur(8px);
-      font-size: 0.8rem;
-      line-height: 1.6;
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
-    }
-
-    .hud-widget-tl { top: 25px; left: 25px; }
-    .hud-widget-tr { top: 25px; right: 25px; text-align: right; }
-    .hud-widget-bl { bottom: 25px; left: 25px; }
-    .hud-widget-br { bottom: 25px; right: 25px; text-align: right; }
-
-    .hud-radar {
-      width: 85px;
-      height: 85px;
-      border: 1px solid var(--accent-red);
-      border-radius: 50%;
-      margin: 8px auto 0;
-      position: relative;
-      overflow: hidden;
-      background: rgba(255, 51, 102, 0.05);
-    }
-
-    .hud-radar-sweep {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: conic-gradient(from 0deg, rgba(255, 51, 102, 0.5) 0deg, transparent 60deg);
-      border-radius: 50%;
-      animation: spin 2.5s linear infinite;
-    }
-
-    @keyframes spin {
-      100% { transform: rotate(360deg); }
-    }
-
-    .hud-modes-bar {
-      position: absolute;
-      bottom: 25px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-      background: rgba(7, 9, 15, 0.8);
-      padding: 6px 12px;
-      border-radius: 30px;
-      border: 1px solid rgba(0, 242, 254, 0.3);
-    }
-
-    .hud-mode-pill {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
+    .btn-abort-sos {
+      background: linear-gradient(135deg, var(--alarm-danger), #ff5252);
+      color: #fff;
       font-family: var(--font-mono);
-      font-size: 0.72rem;
-      padding: 4px 12px;
-      border-radius: 20px;
+      font-weight: 800;
+      font-size: 1rem;
+      padding: 14px 28px;
+      border-radius: 12px;
+      border: none;
       cursor: pointer;
+      width: 100%;
+      box-shadow: 0 0 25px rgba(255, 23, 68, 0.6);
       transition: all 0.2s;
     }
-
-    .hud-mode-pill.active {
-      background: var(--accent-cyan);
-      color: #000;
-      font-weight: 700;
+    .btn-abort-sos:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 35px rgba(255, 23, 68, 0.9);
     }
 
-    /* Inspector Component Detail Box */
+    /* =========================================================================
+       12 SUBSYSTEMS COMPONENT CARDS & INSPECTOR
+       ========================================================================= */
+    .section-header {
+      margin-bottom: 1.8rem;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+      font-size: 0.78rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
+    }
+
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .comp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .comp-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-cyan);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.2);
+    }
+
+    .comp-card.active {
+      border-color: var(--accent-cyan);
+      background: rgba(18, 25, 45, 0.96);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+    }
+
+    .comp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.9rem;
+    }
+
+    .comp-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+
+    .comp-number {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.08);
+      padding: 3px 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+    }
+
+    .comp-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+
+    .comp-desc {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      margin-bottom: 1rem;
+    }
+
+    .comp-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: auto;
+    }
+
+    .comp-mini-tag {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      padding: 3px 7px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    /* Component Inspector Modal */
     .inspector-panel {
       display: none;
-      background: rgba(14, 20, 36, 0.95);
+      background: linear-gradient(135deg, rgba(14, 20, 36, 0.98), rgba(20, 30, 56, 0.98));
       border: 1px solid var(--accent-cyan);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-bottom: 3.5rem;
-      box-shadow: 0 0 35px rgba(0, 242, 254, 0.2);
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
+      border-radius: 20px;
+      padding: 2.2rem;
+      margin-bottom: 3rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 242, 254, 0.25);
+      position: relative;
     }
 
     .inspector-grid {
       display: grid;
-      grid-template-columns: 1.3fr 1fr;
-      gap: 2.5rem;
-      align-items: start;
-    }
-
-    .inspector-title {
-      font-family: var(--font-display);
-      font-size: 1.8rem;
-      color: var(--accent-cyan);
-      margin-bottom: 0.8rem;
-    }
-
-    .inspector-desc {
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-bottom: 1.5rem;
-      line-height: 1.7;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
     }
 
     .spec-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 1.2rem;
+      margin-top: 1rem;
       font-size: 0.88rem;
     }
-
-    .spec-table tr {
+    .spec-table td {
+      padding: 9px 12px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
-
-    .spec-table td {
-      padding: 8px 12px;
-    }
-
     .spec-table td.label {
       color: var(--text-muted);
       font-family: var(--font-mono);
       width: 40%;
     }
-
     .spec-table td.val {
       color: var(--text-main);
       font-weight: 600;
@@ -812,16 +1171,14 @@
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
-
     .points-list li {
       position: relative;
-      padding-left: 24px;
-      font-size: 0.92rem;
+      padding-left: 20px;
+      font-size: 0.88rem;
       color: var(--text-main);
     }
-
     .points-list li::before {
       content: '▹';
       position: absolute;
@@ -830,159 +1187,55 @@
       font-weight: bold;
     }
 
-    /* Section Header */
-    .section-header {
-      margin-bottom: 2rem;
-    }
-
-    .section-tag {
-      font-family: var(--font-mono);
-      color: var(--accent-cyan);
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .section-title {
-      font-family: var(--font-display);
-      font-size: 2.2rem;
-      font-weight: 800;
-      color: #fff;
-    }
-
-    .section-subtitle {
-      color: var(--text-muted);
-      font-size: 1rem;
-      margin-top: 0.4rem;
-    }
-
-    /* Grid of Components */
-    .components-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 4rem;
-    }
-
-    .comp-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 1.8rem;
-      cursor: pointer;
+    /* =========================================================================
+       SPECS MATRIX TABLE (SWIPEABLE WRAPPER)
+       ========================================================================= */
+    .table-responsive-wrapper {
       position: relative;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      margin-bottom: 3.5rem;
     }
 
-    .comp-card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--accent-cyan);
-      transform: translateY(-6px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 242, 254, 0.2);
-    }
-
-    .comp-card.active {
-      border-color: var(--accent-cyan);
-      background: rgba(18, 25, 45, 0.95);
-      box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
-    }
-
-    .comp-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    .comp-icon-box {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
-      background: rgba(0, 242, 254, 0.1);
-      border: 1px solid rgba(0, 242, 254, 0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-    }
-
-    .comp-number {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--accent-cyan);
-      background: rgba(0, 242, 254, 0.08);
-      padding: 4px 10px;
-      border-radius: 20px;
-      border: 1px solid rgba(0, 242, 254, 0.2);
-    }
-
-    .comp-title {
-      font-family: var(--font-display);
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 0.6rem;
-      line-height: 1.3;
-    }
-
-    .comp-desc {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.6;
-      margin-bottom: 1.2rem;
-    }
-
-    .comp-badge-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: auto;
-    }
-
-    .comp-mini-tag {
+    .table-swipe-hint {
+      display: none;
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      padding: 3px 8px;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-muted);
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+      text-align: right;
     }
 
-    /* Architecture Matrix Section */
     .specs-table-container {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
       border-radius: 16px;
-      overflow: hidden;
-      margin-bottom: 4rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .matrix-table {
       width: 100%;
+      min-width: 680px;
       border-collapse: collapse;
-      font-size: 0.92rem;
+      font-size: 0.88rem;
     }
 
     .matrix-table th {
-      background: rgba(10, 14, 25, 0.9);
-      padding: 14px 20px;
+      background: rgba(10, 14, 25, 0.95);
+      padding: 12px 18px;
       text-align: left;
       font-family: var(--font-display);
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--accent-cyan);
       letter-spacing: 1px;
       border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
     }
 
     .matrix-table td {
-      padding: 14px 20px;
+      padding: 12px 18px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       color: var(--text-main);
+      white-space: nowrap;
     }
 
     .matrix-table tr:hover {
@@ -995,7 +1248,7 @@
       gap: 6px;
       color: var(--accent-green);
       font-family: var(--font-mono);
-      font-size: 0.78rem;
+      font-size: 0.75rem;
     }
     .status-active::before {
       content: '';
@@ -1008,14 +1261,14 @@
 
     /* Production Callout Banner */
     .store-cta {
-      background: linear-gradient(135deg, rgba(14, 20, 36, 0.9), rgba(20, 29, 54, 0.9));
+      background: linear-gradient(135deg, rgba(14, 20, 36, 0.92), rgba(20, 29, 54, 0.92));
       border: 1px solid var(--border-glow);
       border-radius: 20px;
-      padding: 3rem 2.5rem;
+      padding: 2.5rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 2rem;
+      gap: 1.5rem;
       flex-wrap: wrap;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
       margin-bottom: 3rem;
@@ -1023,39 +1276,39 @@
 
     .cta-text h2 {
       font-family: var(--font-display);
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
+      font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+      margin-bottom: 0.4rem;
       color: #fff;
     }
-
     .cta-text p {
       color: var(--text-muted);
       max-width: 600px;
+      font-size: 0.9rem;
     }
 
     .cta-actions {
       display: flex;
-      gap: 1rem;
+      gap: 0.8rem;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
       color: #07090f;
-      padding: 12px 28px;
-      border-radius: 10px;
+      padding: 11px 24px;
+      border-radius: 9px;
       text-decoration: none;
       font-weight: 700;
       font-family: var(--font-mono);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       transition: all 0.25s;
       box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
       border: none;
       cursor: pointer;
     }
-
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
@@ -1064,19 +1317,18 @@
     .btn-secondary {
       background: rgba(255, 255, 255, 0.05);
       color: var(--text-main);
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 11px 20px;
+      border-radius: 9px;
       text-decoration: none;
       font-weight: 600;
       font-family: var(--font-mono);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       border: 1px solid var(--border-subtle);
       transition: all 0.25s;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
-
     .btn-secondary:hover {
       background: rgba(255, 255, 255, 0.1);
       border-color: var(--accent-cyan);
@@ -1085,35 +1337,112 @@
     /* Footer */
     footer {
       border-top: 1px solid var(--border-subtle);
-      padding: 2.5rem 2rem;
+      padding: 2.2rem 2rem;
       text-align: center;
       color: var(--text-muted);
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-family: var(--font-mono);
     }
 
-    @media (max-width: 900px) {
-      .inspector-grid {
-        grid-template-columns: 1fr;
-      }
-      .hud-widget {
-        position: static;
-        margin-bottom: 10px;
-      }
-      .hud-simulator {
-        height: auto;
-        padding: 1.5rem;
-      }
-      .floating-3d-toolbar {
-        width: 95%;
-        padding: 8px 12px;
-      }
+    /* =========================================================================
+       RESPONSIVE BREAKPOINTS (ALL DEVICES SUPPORTED)
+       ========================================================================= */
+
+    /* 1. Large Laptops & Desktops (max-width: 1200px) */
+    @media (max-width: 1200px) {
+      header { padding: 1rem 1.8rem; }
+      .container { padding: 2rem 1.5rem 3.5rem; }
+      .components-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    }
+
+    /* 2. Tablets (max-width: 992px) */
+    @media (max-width: 992px) {
       header {
-        padding: 1rem 1.5rem;
+        padding: 0.9rem 1.2rem;
+        flex-wrap: wrap;
+        gap: 12px;
       }
-      .container {
-        padding: 1.5rem 1rem;
+      .nav-links {
+        width: 100%;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
       }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .inspector-grid { grid-template-columns: 1fr; }
+      .viewport-3d-wrapper { height: 480px; }
+      .floating-3d-toolbar {
+        width: 96%;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      .table-swipe-hint { display: block; }
+      .store-cta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* 3. Mobile Landscape & Phablets (max-width: 768px) */
+    @media (max-width: 768px) {
+      .container { padding: 1.5rem 1rem 3rem; }
+      .viewport-3d-wrapper { height: 440px; }
+      
+      .view-switcher-bar {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+      .view-switcher-bar::-webkit-scrollbar { display: none; }
+      .switch-btn { flex-shrink: 0; padding: 7px 13px; font-size: 0.78rem; }
+
+      .hint-pill { font-size: 0.68rem; padding: 4px 10px; width: 90%; justify-content: center; }
+
+      .floating-3d-toolbar {
+        bottom: 10px;
+        padding: 6px 10px;
+        gap: 6px;
+      }
+      .tool-label { font-size: 0.65rem; }
+      .tool-btn { padding: 4px 8px; font-size: 0.68rem; }
+      .slider-range { width: 80px; }
+
+      .hotspot-bubble { font-size: 0.65rem; padding: 3px 6px; }
+
+      .components-grid { grid-template-columns: 1fr; }
+      .alarm-dashboard-grid { grid-template-columns: 1fr; }
+      .alarm-actions-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* 4. Small Mobile Phones (max-width: 480px) */
+    @media (max-width: 480px) {
+      .brand-title { font-size: 0.98rem; }
+      .brand-sub { font-size: 0.62rem; }
+      .brand-logo { width: 34px; height: 34px; font-size: 1rem; }
+      
+      .viewport-3d-wrapper { height: 390px; }
+      .stage-title { font-size: 0.8rem; }
+      .stage-btn { padding: 4px 8px; font-size: 0.68rem; }
+      
+      .floating-3d-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        width: 95%;
+        padding: 8px 10px;
+      }
+      .tool-group { justify-content: center; }
+      .slider-container { width: 100%; justify-content: space-between; }
+      .slider-range { flex-grow: 1; width: auto; }
+
+      .alarm-section { padding: 1.5rem 1rem; }
+      .alarm-title { font-size: 1.4rem; }
+      .alarm-actions-grid { grid-template-columns: 1fr; }
+
+      .sos-modal-card { padding: 1.5rem 1rem; }
+      .sos-timer-circle { font-size: 2.8rem; }
     }
   </style>
 </head>
@@ -1125,11 +1454,12 @@
       <div class="brand-logo">A</div>
       <div class="brand-info">
         <span class="brand-title">AETHER H-1</span>
-        <span class="brand-sub">CYBERNETIC AR SMART HELMET</span>
+        <span class="brand-sub">CYBERNETIC SMART HELMET</span>
       </div>
     </a>
     <nav class="nav-links">
       <a href="#showcase" class="active">Interactive 3D</a>
+      <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="scrollToAlarm()">🚨 Alarm: <span id="nav-alarm-status">ARMED</span></a>
       <a href="#components">12 Subsystems</a>
       <a href="#matrix">Specs Matrix</a>
       <a href="#hud-stage" onclick="switchView('hud')" class="nav-btn-highlight">⚡ Live Visor HUD</a>
@@ -1145,13 +1475,16 @@
       </div>
       <h1>Explore in Full 3D</h1>
       <p class="subtitle">
-        Rotate, zoom, and explode the AETHER H-1 Digital Smart Helmet in real-time 3D. Click on components to isolate subsystems, test custom carbon finishes, and experience the live Heads-Up Display simulator.
+        Rotate, zoom, and explode the AETHER H-1 Digital Smart Helmet in real-time 3D. Inspect CAD subsystems, test active anti-theft and crash detection alarms, and experience live Heads-Up Display telemetry.
       </p>
 
       <!-- View Switcher Controls -->
       <div class="view-switcher-bar">
         <button class="switch-btn active" id="btn-3d" onclick="switchView('3d')">
           <span>🌐</span> Real-Time 3D Model
+        </button>
+        <button class="switch-btn" id="btn-alarm" onclick="scrollToAlarm()">
+          <span>🚨</span> Guardian Alarm Center
         </button>
         <button class="switch-btn" id="btn-real" onclick="switchView('real')">
           <span>🛡️</span> Studio Photo View
@@ -1184,12 +1517,13 @@
     </section>
 
     <!-- Visual Showcase Stage -->
-    <div class="showcase-stage">
+    <div class="showcase-stage" id="showcase-stage-box">
       <div class="showcase-header">
         <div class="stage-title" id="stage-title-text">
           <span>🌐</span> Real-Time 3D Interactive Model (Click &amp; Drag to Rotate 360°)
         </div>
         <div class="stage-actions">
+          <button class="stage-btn" id="btn-sound-toggle" onclick="toggleAudioMute()">🔊 Sound: ON</button>
           <button class="stage-btn" id="btn-autorotate-toggle" onclick="toggleAutoRotate()">🔄 Auto-Rotate: ON</button>
           <button class="stage-btn" onclick="reset3DCamera()">🎯 Reset View</button>
           <button class="stage-btn" onclick="openFullscreen()">⛶ Fullscreen</button>
@@ -1212,7 +1546,7 @@
         <div class="floating-3d-toolbar">
           <!-- 3D Explode Parts Slider -->
           <div class="tool-group slider-container">
-            <span class="tool-label">💥 3D Explode:</span>
+            <span class="tool-label">💥 Explode:</span>
             <input 
               type="range" 
               class="slider-range" 
@@ -1229,8 +1563,8 @@
           <div class="tool-group">
             <span class="tool-label">🎨 Finish:</span>
             <button class="tool-btn active" id="fbtn-carbon" onclick="setFinish('carbon', this)">3K Carbon</button>
-            <button class="tool-btn" id="fbtn-black" onclick="setFinish('black', this)">Gloss Obsidian</button>
-            <button class="tool-btn" id="fbtn-cyan" onclick="setFinish('cyan', this)">Cyber Cyan</button>
+            <button class="tool-btn" id="fbtn-black" onclick="setFinish('black', this)">Obsidian</button>
+            <button class="tool-btn" id="fbtn-cyan" onclick="setFinish('cyan', this)">Cyan</button>
             <button class="tool-btn" id="fbtn-titanium" onclick="setFinish('titanium', this)">Titanium</button>
           </div>
 
@@ -1248,213 +1582,320 @@
       <!-- 2. Static Image Viewport (Secondary Photographic Views) -->
       <div class="showcase-viewport-img" id="stage-img">
         <img 
-          id="main-display-img" 
-          class="showcase-img" 
           src="assets/smart_helmet_real_render.jpg" 
-          alt="Digital Smart Helmet View"
+          alt="AETHER H-1 Real Production Smart Helmet" 
+          id="main-display-img"
         />
       </div>
 
-      <!-- 3. Live Visor HUD Simulator Mode -->
-      <div class="hud-simulator" id="hud-stage">
-        <div class="hud-reticle"></div>
-        <div class="hud-center-cross"></div>
-        
-        <div class="hud-speedometer">
-          <div class="hud-speed" id="hud-speed-val">74</div>
-          <div class="hud-unit">KM / H • TELEMETRY OK</div>
+      <!-- 3. Live Visor HUD Simulator Stage -->
+      <div class="hud-stage" id="hud-stage">
+        <div class="hud-visor-frame"></div>
+        <div class="hud-reticle-center">
+          <svg width="140" height="140" viewBox="0 0 140 140" fill="none">
+            <circle cx="70" cy="70" r="54" stroke="currentColor" stroke-width="1.2" stroke-dasharray="8 6" opacity="0.6"/>
+            <circle cx="70" cy="70" r="28" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            <line x1="70" y1="10" x2="70" y2="35" stroke="currentColor" stroke-width="2"/>
+            <line x1="70" y1="105" x2="70" y2="130" stroke="currentColor" stroke-width="2"/>
+            <line x1="10" y1="70" x2="35" y2="70" stroke="currentColor" stroke-width="2"/>
+            <line x1="105" y1="70" x2="130" y2="70" stroke="currentColor" stroke-width="2"/>
+            <circle cx="70" cy="70" r="3" fill="currentColor"/>
+          </svg>
         </div>
 
-        <!-- Top Left Widget: Telemetry -->
-        <div class="hud-widget hud-widget-tl">
-          <div style="color:var(--accent-cyan); font-weight:700; margin-bottom:4px;">AETHER OS v4.8 &bull; NEURAL LINK</div>
-          <div>CPU LOAD: <span style="color:#00ff88">21%</span> | EDGE AI: <span style="color:#00ff88">ONLINE</span></div>
-          <div>IMU FUSION: 9-AXIS STABILIZED</div>
-          <div>DATA LATENCY: 2.8 ms (5G ULTRA)</div>
-        </div>
-
-        <!-- Top Right Widget: Environment -->
-        <div class="hud-widget hud-widget-tr">
-          <div style="color:var(--accent-green); font-weight:700; margin-bottom:4px;">ACTIVE SENSOR ARRAY</div>
-          <div>SOLID-STATE LIDAR: <span style="color:#00f2fe">85m SCAN</span></div>
-          <div>EXTERNAL AMBIENT: 28°C | CLEAR</div>
-          <div>STRUCTURAL INTEGRITY: 100%</div>
-        </div>
-
-        <!-- Bottom Left Widget: Collision Alert Radar -->
-        <div class="hud-widget hud-widget-bl">
-          <div style="color:var(--accent-red); font-weight:700;">PROXIMITY RADAR SCAN</div>
-          <div class="hud-radar">
-            <div class="hud-radar-sweep"></div>
+        <div class="hud-grid-widgets">
+          <!-- Speedometer & Gear -->
+          <div class="hud-card">
+            <div class="hud-card-title">
+              <span>VEHICLE TELEMETRY</span>
+              <span>LIVE CAN-BUS</span>
+            </div>
+            <div style="display:flex; align-items:baseline; gap:6px;">
+              <div class="hud-speed-big" id="hud-speed-val">74</div>
+              <span class="hud-unit">KM/H</span>
+              <span style="margin-left:auto; font-family:var(--font-mono); font-size:1.1rem; color:var(--accent-green); font-weight:bold;">GEAR 4</span>
+            </div>
+            <div style="margin-top:10px; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+              <span>RPM: 6,420</span>
+              <span>LEAN: 14.2° L</span>
+            </div>
           </div>
-          <div style="margin-top:6px; font-size:0.75rem; text-align:center;">CLEAR ZONE • 360° SECURE</div>
+
+          <!-- LiDAR Radar & Collision Alert -->
+          <div class="hud-card">
+            <div class="hud-card-title">
+              <span>360° LIDAR PERIMETER</span>
+              <span style="color:var(--accent-green);">ALL CLEAR</span>
+            </div>
+            <div style="font-family:var(--font-mono); font-size:0.85rem; line-height:1.6;">
+              <div>▸ FRONT RADAR: <span style="color:#fff;">38.4m [TRUCK]</span></div>
+              <div>▸ REAR BLIND SPOT: <span style="color:var(--accent-green);">CLEAR</span></div>
+              <div>▸ ROAD FRICTION: <span style="color:var(--accent-cyan);">OPTIMAL (DRY)</span></div>
+            </div>
+          </div>
+
+          <!-- Turn-by-Turn AR Navigation -->
+          <div class="hud-card">
+            <div class="hud-card-title">
+              <span>AR NAVIGATION</span>
+              <span>GPS L1/L5</span>
+            </div>
+            <div style="font-family:var(--font-display); font-size:1.05rem; color:#fff; margin-bottom:4px;">
+              IN 250M ➔ RIGHT TURN
+            </div>
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
+              MONIVONG BLVD • ETA 14 MIN (7.8 KM)
+            </div>
+          </div>
         </div>
 
-        <!-- Bottom Right Widget: Navigation -->
-        <div class="hud-widget hud-widget-br">
-          <div style="color:var(--accent-blue); font-weight:700; margin-bottom:4px;">AR ROUTE GUIDANCE</div>
-          <div>DESTINATION: METROPOLIS HIGHWAY WAYPOINT 04</div>
-          <div>NEXT MANEUVER: TURN RIGHT IN 180m</div>
-          <div>BATTERY: <span style="color:#00ff88">89%</span> (~7.4 hrs)</div>
-        </div>
-
-        <!-- HUD Mode Toggle Bar -->
-        <div class="hud-modes-bar">
-          <button class="hud-mode-pill active" onclick="setHudMode('telemetry', this)">Combat/Race HUD</button>
+        <div class="hud-mode-pills">
+          <button class="hud-mode-pill active" onclick="setHudMode('default', this)">Urban Cruise</button>
           <button class="hud-mode-pill" onclick="setHudMode('night', this)">Night Vision FLIR</button>
-          <button class="hud-mode-pill" onclick="setHudMode('city', this)">Urban Commute AR</button>
+          <button class="hud-mode-pill" onclick="setHudMode('city', this)">Track Apex</button>
+          <button class="hud-mode-pill" onclick="triggerAlarm('theft')">🚨 Security Hazard Alert</button>
         </div>
       </div>
 
-      <!-- Thumbnail Strip -->
+      <!-- Gallery Thumbnails Strip -->
       <div class="thumb-strip">
         <div class="thumb-item active" onclick="switchView('3d')">
-          <img src="assets/render_isometric.png" alt="Interactive 3D">
-          <span class="thumb-label">🌐 Real-Time 3D</span>
+          <img src="assets/render_isometric.png" alt="3D Model" />
+          <div class="thumb-label">🌐 Real-Time 3D</div>
         </div>
         <div class="thumb-item" onclick="switchView('real')">
-          <img src="assets/smart_helmet_real_render.jpg" alt="Real Assembled">
-          <span class="thumb-label">Studio Photo</span>
+          <img src="assets/smart_helmet_real_render.jpg" alt="Real Render" />
+          <div class="thumb-label">Studio Photo</div>
         </div>
         <div class="thumb-item" onclick="switchView('cutaway')">
-          <img src="assets/smart_helmet_internal_cutaway.jpg" alt="Internal Cutaway">
-          <span class="thumb-label">Cutaway Internal</span>
+          <img src="assets/smart_helmet_internal_cutaway.jpg" alt="Cutaway" />
+          <div class="thumb-label">Cutaway Internal</div>
         </div>
         <div class="thumb-item" onclick="switchView('exploded')">
-          <img src="assets/digital_helmet_exploded.jpg" alt="Exploded View">
-          <span class="thumb-label">2D Exploded</span>
+          <img src="assets/digital_helmet_exploded.jpg" alt="Exploded" />
+          <div class="thumb-label">2D Exploded</div>
         </div>
         <div class="thumb-item" onclick="switchView('audio')">
-          <img src="assets/smart_helmet_audio_comms.jpg" alt="Audio Comms">
-          <span class="thumb-label">Audio & Comms</span>
+          <img src="assets/smart_helmet_audio_comms.jpg" alt="Audio & Comms" />
+          <div class="thumb-label">Audio &amp; Comms</div>
         </div>
         <div class="thumb-item" onclick="switchView('isometric')">
-          <img src="assets/render_isometric.png" alt="3D Isometric">
-          <span class="thumb-label">3D Isometric</span>
+          <img src="assets/render_isometric.png" alt="Isometric" />
+          <div class="thumb-label">3D Isometric</div>
         </div>
         <div class="thumb-item" onclick="switchView('front')">
-          <img src="assets/render_front.png" alt="3D Front">
-          <span class="thumb-label">3D Front Angle</span>
+          <img src="assets/render_front.png" alt="Front View" />
+          <div class="thumb-label">3D Front Angle</div>
         </div>
         <div class="thumb-item" onclick="switchView('side')">
-          <img src="assets/render_side.png" alt="3D Side">
-          <span class="thumb-label">3D Side Profile</span>
+          <img src="assets/render_side.png" alt="Side View" />
+          <div class="thumb-label">3D Side Profile</div>
         </div>
         <div class="thumb-item" onclick="switchView('top')">
-          <img src="assets/render_top.png" alt="3D Top">
-          <span class="thumb-label">3D Top Aero</span>
+          <img src="assets/render_top.png" alt="Top View" />
+          <div class="thumb-label">3D Top Aero</div>
         </div>
       </div>
     </div>
 
-    <!-- Inspector Highlight Box (Appears on 3D click or Card click) -->
+    <!-- =========================================================================
+         🚨 AETHER GUARDIAN™ ALARM & SECURITY COMMAND CENTER (NEW SECTION)
+         ========================================================================= -->
+    <section class="alarm-section" id="alarm-center">
+      <div class="alarm-badge-tag">
+        <span>🚨</span> Active Vehicle Security &amp; Telemetry
+      </div>
+      <h2 class="alarm-title">AETHER Guardian™ Smart Alarm &amp; SOS Center</h2>
+      <p class="alarm-subtitle">
+        Test the intelligent anti-theft movement alarm and high-G crash emergency dispatch system. Integrated 6-axis IMU sensors detect unauthorized helmet tampering when parked, sounding a 110dB acoustic siren and flashing emergency 3D strobe lights.
+      </p>
+
+      <div class="alarm-dashboard-grid">
+        <!-- Live Status Card -->
+        <div class="alarm-card">
+          <div>
+            <div class="alarm-status-header">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Guardian Security Status</span>
+              <span id="alarm-status-badge" class="alarm-status-badge status-safe">🛡️ ARMED (MONITORING)</span>
+            </div>
+
+            <div class="telemetry-row">
+              <span class="label">6-Axis Motion Sensor:</span>
+              <span class="val" id="telemetry-imu">MPU-6050 (0.2° Tilt)</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="label">Impact Accelerometer:</span>
+              <span class="val" id="telemetry-gforce">1.02G (Baseline)</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="label">GPS Geofence:</span>
+              <span class="val" id="telemetry-gps">LOCKED (11.5564° N, 104.9282° E)</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="label">Acoustic Piezo Siren:</span>
+              <span class="val" id="telemetry-siren" style="color:var(--accent-green);">110dB STANDBY</span>
+            </div>
+          </div>
+
+          <div class="alarm-actions-grid">
+            <button class="alarm-btn btn-arm" id="btn-toggle-arm" onclick="toggleGuardianArm()">
+              <span>🛡️</span> Disarm System
+            </button>
+            <button class="alarm-btn btn-tamper" onclick="triggerAlarm('theft')">
+              <span>📳</span> Simulate Tamper
+            </button>
+            <button class="alarm-btn btn-crash" onclick="triggerAlarm('crash')">
+              <span>💥</span> Simulate Crash SOS
+            </button>
+            <button class="alarm-btn btn-silence" onclick="silenceAlarm()">
+              <span>🔕</span> Silence / Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Security Event Log Terminal -->
+        <div class="alarm-card">
+          <div class="alarm-status-header">
+            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-cyan); text-transform:uppercase;">Live Security Event Log</span>
+            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-green);">● ENCRYPTED MESH</span>
+          </div>
+
+          <div class="alarm-log-terminal" id="alarm-log-terminal">
+            <div class="log-entry">[00:00:01] AETHER Guardian™ Security Subsystem Initialized.</div>
+            <div class="log-entry">[00:00:02] IMU Gyro calibrated: X=0.0 Y=0.0 Z=1.0G.</div>
+            <div class="log-entry">[00:00:03] GPS Geofence established at CADT Innovation Hub.</div>
+            <div class="log-entry log-warn">[00:00:04] Anti-Theft Guardian Mode: ARMED. Tamper detection ready.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Emergency Crash SOS Countdown Modal -->
+    <div class="sos-modal-backdrop" id="sos-modal">
+      <div class="sos-modal-card">
+        <div class="sos-icon">⚠️</div>
+        <div class="sos-title">HIGH-G IMPACT DETECTED!</div>
+        <p style="color:var(--text-muted); font-size:0.85rem;">
+          Autonomous eCall emergency dispatch will broadcast rider coordinates, impact force (28.4G), and blood type (O+) to local emergency services in:
+        </p>
+
+        <div class="sos-timer-circle" id="sos-countdown-txt">10s</div>
+
+        <p style="color:var(--accent-amber); font-family:var(--font-mono); font-size:0.75rem; margin-bottom:1.5rem;">
+          GPS: 11.5564° N, 104.9282° E • CADT Campus, Phnom Penh
+        </p>
+
+        <button class="btn-abort-sos" onclick="abortCrashSOS()">
+          🛑 I AM OK — CANCEL SOS ALARM
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Component Inspector Panel -->
     <div class="inspector-panel" id="inspector">
+      <div class="badge" id="insp-badge">SUBSYSTEM SPECIFICATIONS</div>
       <div class="inspector-grid">
         <div>
-          <div class="badge" id="insp-badge">SUBSYSTEM INSPECTION</div>
-          <h2 class="inspector-title" id="insp-title">Component Title</h2>
-          <p class="inspector-desc" id="insp-desc">Detailed description of this component's engineering purpose and working mechanism.</p>
-          <table class="spec-table" id="insp-specs">
-            <!-- Populated via JS -->
-          </table>
+          <h2 id="insp-title" style="font-family:var(--font-display); font-size:1.8rem; margin-bottom:0.8rem; color:#fff;">Component Title</h2>
+          <p id="insp-desc" style="color:var(--text-muted); font-size:0.95rem; line-height:1.6; margin-bottom:1.2rem;">Detailed component engineering description.</p>
+          <ul class="points-list" id="insp-points"></ul>
         </div>
         <div>
-          <h3 style="font-family:var(--font-display); font-size:1.1rem; color:#fff; margin-bottom:1rem;">Key Engineering Highlights</h3>
-          <ul class="points-list" id="insp-points">
-            <!-- Populated via JS -->
-          </ul>
+          <h4 style="font-family:var(--font-mono); color:var(--accent-cyan); font-size:0.85rem; letter-spacing:1px; margin-bottom:0.6rem;">ENGINEERING BENCHMARKS</h4>
+          <table class="spec-table" id="insp-specs"></table>
         </div>
       </div>
     </div>
 
-    <!-- 12 Components Deep Dive Grid -->
+    <!-- 12 Subsystems Grid Section -->
     <section class="section-header" id="components">
-      <div class="section-tag">Anatomy &amp; Subsystems</div>
-      <h2 class="section-title">All 12 Real Components Breakdown</h2>
-      <p class="section-subtitle">Click on any subsystem card below or click any 3D hotspot on the model above to inspect its engineering specifications.</p>
+      <div class="section-tag">PHYSICAL &amp; ELECTRONIC ARCHITECTURE</div>
+      <h2 class="section-title">12 Modular Subsystems</h2>
+      <p class="section-subtitle">Click on any module to inspect CAD tolerances, sensor specs, and material compositions.</p>
     </section>
 
-    <div class="components-grid" id="components-container">
-      <!-- Injected via JavaScript for clean maintainability -->
-    </div>
+    <div class="components-grid" id="components-container"></div>
 
-    <!-- Technical Architecture Matrix -->
+    <!-- Architecture Specs Matrix -->
     <section class="section-header" id="matrix">
-      <div class="section-tag">Engineering Specifications</div>
-      <h2 class="section-title">Component Integration Matrix</h2>
-      <p class="section-subtitle">Comparative operational data across physical, electrical, and optical domains.</p>
+      <div class="section-tag">HARDWARE SPECIFICATIONS</div>
+      <h2 class="section-title">Engineering Specs Matrix</h2>
+      <p class="section-subtitle">Complete technical benchmarks across all safety, optical, computing, and security hardware.</p>
     </section>
 
-    <div class="specs-table-container">
-      <table class="matrix-table">
-        <thead>
-          <tr>
-            <th>Subsystem</th>
-            <th>Material / Hardware</th>
-            <th>Primary Function</th>
-            <th>Weight / Power</th>
-            <th>Operational Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Outer Shell</strong></td>
-            <td>3K Prepreg Carbon Fiber &amp; Kevlar</td>
-            <td>Penetration protection &amp; aerodynamic channeling</td>
-            <td>420g / Passive</td>
-            <td><span class="status-active">MIL-SPEC CERTIFIED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Impact Absorber</strong></td>
-            <td>Dual-Density EPS + MIPS C2 Core</td>
-            <td>Rotational and linear force dissipation</td>
-            <td>280g / Passive</td>
-            <td><span class="status-active">DOT &amp; ECE 22.06</span></td>
-          </tr>
-          <tr>
-            <td><strong>AI Edge Core</strong></td>
-            <td>Quad-Core ARM Cortex + 8 TOPS NPU</td>
-            <td>LiDAR vision analysis, HUD projection logic</td>
-            <td>65g / 4.5W TDP</td>
-            <td><span class="status-active">ACTIVE TELEMETRY</span></td>
-          </tr>
-          <tr>
-            <td><strong>Waveguide Visor</strong></td>
-            <td>Electrochromic Curved Polycarbonate</td>
-            <td>Holographic augmented reality projection</td>
-            <td>140g / 0.8W tint</td>
-            <td><span class="status-active">OPTICAL CALIBRATED</span></td>
-          </tr>
-          <tr>
-            <td><strong>Micro-OLED Engines</strong></td>
-            <td>Twin 0.71-inch Sony Micro-OLEDs</td>
-            <td>Dual 4K ultra-bright HUD imagery</td>
-            <td>35g / 2.2W</td>
-            <td><span class="status-active">4,000 NITS PEAK</span></td>
-          </tr>
-          <tr>
-            <td><strong>LiDAR &amp; Camera Array</strong></td>
-            <td>Solid-state ToF LiDAR + 4K Starvis Sensor</td>
-            <td>Obstacle detection &amp; 60fps dashcam recording</td>
-            <td>48g / 1.8W</td>
-            <td><span class="status-active">360° SURVEILLANCE</span></td>
-          </tr>
-          <tr>
-            <td><strong>Power Cell</strong></td>
-            <td>Curved Li-Polymer Smart Battery</td>
-            <td>Balanced 6,200 mAh energy storage</td>
-            <td>185g / 6,200 mAh</td>
-            <td><span class="status-active">8.5H RUNTIME</span></td>
-          </tr>
-          <tr>
-            <td><strong>Audio Transducers</strong></td>
-            <td>Dual Bone Conduction + Beamforming Mics</td>
-            <td>Open-ear spatial comms &amp; voice commands</td>
-            <td>25g / 0.5W</td>
-            <td><span class="status-active">ENC NOISE CANCEL</span></td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="table-responsive-wrapper">
+      <div class="table-swipe-hint">👉 Swipe horizontally to view full matrix ⇄</div>
+      <div class="specs-table-container">
+        <table class="matrix-table">
+          <thead>
+            <tr>
+              <th>Subsystem Name</th>
+              <th>Hardware Component</th>
+              <th>Function / Benchmark</th>
+              <th>Weight &amp; Power</th>
+              <th>Certification / Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Outer Shell</strong></td>
+              <td>3K Toray Carbon Fiber + Kevlar</td>
+              <td>Structural impact resistance &amp; aero stability</td>
+              <td>420g / Passive</td>
+              <td><span class="status-active">ECE 22.06 / DOT</span></td>
+            </tr>
+            <tr>
+              <td><strong>Impact Core</strong></td>
+              <td>Dual-Density EPS + MIPS C2</td>
+              <td>Multi-directional rotational concussion reduction</td>
+              <td>280g / Passive</td>
+              <td><span class="status-active">Snell M2025</span></td>
+            </tr>
+            <tr>
+              <td><strong>Optical Visor</strong></td>
+              <td>Geometric Optical Waveguide</td>
+              <td>110° FOV, 0.1s electrochromic variable tint</td>
+              <td>160g / 0.8W</td>
+              <td><span class="status-active">ANSI Z87.1+ Optical</span></td>
+            </tr>
+            <tr>
+              <td><strong>Projection Engine</strong></td>
+              <td>Dual Sony 4K Micro-OLED</td>
+              <td>4,000 Nits peak daylight luminance, 90Hz</td>
+              <td>45g / 2.2W</td>
+              <td><span class="status-active">HDR10 Certified</span></td>
+            </tr>
+            <tr>
+              <td><strong>LiDAR &amp; Vision</strong></td>
+              <td>Solid-State ToF LiDAR + Sony Starvis 2</td>
+              <td>100m obstacle detection, 4K 60fps EIS dashcam</td>
+              <td>85g / 3.4W</td>
+              <td><span class="status-active">Class 1 Eye-Safe</span></td>
+            </tr>
+            <tr>
+              <td><strong>Guardian Alarm &amp; IMU</strong></td>
+              <td>MPU-6050 6-Axis IMU + 110dB Piezo Siren</td>
+              <td>Anti-theft movement detection &amp; 64G crash alarm</td>
+              <td>25g / 0.4W</td>
+              <td><span class="status-active">GUARDIAN ARMED</span></td>
+            </tr>
+            <tr>
+              <td><strong>Smart Battery</strong></td>
+              <td>Curved Lithium-Polymer (7.4V 4,800mAh)</td>
+              <td>Up to 10 hours continuous HUD &amp; dashcam life</td>
+              <td>185g / 35.5Wh</td>
+              <td><span class="status-active">UN38.3 Safe Transport</span></td>
+            </tr>
+            <tr>
+              <td><strong>Audio Transducers</strong></td>
+              <td>Dual Bone Conduction + Beamforming Mics</td>
+              <td>Open-ear spatial comms &amp; voice commands</td>
+              <td>25g / 0.5W</td>
+              <td><span class="status-active">ENC NOISE CANCEL</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <!-- Production Callout Banner -->
@@ -1462,11 +1903,11 @@
       <div class="cta-text">
         <div class="badge" style="margin-bottom:0.6rem;">AETHER H-1 • NEXT-GEN PLATFORM</div>
         <h2>Experience the Future of Digital Protection</h2>
-        <p>Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, and 100m solid-state LiDAR detection.</p>
+        <p>Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, active anti-theft alarm, and 100m solid-state LiDAR perception.</p>
       </div>
       <div class="cta-actions">
         <button onclick="switchView('3d')" class="btn-primary">🌐 Launch 3D Explorer →</button>
-        <a href="assets/smart_helmet_real_render.jpg" download class="btn-secondary">Download 4K CAD Renders</a>
+        <button onclick="scrollToAlarm()" class="btn-secondary">🚨 Test Guardian Alarm</button>
       </div>
     </div>
   </main>
@@ -1478,7 +1919,9 @@
   </footer>
 
   <script>
-    // 12 Full Component Specifications
+    /* =========================================================================
+       12 COMPONENT SPECIFICATIONS
+       ========================================================================= */
     const components = [
       {
         icon: "🛡️",
@@ -1570,7 +2013,7 @@
         ],
         points: [
           "Micro-mirror collimator optics that eliminate eye fatigue on long rides.",
-          "Auto-brightness photodiode sensor matching display intensity to ambient ambient lighting.",
+          "Auto-brightness photodiode sensor matching display intensity to ambient lighting.",
           "Independent left/right eye focal diopter adjustment (+2.0D to -5.0D) for riders wearing prescription lenses."
         ],
         tags: ["4K Micro-OLED", "4,000 Nits", "90Hz", "Diopter Adjust"]
@@ -1598,107 +2041,107 @@
         icon: "🔋",
         number: "PART #07",
         title: "Curved Li-Polymer Smart Battery",
-        badge: "POWER SYSTEM",
-        desc: "Twin curved lithium-polymer battery packs custom molded to fit into the rear lower collar of the helmet. Serves as a perfect counter-weight to the front optics, ensuring balanced center of gravity.",
+        badge: "POWER SUBSYSTEM",
+        desc: "Twin curved 3,800mAh high-density lithium-polymer battery packs sculpted into the rear lower base for a neutral center of gravity, with fast Qi wireless charging and USB-C Power Delivery.",
         specs: [
-          { label: "Cell Chemistry", val: "High-Energy Density Lithium-Cobalt Polymer" },
-          { label: "Total Capacity", val: "6,200 mAh @ 3.85V (23.8 Wh)" },
-          { label: "Operating Runtime", val: "8.5 Hours Continuous Full HUD + Recording" },
-          { label: "Recharge Standard", val: "USB-C PD 3.0 (30W) & Qi 15W Wireless Dock" }
+          { label: "Battery Capacity", val: "7.4V 4,800mAh (35.52 Wh)" },
+          { label: "Operating Runtime", val: "8 to 10 hours continuous active HUD" },
+          { label: "Charging Speed", val: "Fast Charge 0-80% in 45 minutes (USB-C 30W PD)" },
+          { label: "Safety Protections", val: "Overcharge, Overheat, Short-Circuit & Puncture-proof" }
         ],
         points: [
-          "Charges from 0% to 80% in just 32 minutes via USB-C Power Delivery.",
-          "Integrated Battery Management System (BMS) with overcurrent, overvoltage, and cell-balancing protection.",
-          "Hot-swappable magnetic cartridge design for instant battery replacement on multi-day tours."
+          "Even weight distribution on rider's shoulders eliminates neck strain on extended long-distance tours.",
+          "Automatic ultra-low-power hibernation mode conserving charge for up to 90 days on standby.",
+          "Magnetic quick-snap breakaway charging cable to prevent accidental helmet drops if snagged."
         ],
-        tags: ["6,200 mAh", "8.5h Runtime", "USB-C PD 30W", "Qi Wireless"]
+        tags: ["4800mAh", "10h Battery", "30W Fast Charge", "Neutral Balance"]
       },
       {
         icon: "🔊",
         number: "PART #08",
-        title: "Bone Conduction & Audio Transducers",
-        badge: "ACOUSTICS & COMMS",
-        desc: "Dual bone-conduction audio exciters contacting the temporal bone, coupled with 4 beamforming environmental noise-cancelling (ENC) microphones for crisp intercom speech even at 120 km/h.",
+        title: "Spatial Bone Conduction Audio",
+        badge: "ACOUSTIC TRANSDUCERS",
+        desc: "Direct-contact temporal bone conduction transducers combined with a quad beamforming microphone array. Transmits audio, intercom, and phone calls without plugging ears.",
         specs: [
-          { label: "Transducer Type", val: "Dual Magnetic Bone Conduction Transducers" },
-          { label: "Microphone Array", val: "4-mic Beamforming ENC Array" },
-          { label: "Frequency Response", val: "20 Hz – 20,000 Hz" },
-          { label: "Intercom Protocol", val: "Dynamic Mesh Intercom (up to 16 riders, 2km range)" }
+          { label: "Transducer Type", val: "Dual Temporal Bone Conduction Actuators" },
+          { label: "Frequency Range", val: "20 Hz to 20,000 Hz" },
+          { label: "Microphone Array", val: "4-Mic Array with Environmental Noise Cancellation (ENC)" },
+          { label: "Wind Noise Suppression", val: "Clear voice capture up to 140 km/h" }
         ],
         points: [
-          "Keeps rider's ear canals completely open to hear critical ambient road sirens and traffic sounds.",
-          "Wind-noise cancellation DSP algorithm filtering out up to 45dB of rushing air turbulence.",
-          "Native hands-free voice command engine ('Hey Helmet, zoom map', 'Answer call')."
+          "Keeps rider's ears 100% open to ambient emergency sirens, horns, and traffic sounds.",
+          "Spatial 3D audio positioning: navigation cues sound as if they come from the upcoming street direction.",
+          "Multi-channel rider-to-passenger and mesh group intercom with up to 1.6 km line-of-sight range."
         ],
-        tags: ["Bone Conduction", "4-Mic ENC", "Mesh Intercom", "Voice Control"]
+        tags: ["Bone Conduction", "ENC Noise Cancel", "Open-Ear", "Spatial 3D"]
       },
       {
         icon: "🚨",
         number: "PART #09",
-        title: "Active Rear Warning LED Bar",
-        badge: "REAR ILLUMINATION",
-        desc: "High-output curved RGB LED light strip wrapped around the rear spoiler. Features smart deceleration sensing that triggers ultra-bright brake pulses without any physical connection to the motorcycle.",
+        title: "Rear Warning LED & Decel Bar",
+        badge: "REAR ILLUMINATION & BRAKE",
+        desc: "High-intensity curved ruby LED array with an integrated 77GHz millimeter-wave rear radar. Automatically flashes high-frequency strobe during emergency hard braking.",
         specs: [
-          { label: "LED Emitters", val: "36 High-Lumen Addressable NeoPixel LEDs" },
-          { label: "Peak Luminosity", val: "850 Lumens (Visible from 1.2km away)" },
-          { label: "Braking Trigger", val: "Internal 9-axis accelerometer auto-detects deceleration" },
-          { label: "Lighting Modes", val: "Pulse, Solid Amber, Emergency Hazard Strobe" }
+          { label: "Luminous Output", val: "240 Lumens diffused ruby red" },
+          { label: "Brake Detection", val: "Automatic internal IMU deceleration trigger (<5ms)" },
+          { label: "Rear Radar Range", val: "50 meters blind-spot approach speed sensor" },
+          { label: "Strobe Modes", val: "Steady Running, Deceleration Pulse, SOS Hazard Flash" }
         ],
         points: [
-          "Brake light activates instantaneously on engine braking / downshifting even before manual brakes are touched.",
-          "Turn signal indicators synchronized with HUD GPS navigation instructions.",
-          "Emergency crash strobe automatically flashes SOS in high-visibility amber if a crash is registered."
+          "Elevated rider eye-level brake light ensures trailing SUVs and trucks see braking instantly.",
+          "Warns rider through HUD visor if a rear vehicle is approaching too quickly from behind at a red light.",
+          "Built-in light sensor dims the LED at night to prevent blinding following motorists."
         ],
-        tags: ["850 Lumens", "Smart Brake Sensing", "Auto SOS", "Dynamic Turn Signal"]
-      },
-      {
-        icon: "🧲",
-        number: "PART #10",
-        title: "Fidlock Magnetic Chin Harness",
-        badge: "RETENTION & ERGONOMICS",
-        desc: "German engineered Fidlock magnetic mechanical quick-release chin strap buckle. Snaps shut effortlessly with one gloved hand and withstands over 2,000 Newtons of tensile crash force.",
-        specs: [
-          { label: "Mechanism", val: "Magnetic-Mechanical Interlocking Hook" },
-          { label: "Tensile Rating", val: "2,200 N (Exceeds FIA and SNELL criteria)" },
-          { label: "Strap Material", val: "High-Tenacity Tubular Nylon Webbing" },
-          { label: "Padding", val: "Soft Neoprene Chin Guard with Moisture Barrier" }
-        ],
-        points: [
-          "One-hand operation: simply bring the two buckle ends close and magnets snap and lock them mechanically.",
-          "Emergency quick-release red pull cord for first responders to swiftly remove helmet without neck strain.",
-          "Ergonomic chin curtain reducing wind draft and turbulence entering from underneath."
-        ],
-        tags: ["Fidlock Magnetic", "2,200N Strength", "One-Hand Lock", "EMT Quick-Pull"]
+        tags: ["Auto Brake LED", "77GHz Rear Radar", "Blind Spot Alert", "240 Lumens"]
       },
       {
         icon: "💨",
-        number: "PART #11",
-        title: "Active Airflow Cooling Channels",
-        badge: "CLIMATE & VENTILATION",
-        desc: "Internal computational fluid dynamics (CFD) engineered venturi conduits, front shutter gates, and exhaust diffusers that maintain optimum internal head temperature and prevent visor fogging.",
+        number: "PART #10",
+        title: "Active Ram-Air Micro-Fans",
+        badge: "CLIMATE CONTROL",
+        desc: "Dual brushless micro-turbines embedded in the chin and crown channels with HEPA carbon particulate filtration to actively exhaust heat, moisture, and CO2.",
         specs: [
-          { label: "Intake Ports", val: "2 Chin intakes, 2 Brow intakes with micro-mesh" },
-          { label: "Exhaust Ports", val: "3 Venturi low-pressure negative exhaust vents" },
-          { label: "Sealing Rating", val: "IP67 Dust & Water Ingress Protection" },
-          { label: "Temperature Drop", val: "Up to 5.5°C cooler than conventional helmets" }
+          { label: "Turbine Spec", val: "Twin 12V Brushless Mag-Lev Micro-Fans" },
+          { label: "Airflow Volume", val: "4.2 CFM maximum active throughput" },
+          { label: "Noise Level", val: "<18 dBA (virtually silent below engine sound)" },
+          { label: "Filtration", val: "Replaceable N95/PM2.5 activated carbon pre-filter" }
         ],
         points: [
-          "Micro-mesh bug screens preventing foreign particles and insects from entering airflow ports.",
-          "Adjustable slider toggles operable with thick riding gloves.",
-          "Internal silicon gasket perimeter creating an airtight seal when visor is closed."
+          "Dynamic temperature and humidity sensor automatically kicks on airflow at red lights.",
+          "Defogs visor within 1.5 seconds of detection without needing to open the face shield.",
+          "Filters urban exhaust fumes and smog particles while riding in dense traffic."
         ],
-        tags: ["CFD Venturi", "IP67 Sealed", "Glove Friendly", "Anti-Mist"]
+        tags: ["Active Micro-Fans", "N95 Filter", "Anti-Fog Boost", "Mag-Lev Turbines"]
       },
       {
-        icon: "🧭",
-        number: "PART #12",
-        title: "Crash Sensor & SOS Telematics",
-        badge: "SAFETY & EMERGENCY",
-        desc: "High-G triaxial impact sensor coupled with real-time GPS/GLONASS/Galileo satellite transceiver that automatically detects accidents and transmits crash telemetry to emergency responders.",
+        icon: "🎛️",
+        number: "PART #11",
+        title: "Tactile Multi-Jog Controller",
+        badge: "PHYSICAL INTERACTION",
+        desc: "An oversized magnetic rotary dial and sealed tactile buttons mounted on the lower left jawline, engineered specifically for positive tactile feedback with thick winter leather gloves.",
         specs: [
-          { label: "G-Force Threshold", val: "Up to ±64G impact detection" },
+          { label: "Actuation Mechanism", val: "Hall-Effect Magnetic Stepped Rotary Jog + 3 Tactile Buttons" },
+          { label: "Ingress Protection", val: "IP68 Submersible Dust and Waterproof" },
+          { label: "Click Resistance", val: "Positive 150g tactical detent" },
+          { label: "Auxiliary Input", val: "Voice Recognition Command Engine" }
+        ],
+        points: [
+          "Distinct haptic click per notch allows precise volume and menu adjustment without taking eyes off the road.",
+          "Emergency quick-tap button to instantly toggle tinted visor to 100% clear when entering dark tunnels.",
+          "Programmable hotkeys for favorite radio channel, intercom group, or HUD declutter mode."
+        ],
+        tags: ["Glove Friendly", "IP68 Waterproof", "Hall-Effect Jog", "Tactile Detents"]
+      },
+      {
+        icon: "🆘",
+        number: "PART #12",
+        title: "Autonomous eCall SOS & Blackbox",
+        badge: "EMERGENCY LIFELINE",
+        desc: "A standalone ruggedized safety module with dedicated low-power satellite GNSS, 64G crash detection accelerometer, and autonomous cellular SOS transmission.",
+        specs: [
+          { label: "Impact Sensor", val: "64G High-Shock Crash Accelerometer" },
           { label: "Satellite Constellation", val: "GPS L1/L5, GLONASS, Galileo, BeiDou" },
-          { label: "SOS Response Time", val: "Countdown timer (30s) before automated dispatch" },
+          { label: "SOS Response Time", val: "Countdown timer (10s) before automated dispatch" },
           { label: "Cloud Integration", val: "AETHER Cloud Emergency Dispatch Protocol" }
         ],
         points: [
@@ -1706,7 +2149,7 @@
           "Transmits rider's blood type, emergency contacts, GPS coordinates, and impact G-force to ambulance.",
           "Manual cancel button on helmet side if rider is uninjured and does not require medical response."
         ],
-        tags: ["64G Impact Sensor", "Multi-GNSS", "Emergency Cloud", "30s Cancel Timer"]
+        tags: ["64G Impact Sensor", "Multi-GNSS", "Emergency Cloud", "10s Cancel Timer"]
       }
     ];
 
@@ -1778,7 +2221,6 @@
       const activeBtn = document.getElementById('btn-' + view);
       if (activeBtn) activeBtn.classList.add('active');
 
-      // Update thumbnails active state
       document.querySelectorAll('.thumb-item').forEach(th => th.classList.remove('active'));
       const activeThumb = Array.from(document.querySelectorAll('.thumb-item')).find(th => 
         th.getAttribute('onclick') && th.getAttribute('onclick').includes(view)
@@ -1815,7 +2257,6 @@
       }
     }
 
-    // Inspector function
     function inspectComponent(index) {
       const data = components[index];
       const panel = document.getElementById('inspector');
@@ -1842,17 +2283,14 @@
       });
 
       document.querySelectorAll('.comp-card').forEach((card, idx) => {
-        if (idx === index) {
-          card.classList.add('active');
-        } else {
-          card.classList.remove('active');
-        }
+        if (idx === index) card.classList.add('active');
+        else card.classList.remove('active');
       });
 
       panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    // Speedometer dynamic ticker
+    // Dynamic HUD Speedometer Ticker
     let speed = 74;
     setInterval(() => {
       const delta = (Math.random() - 0.49) * 3;
@@ -1861,7 +2299,6 @@
       if (el) el.innerText = Math.round(speed);
     }, 1100);
 
-    // Fullscreen toggle
     function openFullscreen() {
       const stage = document.querySelector('.showcase-stage');
       if (!document.fullscreenElement) {
@@ -1871,10 +2308,9 @@
       }
     }
 
-    // HUD Mode changer
     function setHudMode(mode, btn) {
       document.querySelectorAll('.hud-mode-pill').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+      if (btn) btn.classList.add('active');
       const hud = document.getElementById('hud-stage');
       if (mode === 'night') {
         hud.style.background = 'radial-gradient(circle at center, rgba(0, 255, 136, 0.15) 0%, rgba(2, 15, 6, 0.96) 85%)';
@@ -1889,12 +2325,253 @@
     }
 
     /* =========================================================================
+       🚨 GUARDIAN ALARM & SECURITY ENGINE (AUDIO & VISUAL STROBE)
+       ========================================================================= */
+    let audioCtx = null;
+    let alarmSoundInterval = null;
+    let isAudioMuted = false;
+    let isArmed = true;
+    let isAlarmActive = false;
+    let sosTimer = null;
+    let sosCountdown = 10;
+    let alarmStrobeActive = false;
+    let alarmStrobeTime = 0;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playTone(freq, duration, type = 'sawtooth', gainVal = 0.18) {
+      if (isAudioMuted) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(gainVal, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {
+        console.warn("AudioContext tone error:", e);
+      }
+    }
+
+    function startSirenSound() {
+      stopSirenSound();
+      let high = false;
+      playTone(950, 0.22, 'sawtooth', 0.22);
+      alarmSoundInterval = setInterval(() => {
+        high = !high;
+        playTone(high ? 1350 : 850, 0.2, 'sawtooth', 0.22);
+      }, 240);
+    }
+
+    function stopSirenSound() {
+      if (alarmSoundInterval) {
+        clearInterval(alarmSoundInterval);
+        alarmSoundInterval = null;
+      }
+    }
+
+    function toggleAudioMute() {
+      isAudioMuted = !isAudioMuted;
+      const btn = document.getElementById('btn-sound-toggle');
+      if (btn) {
+        btn.innerText = isAudioMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+      }
+      if (isAudioMuted) stopSirenSound();
+      else if (isAlarmActive) startSirenSound();
+    }
+
+    function appendAlarmLog(text, type = '') {
+      const terminal = document.getElementById('alarm-log-terminal');
+      if (!terminal) return;
+      const d = new Date();
+      const timeStr = d.toTimeString().split(' ')[0];
+      const div = document.createElement('div');
+      div.className = 'log-entry' + (type ? ' ' + type : '');
+      div.innerText = `[${timeStr}] ${text}`;
+      terminal.appendChild(div);
+      terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function scrollToAlarm() {
+      const el = document.getElementById('alarm-center');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleGuardianArm() {
+      isArmed = !isArmed;
+      const badge = document.getElementById('alarm-status-badge');
+      const navBadge = document.getElementById('nav-alarm-status');
+      const armBtn = document.getElementById('btn-toggle-arm');
+
+      if (isArmed) {
+        playTone(880, 0.12, 'sine');
+        setTimeout(() => playTone(1320, 0.16, 'sine'), 130);
+        badge.className = 'alarm-status-badge status-safe';
+        badge.innerText = '🛡️ ARMED (MONITORING)';
+        navBadge.innerText = 'ARMED';
+        armBtn.innerHTML = '<span>🛡️</span> Disarm System';
+        appendAlarmLog("Guardian Theft Monitoring ARMED. Motion threshold set to 15°.", "log-warn");
+      } else {
+        playTone(1320, 0.12, 'sine');
+        setTimeout(() => playTone(660, 0.16, 'sine'), 130);
+        silenceAlarm();
+        badge.className = 'alarm-status-badge';
+        badge.style.background = 'rgba(255,255,255,0.06)';
+        badge.style.color = 'var(--text-muted)';
+        badge.innerText = '⚪ DISARMED';
+        navBadge.innerText = 'DISARMED';
+        armBtn.innerHTML = '<span>🛡️</span> Arm Guardian';
+        appendAlarmLog("Guardian Security DISARMED by user.");
+      }
+    }
+
+    function triggerAlarm(type) {
+      isAlarmActive = true;
+      alarmStrobeActive = true;
+      startSirenSound();
+
+      // UI Indicators
+      const badge = document.getElementById('alarm-status-badge');
+      const navBadge = document.getElementById('nav-alarm-status');
+      const navPill = document.getElementById('nav-alarm-pill');
+      const stageBox = document.getElementById('showcase-stage-box');
+      const sirenTelemetry = document.getElementById('telemetry-siren');
+
+      badge.className = 'alarm-status-badge status-triggered';
+      navPill.classList.add('alarm-triggered');
+      stageBox.classList.add('alarm-strobe-active');
+      sirenTelemetry.innerText = '110dB WARBLE SIREN ACTIVE';
+      sirenTelemetry.style.color = 'var(--alarm-danger)';
+
+      if (type === 'theft') {
+        badge.innerText = '🚨 THEFT ALERT (TAMPER DETECTED)';
+        navBadge.innerText = 'THEFT ALARM!';
+        document.getElementById('telemetry-imu').innerText = 'TAMPER TILT 38.6° (UNAUTHORIZED)';
+        document.getElementById('telemetry-imu').style.color = 'var(--alarm-danger)';
+        appendAlarmLog("⚠️ MOVEMENT TRIGGER: Accelerometer spike >38°. Piezo siren engaged!", "log-alert");
+        appendAlarmLog("📡 Cloud SOS: Transmitted GPS coords (11.5564° N, 104.9282° E) to rider smartphone.", "log-alert");
+      } else if (type === 'crash') {
+        badge.innerText = '🚨 HIGH-G IMPACT (eCall SOS ACTIVE)';
+        navBadge.innerText = 'CRASH SOS!';
+        document.getElementById('telemetry-gforce').innerText = '28.4G PEAK IMPACT';
+        document.getElementById('telemetry-gforce').style.color = 'var(--alarm-danger)';
+        appendAlarmLog("🚨 CRASH DETECTED: 28.4G Deceleration threshold exceeded!", "log-alert");
+        appendAlarmLog("🚑 Autonomous eCall SOS sequence triggered. 10s cancellation window open.", "log-alert");
+
+        // Open Emergency Modal
+        openCrashModal();
+      }
+    }
+
+    function silenceAlarm() {
+      isAlarmActive = false;
+      alarmStrobeActive = false;
+      stopSirenSound();
+      resetMaterialsToNormal();
+
+      if (sosTimer) {
+        clearInterval(sosTimer);
+        sosTimer = null;
+      }
+      document.getElementById('sos-modal').classList.remove('active');
+
+      const badge = document.getElementById('alarm-status-badge');
+      const navBadge = document.getElementById('nav-alarm-status');
+      const navPill = document.getElementById('nav-alarm-pill');
+      const stageBox = document.getElementById('showcase-stage-box');
+      const sirenTelemetry = document.getElementById('telemetry-siren');
+
+      if (isArmed) {
+        badge.className = 'alarm-status-badge status-safe';
+        badge.innerText = '🛡️ ARMED (MONITORING)';
+        navBadge.innerText = 'ARMED';
+      } else {
+        badge.className = 'alarm-status-badge';
+        badge.innerText = '⚪ DISARMED';
+        navBadge.innerText = 'DISARMED';
+      }
+
+      navPill.classList.remove('alarm-triggered');
+      stageBox.classList.remove('alarm-strobe-active');
+      sirenTelemetry.innerText = '110dB STANDBY';
+      sirenTelemetry.style.color = 'var(--accent-green)';
+
+      document.getElementById('telemetry-imu').innerText = 'MPU-6050 (0.2° Tilt)';
+      document.getElementById('telemetry-imu').style.color = 'var(--text-main)';
+      document.getElementById('telemetry-gforce').innerText = '1.02G (Baseline)';
+      document.getElementById('telemetry-gforce').style.color = 'var(--text-main)';
+
+      appendAlarmLog("Alarm silenced. Systems reset to normal standby.");
+    }
+
+    function openCrashModal() {
+      const modal = document.getElementById('sos-modal');
+      const timerTxt = document.getElementById('sos-countdown-txt');
+      modal.classList.add('active');
+      sosCountdown = 10;
+      timerTxt.innerText = `${sosCountdown}s`;
+
+      if (sosTimer) clearInterval(sosTimer);
+      sosTimer = setInterval(() => {
+        sosCountdown--;
+        timerTxt.innerText = `${sosCountdown}s`;
+        playTone(1800, 0.08, 'square', 0.25);
+        if (sosCountdown <= 0) {
+          clearInterval(sosTimer);
+          sosTimer = null;
+          timerTxt.innerText = 'DISPATCHED!';
+          appendAlarmLog("📡 eCall DISPATCHED: Medical and EMS notified with emergency coordinates.", "log-alert");
+        }
+      }, 1000);
+    }
+
+    function abortCrashSOS() {
+      playTone(550, 0.2, 'sine');
+      appendAlarmLog("✅ eCall Cancelled: Rider confirmed safe ('I AM OK').");
+      silenceAlarm();
+    }
+
+    function resetMaterialsToNormal() {
+      allMeshes.forEach(mesh => {
+        if (mesh.name.includes('LED')) {
+          if (mesh.material && mesh.material.emissive) {
+            mesh.material.emissive.setHex(0xff1e00);
+            mesh.material.emissiveIntensity = 1.1;
+          }
+        } else if (mesh.name.includes('HUD') || mesh.name.includes('Halo')) {
+          if (mesh.material && mesh.material.emissive) {
+            mesh.material.emissive.setHex(0x00f2fe);
+            mesh.material.emissiveIntensity = 0.8;
+          }
+        }
+      });
+      if (typeof rearLedLight !== 'undefined' && rearLedLight) {
+        rearLedLight.color.setHex(0xff3366);
+        rearLedLight.intensity = 1.5;
+      }
+    }
+
+    /* =========================================================================
        3D REAL-TIME WEBGL THREE.JS VIEWER ENGINE
        ========================================================================= */
     let scene, camera, renderer, controls;
     let helmetModel = null;
     let allMeshes = [];
     let autoRotateEnabled = true;
+    let rearLedLight = null;
 
     // Explode offsets mapping for the 22 meshes (-Z is front, +Z is rear, +Y is up, -X is left)
     const explodeVectors = {
@@ -1978,9 +2655,9 @@
       cyanRim.position.set(0, 10, -220);
       scene.add(cyanRim);
 
-      const rearLed = new THREE.PointLight(0xff3366, 1.5, 500);
-      rearLed.position.set(0, 10, 220);
-      scene.add(rearLed);
+      rearLedLight = new THREE.PointLight(0xff3366, 1.5, 500);
+      rearLedLight.position.set(0, 10, 220);
+      scene.add(rearLedLight);
 
       // 6. Load 3D Model
       loadHelmetModel();
@@ -2135,7 +2812,6 @@
         // Project 3D coordinate into screen 2D space
         wp.project(camera);
 
-        // Check if behind camera
         if (wp.z > 1) {
           h.domEl.style.display = 'none';
           return;
@@ -2259,6 +2935,23 @@
       requestAnimationFrame(animate3D);
       if (controls) controls.update();
       if (renderer && scene && camera) {
+        // Real-time alarm strobe
+        if (alarmStrobeActive) {
+          alarmStrobeTime += 0.16;
+          const isFlash = Math.sin(alarmStrobeTime * 12) > 0;
+          allMeshes.forEach(mesh => {
+            if (mesh.name.includes('LED') || mesh.name.includes('HUD') || mesh.name.includes('Halo')) {
+              if (mesh.material && mesh.material.emissive) {
+                mesh.material.emissive.setHex(isFlash ? 0xff0033 : 0x220000);
+                mesh.material.emissiveIntensity = isFlash ? 2.8 : 0.2;
+              }
+            }
+          });
+          if (rearLedLight) {
+            rearLedLight.color.setHex(0xff0033);
+            rearLedLight.intensity = isFlash ? 4.0 : 0.4;
+          }
+        }
         renderer.render(scene, camera);
         updateHotspotsPosition();
       }
