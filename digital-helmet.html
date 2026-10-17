@@ -3,13 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>AETHER H-1 • Digital Smart Helmet | Real-Time 3D & Guardian Alarm System</title>
-  <meta name="description" content="Official AETHER H-1 Cybernetic Digital Smart Helmet featuring 360-degree interactive 3D WebGL explorer, CAD exploded view, Guardian Anti-Theft Alarm, eCall SOS, and Live Visor HUD simulator.">
+  <title>VELORAN • Digital Smart Helmet | Ride Smarter. Go Further.</title>
+  <meta name="description" content="Official VELORAN Cybernetic Smart Helmet. Experience real-time 3D WebGL exploration, Guardian Anti-Theft Movement Alarm, Autonomous eCall SOS, and Live Holographic Visor HUD telemetry.">
+  <link rel="icon" type="image/png" href="assets/veloran_logo_white.png">
+  
+  <!-- Premium Modern Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
-  <!-- Local Three.js Libraries -->
+  <!-- Local Three.js 3D Engine -->
   <script src="assets/three.min.js"></script>
   <script src="assets/OrbitControls.js"></script>
   <script src="assets/GLTFLoader.js"></script>
@@ -17,29 +20,45 @@
 
   <style>
     :root {
-      --bg-dark: #07090f;
-      --bg-surface: #0e121e;
-      --bg-card: rgba(15, 20, 34, 0.88);
-      --bg-card-hover: rgba(24, 32, 54, 0.96);
+      /* VELORAN Signature Brand Colors */
+      --bg-dark: #020712;
+      --bg-surface: #050d20;
+      --bg-card: rgba(6, 16, 36, 0.85);
+      --bg-card-hover: rgba(10, 26, 56, 0.96);
+      
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(0, 242, 254, 0.35);
-      --accent-cyan: #00f2fe;
-      --accent-blue: #4facfe;
-      --accent-purple: #9d4edd;
-      --accent-red: #ff3366;
-      --accent-green: #00ff88;
-      --accent-amber: #ffaa00;
-      --text-main: #f3f6fb;
-      --text-muted: #8e9bb0;
-      --font-display: 'Orbitron', -apple-system, sans-serif;
+      --border-glow: rgba(0, 166, 251, 0.4);
+      --border-gold: rgba(250, 168, 25, 0.45);
+
+      /* Veloran Colors from Official Logo */
+      --veloran-navy: #002244;
+      --veloran-blue: #0088ff;
+      --veloran-azure: #00a6fb;
+      --veloran-cyan: #00d2ff;
+      --veloran-gold: #faa819;
+      --veloran-amber: #f59e0b;
+      --veloran-white: #ffffff;
+      --veloran-silver: #94a3b8;
+
+      /* UI Accents */
+      --accent-blue: #00a6fb;
+      --accent-gold: #faa819;
+      --accent-cyan: #00d2ff;
+      --accent-red: #ff2a55;
+      --accent-green: #00e676;
+
+      /* Typography: Sleek Aerodynamic Modernity matching Veloran Logo */
+      --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-heading: 'Outfit', sans-serif;
+      --font-brand: 'Syne', 'Outfit', sans-serif;
       --font-body: 'Plus Jakarta Sans', sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
 
       /* Alarm State Colors */
-      --alarm-safe: #00ff88;
-      --alarm-warn: #ffaa00;
+      --alarm-safe: #00e676;
+      --alarm-warn: #faa819;
       --alarm-danger: #ff1744;
-      --alarm-glow-danger: rgba(255, 23, 68, 0.5);
+      --alarm-glow-danger: rgba(255, 23, 68, 0.6);
     }
 
     * {
@@ -56,19 +75,20 @@
     body {
       background-color: var(--bg-dark);
       background-image: 
-        radial-gradient(circle at 10% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 40%),
-        radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.08) 0%, transparent 45%),
-        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
-      color: var(--text-main);
+        radial-gradient(circle at 15% 10%, rgba(0, 136, 255, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 25%, rgba(245, 166, 35, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 50% 85%, rgba(0, 166, 251, 0.08) 0%, transparent 50%),
+        linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+      color: var(--veloran-white);
       font-family: var(--font-body);
       min-height: 100vh;
       overflow-x: hidden;
       line-height: 1.6;
     }
 
-    /* Custom Scrollbar */
+    /* Custom Veloran Scrollbar */
     ::-webkit-scrollbar {
       width: 7px;
       height: 7px;
@@ -77,73 +97,85 @@
       background: var(--bg-dark);
     }
     ::-webkit-scrollbar-thumb {
-      background: #1c253b;
+      background: #142442;
       border-radius: 4px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-cyan);
+      background: var(--veloran-blue);
     }
 
     /* =========================================================================
-       NAVIGATION BAR & HEADER
+       NAVIGATION BAR & VELORAN BRAND HEADER
        ========================================================================= */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2.5rem;
+      padding: 0.9rem 2.5rem;
       border-bottom: 1px solid var(--border-subtle);
-      backdrop-filter: blur(16px);
+      backdrop-filter: blur(18px);
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(7, 9, 15, 0.9);
+      background: rgba(3, 7, 18, 0.92);
       transition: all 0.3s ease;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       text-decoration: none;
       flex-shrink: 0;
     }
 
-    .brand-logo {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+    /* Veloran Official Logo Container */
+    .brand-logo-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      font-family: var(--font-display);
-      font-weight: 900;
-      font-size: 1.15rem;
-      color: #07090f;
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      height: 52px;
+      transition: transform 0.25s ease;
+    }
+    .brand-logo-container:hover {
+      transform: scale(1.04);
+    }
+    .brand-logo-img {
+      height: 48px;
+      max-height: 48px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 16px rgba(0, 166, 251, 0.45));
+    }
+
+    .brand-divider {
+      width: 1px;
+      height: 32px;
+      background: rgba(255, 255, 255, 0.15);
     }
 
     .brand-info {
       display: flex;
       flex-direction: column;
+      gap: 2px;
     }
 
-    .brand-title {
-      font-family: var(--font-display);
-      font-weight: 800;
-      letter-spacing: 1.2px;
-      font-size: 1.1rem;
-      background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .brand-status-tag {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      font-size: 0.68rem;
+      color: var(--veloran-gold);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .brand-sub {
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       font-family: var(--font-mono);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       letter-spacing: 0.5px;
     }
 
@@ -155,9 +187,9 @@
     }
 
     .nav-links a {
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       font-weight: 600;
       transition: all 0.25s ease;
       padding: 6px 14px;
@@ -167,22 +199,23 @@
       align-items: center;
       gap: 6px;
       white-space: nowrap;
+      font-family: var(--font-heading);
     }
 
     .nav-links a:hover, .nav-links a.active {
-      color: var(--accent-cyan);
-      border-color: rgba(0, 242, 254, 0.3);
-      background: rgba(0, 242, 254, 0.08);
-      box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+      color: #fff;
+      border-color: rgba(0, 136, 255, 0.4);
+      background: rgba(0, 136, 255, 0.12);
+      box-shadow: 0 0 15px rgba(0, 136, 255, 0.2);
     }
 
     /* Alarm Header Pill */
     .alarm-pill-nav {
-      background: rgba(0, 255, 136, 0.1) !important;
-      border-color: rgba(0, 255, 136, 0.35) !important;
+      background: rgba(0, 230, 118, 0.1) !important;
+      border-color: rgba(0, 230, 118, 0.35) !important;
       color: var(--accent-green) !important;
-      font-family: var(--font-mono);
-      font-size: 0.8rem !important;
+      font-family: var(--font-mono) !important;
+      font-size: 0.78rem !important;
       cursor: pointer;
     }
     .alarm-pill-nav.alarm-triggered {
@@ -197,13 +230,13 @@
     }
 
     .nav-btn-highlight {
-      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2)) !important;
-      border-color: var(--accent-cyan) !important;
+      background: linear-gradient(135deg, rgba(0, 136, 255, 0.25), rgba(245, 166, 35, 0.2)) !important;
+      border-color: var(--veloran-blue) !important;
       color: #fff !important;
     }
 
     /* =========================================================================
-       CONTAINER & LAYOUT
+       CONTAINER & HERO SECTION
        ========================================================================= */
     .container {
       max-width: 1440px;
@@ -211,25 +244,58 @@
       padding: 2.2rem 2rem 4rem;
     }
 
-    /* Hero Section */
     .hero {
       text-align: center;
-      margin-bottom: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Veloran Hero Brand Showcase Centerpiece */
+    .hero-brand-emblem-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-brand-emblem {
+      background: radial-gradient(circle at 50% 50%, rgba(0, 166, 251, 0.16) 0%, rgba(250, 168, 25, 0.08) 50%, transparent 75%);
+      padding: 1.2rem 2.8rem;
+      border-radius: 28px;
+      border: 1px solid rgba(0, 166, 251, 0.28);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 40px rgba(0, 136, 255, 0.12), inset 0 0 25px rgba(0, 166, 251, 0.06);
+      max-width: 540px;
+      width: 90%;
+      transition: all 0.35s ease;
+    }
+
+    .hero-brand-emblem:hover {
+      transform: translateY(-3px) scale(1.02);
+      border-color: rgba(0, 166, 251, 0.5);
+      box-shadow: 0 16px 50px rgba(0, 136, 255, 0.22), inset 0 0 35px rgba(0, 166, 251, 0.12);
+    }
+
+    .hero-brand-logo-img {
+      width: 100%;
+      height: auto;
+      max-height: 96px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 16px rgba(0, 166, 251, 0.45));
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 16px;
+      padding: 6px 18px;
       border-radius: 50px;
-      background: rgba(0, 242, 254, 0.1);
-      border: 1px solid rgba(0, 242, 254, 0.35);
-      color: var(--accent-cyan);
-      font-size: 0.78rem;
+      background: rgba(0, 136, 255, 0.1);
+      border: 1px solid rgba(0, 136, 255, 0.35);
+      color: var(--veloran-azure);
+      font-size: 0.76rem;
       font-family: var(--font-mono);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       margin-bottom: 1rem;
     }
 
@@ -237,8 +303,8 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: var(--accent-cyan);
-      box-shadow: 0 0 10px var(--accent-cyan);
+      background: var(--veloran-gold);
+      box-shadow: 0 0 10px var(--veloran-gold);
       animation: pulse 1.8s infinite;
     }
     @keyframes pulse {
@@ -248,26 +314,87 @@
     }
 
     h1 {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 4.5vw, 3.4rem);
-      font-weight: 900;
-      letter-spacing: 1.5px;
+      font-family: var(--font-heading);
+      font-size: clamp(2.3rem, 5vw, 3.9rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
       line-height: 1.15;
-      margin-bottom: 0.8rem;
-      background: linear-gradient(135deg, #ffffff 40%, var(--accent-cyan) 80%, var(--accent-blue) 100%);
+      margin-bottom: 0.6rem;
+      background: linear-gradient(135deg, #ffffff 20%, #38bdf8 65%, #faa819 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
+    .hero-tagline-callout {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+      letter-spacing: 2.5px;
+      margin-bottom: 0.9rem;
+      text-transform: uppercase;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-tagline-callout .tag-ride {
+      color: #ffffff;
+      text-shadow: 0 0 16px rgba(0, 166, 251, 0.55);
+    }
+
+    .hero-tagline-callout .tag-go {
+      color: var(--veloran-gold);
+      text-shadow: 0 0 16px rgba(250, 168, 25, 0.55);
+    }
+
     .subtitle {
-      color: var(--text-muted);
-      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      color: var(--veloran-silver);
+      font-size: clamp(0.92rem, 1.8vw, 1.05rem);
       max-width: 820px;
       margin: 0 auto 1.5rem;
       line-height: 1.6;
     }
 
-    /* View Switcher Controls (Horizontally scrollable with touch snap) */
+    /* Floating 3D Stage Watermark */
+    .stage-brand-watermark {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      z-index: 15;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(2, 7, 18, 0.82);
+      border: 1px solid rgba(0, 166, 251, 0.35);
+      padding: 6px 16px;
+      border-radius: 50px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+      pointer-events: none;
+      transition: all 0.3s ease;
+    }
+
+    .stage-watermark-logo {
+      height: 24px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 8px rgba(0, 166, 251, 0.5));
+    }
+
+    .stage-watermark-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--veloran-azure);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    /* View Switcher Controls */
     .view-switcher-bar {
       display: flex;
       justify-content: center;
@@ -278,9 +405,9 @@
     }
 
     .switch-btn {
-      background: rgba(16, 22, 38, 0.85);
+      background: rgba(10, 20, 42, 0.85);
       border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       padding: 9px 16px;
       border-radius: 10px;
       font-family: var(--font-mono);
@@ -295,18 +422,18 @@
     }
 
     .switch-btn:hover {
-      border-color: var(--accent-cyan);
-      color: var(--text-main);
+      border-color: var(--veloran-blue);
+      color: #fff;
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0, 242, 254, 0.15);
+      box-shadow: 0 4px 15px rgba(0, 136, 255, 0.2);
     }
 
     .switch-btn.active {
-      background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(79, 172, 254, 0.18));
-      border-color: var(--accent-cyan);
+      background: linear-gradient(135deg, rgba(0, 136, 255, 0.22), rgba(245, 166, 35, 0.18));
+      border-color: var(--veloran-blue);
       color: #ffffff;
       font-weight: 700;
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
+      box-shadow: 0 0 20px rgba(0, 136, 255, 0.3);
     }
 
     /* =========================================================================
@@ -314,19 +441,18 @@
        ========================================================================= */
     .showcase-stage {
       position: relative;
-      background: radial-gradient(circle at center, #11172a 0%, #07090f 85%);
+      background: radial-gradient(circle at center, #09152b 0%, #030712 85%);
       border: 1px solid var(--border-glow);
       border-radius: 20px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.12);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 136, 255, 0.15);
       margin-bottom: 2.5rem;
       transition: border-color 0.3s;
     }
 
-    /* Perimeter Alarm Strobe on 3D Viewport */
     .showcase-stage.alarm-strobe-active {
       border-color: var(--alarm-danger) !important;
-      box-shadow: 0 0 50px rgba(255, 23, 68, 0.6), inset 0 0 30px rgba(255, 23, 68, 0.3) !important;
+      box-shadow: 0 0 50px rgba(255, 23, 68, 0.65), inset 0 0 30px rgba(255, 23, 68, 0.3) !important;
       animation: stageBorderFlash 0.6s infinite alternate;
     }
     @keyframes stageBorderFlash {
@@ -340,7 +466,7 @@
       align-items: center;
       padding: 12px 20px;
       border-bottom: 1px solid var(--border-subtle);
-      background: rgba(10, 14, 25, 0.9);
+      background: rgba(6, 14, 30, 0.92);
       backdrop-filter: blur(12px);
       flex-wrap: wrap;
       gap: 10px;
@@ -348,8 +474,8 @@
 
     .stage-title {
       font-family: var(--font-display);
-      font-size: 0.92rem;
-      color: var(--accent-cyan);
+      font-size: 0.9rem;
+      color: var(--veloran-azure);
       letter-spacing: 1px;
       display: flex;
       align-items: center;
@@ -366,7 +492,7 @@
     .stage-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-subtle);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       padding: 5px 12px;
       border-radius: 6px;
       font-family: var(--font-mono);
@@ -376,7 +502,7 @@
     }
 
     .stage-btn:hover {
-      border-color: var(--accent-cyan);
+      border-color: var(--veloran-blue);
       color: #fff;
     }
 
@@ -400,19 +526,19 @@
       cursor: grabbing;
     }
 
-    /* Interaction Hint Overlay */
+    /* Drag Hint */
     .hint-pill {
       position: absolute;
       top: 14px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(10, 16, 28, 0.85);
-      border: 1px solid rgba(0, 242, 254, 0.3);
+      background: rgba(6, 14, 30, 0.88);
+      border: 1px solid rgba(0, 136, 255, 0.35);
       padding: 5px 14px;
       border-radius: 20px;
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      color: var(--accent-cyan);
+      color: var(--veloran-azure);
       pointer-events: none;
       backdrop-filter: blur(8px);
       z-index: 5;
@@ -420,7 +546,7 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
       white-space: nowrap;
     }
 
@@ -433,7 +559,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background: rgba(12, 16, 28, 0.92);
+      background: rgba(6, 14, 30, 0.94);
       border: 1px solid var(--border-glow);
       padding: 8px 16px;
       border-radius: 14px;
@@ -455,7 +581,7 @@
     .tool-label {
       font-size: 0.7rem;
       font-family: var(--font-mono);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       text-transform: uppercase;
       margin-right: 3px;
     }
@@ -463,7 +589,7 @@
     .tool-btn {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text-main);
+      color: var(--veloran-white);
       padding: 5px 10px;
       border-radius: 7px;
       font-family: var(--font-mono);
@@ -474,14 +600,14 @@
     }
 
     .tool-btn:hover {
-      border-color: var(--accent-cyan);
-      background: rgba(0, 242, 254, 0.15);
-      color: var(--accent-cyan);
+      border-color: var(--veloran-blue);
+      background: rgba(0, 136, 255, 0.15);
+      color: #fff;
     }
 
     .tool-btn.active {
-      background: linear-gradient(135deg, rgba(0, 242, 254, 0.3), rgba(79, 172, 254, 0.3));
-      border-color: var(--accent-cyan);
+      background: linear-gradient(135deg, rgba(0, 136, 255, 0.35), rgba(245, 166, 35, 0.25));
+      border-color: var(--veloran-blue);
       color: #fff;
       font-weight: 700;
     }
@@ -497,7 +623,7 @@
       width: 100px;
       height: 6px;
       border-radius: 3px;
-      background: #1c263c;
+      background: #14223d;
       outline: none;
     }
     .slider-range::-webkit-slider-thumb {
@@ -505,9 +631,9 @@
       width: 15px;
       height: 15px;
       border-radius: 50%;
-      background: var(--accent-cyan);
+      background: var(--veloran-gold);
       cursor: pointer;
-      box-shadow: 0 0 10px var(--accent-cyan);
+      box-shadow: 0 0 10px var(--veloran-gold);
     }
 
     /* 3D Hotspot Coordinates Layer */
@@ -540,21 +666,21 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: var(--accent-cyan);
-      box-shadow: 0 0 15px var(--accent-cyan);
+      background: var(--veloran-azure);
+      box-shadow: 0 0 15px var(--veloran-blue);
       border: 2px solid #ffffff;
       animation: hotspotPulse 2s infinite;
       flex-shrink: 0;
     }
     @keyframes hotspotPulse {
-      0% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(0, 242, 254, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(0, 136, 255, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(0, 136, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(0, 136, 255, 0); }
     }
 
     .hotspot-bubble {
-      background: rgba(10, 16, 28, 0.92);
-      border: 1px solid var(--accent-cyan);
+      background: rgba(6, 14, 30, 0.94);
+      border: 1px solid var(--veloran-blue);
       padding: 4px 10px;
       border-radius: 6px;
       font-family: var(--font-mono);
@@ -573,7 +699,7 @@
       justify-content: center;
       align-items: center;
       position: relative;
-      background: #090c16;
+      background: #040915;
     }
 
     .showcase-viewport-img img {
@@ -588,7 +714,7 @@
       display: flex;
       gap: 10px;
       padding: 12px 20px;
-      background: rgba(8, 11, 20, 0.95);
+      background: rgba(4, 9, 20, 0.96);
       border-top: 1px solid var(--border-subtle);
       overflow-x: auto;
       scrollbar-width: thin;
@@ -604,7 +730,7 @@
       cursor: pointer;
       position: relative;
       transition: all 0.25s;
-      background: #111624;
+      background: #081328;
     }
 
     .thumb-item img {
@@ -621,7 +747,7 @@
       background: rgba(0, 0, 0, 0.85);
       font-size: 0.6rem;
       font-family: var(--font-mono);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       padding: 2px 4px;
       text-align: center;
       white-space: nowrap;
@@ -630,8 +756,8 @@
     }
 
     .thumb-item:hover, .thumb-item.active {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+      border-color: var(--veloran-blue);
+      box-shadow: 0 0 12px rgba(0, 136, 255, 0.4);
     }
 
     /* =========================================================================
@@ -642,8 +768,8 @@
       position: relative;
       width: 100%;
       min-height: 520px;
-      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.08) 0%, rgba(5, 7, 12, 0.96) 85%);
-      color: var(--accent-cyan);
+      background: radial-gradient(circle at center, rgba(0, 136, 255, 0.08) 0%, rgba(3, 7, 18, 0.96) 85%);
+      color: var(--veloran-azure);
       overflow: hidden;
       padding: 2rem;
     }
@@ -657,10 +783,10 @@
       left: 12px;
       right: 12px;
       bottom: 12px;
-      border: 1px solid rgba(0, 242, 254, 0.25);
+      border: 1px solid rgba(0, 136, 255, 0.25);
       border-radius: 20px;
       pointer-events: none;
-      box-shadow: inset 0 0 40px rgba(0, 242, 254, 0.06);
+      box-shadow: inset 0 0 40px rgba(0, 136, 255, 0.08);
     }
 
     .hud-reticle-center {
@@ -681,8 +807,8 @@
     }
 
     .hud-card {
-      background: rgba(12, 18, 32, 0.75);
-      border: 1px solid rgba(0, 242, 254, 0.3);
+      background: rgba(6, 14, 30, 0.78);
+      border: 1px solid rgba(0, 136, 255, 0.35);
       border-radius: 12px;
       padding: 1.2rem;
       backdrop-filter: blur(12px);
@@ -694,7 +820,7 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-bottom: 0.6rem;
-      opacity: 0.8;
+      color: var(--veloran-gold);
       display: flex;
       justify-content: space-between;
     }
@@ -709,7 +835,7 @@
     .hud-unit {
       font-size: 0.9rem;
       font-family: var(--font-mono);
-      color: var(--accent-cyan);
+      color: var(--veloran-azure);
       margin-left: 4px;
     }
 
@@ -722,7 +848,7 @@
     .hud-mode-pill {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       padding: 5px 12px;
       border-radius: 6px;
       font-family: var(--font-mono);
@@ -730,22 +856,22 @@
       cursor: pointer;
     }
     .hud-mode-pill.active {
-      border-color: var(--accent-cyan);
-      background: rgba(0, 242, 254, 0.2);
+      border-color: var(--veloran-blue);
+      background: rgba(0, 136, 255, 0.2);
       color: #fff;
       font-weight: bold;
     }
 
     /* =========================================================================
-       🚨 GUARDIAN ALARM & SECURITY COMMAND CENTER (NEW SECTION)
+       🚨 VELORAN GUARDIAN™ ALARM & SECURITY COMMAND CENTER
        ========================================================================= */
     .alarm-section {
-      background: radial-gradient(circle at 80% 20%, rgba(255, 23, 68, 0.08) 0%, rgba(13, 17, 30, 0.95) 70%);
-      border: 1px solid rgba(255, 23, 68, 0.25);
+      background: radial-gradient(circle at 80% 20%, rgba(255, 23, 68, 0.08) 0%, rgba(8, 16, 36, 0.95) 70%);
+      border: 1px solid rgba(255, 23, 68, 0.3);
       border-radius: 20px;
       padding: 2.2rem 2rem;
       margin-bottom: 3.5rem;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.65);
       position: relative;
       overflow: hidden;
     }
@@ -771,7 +897,7 @@
     }
 
     .alarm-subtitle {
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       font-size: 0.92rem;
       max-width: 780px;
       margin-bottom: 1.8rem;
@@ -785,7 +911,7 @@
     }
 
     .alarm-card {
-      background: rgba(10, 14, 25, 0.85);
+      background: rgba(5, 12, 28, 0.88);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
       padding: 1.5rem;
@@ -812,8 +938,8 @@
       font-weight: 700;
     }
     .status-safe {
-      background: rgba(0, 255, 136, 0.12);
-      border: 1px solid rgba(0, 255, 136, 0.4);
+      background: rgba(0, 230, 118, 0.12);
+      border: 1px solid rgba(0, 230, 118, 0.4);
       color: var(--accent-green);
     }
     .status-triggered {
@@ -835,13 +961,13 @@
       font-size: 0.85rem;
     }
     .telemetry-row .label {
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       font-family: var(--font-mono);
     }
     .telemetry-row .val {
       font-family: var(--font-mono);
       font-weight: 600;
-      color: var(--text-main);
+      color: var(--veloran-white);
     }
 
     .alarm-actions-grid {
@@ -866,27 +992,27 @@
       border: 1px solid transparent;
     }
     .btn-arm {
-      background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 242, 254, 0.2));
+      background: linear-gradient(135deg, rgba(0, 230, 118, 0.2), rgba(0, 136, 255, 0.2));
       border-color: var(--accent-green);
       color: var(--accent-green);
     }
     .btn-arm:hover {
-      background: rgba(0, 255, 136, 0.3);
-      box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+      background: rgba(0, 230, 118, 0.3);
+      box-shadow: 0 0 15px rgba(0, 230, 118, 0.4);
     }
 
     .btn-tamper {
-      background: linear-gradient(135deg, rgba(255, 170, 0, 0.2), rgba(255, 51, 102, 0.2));
-      border-color: var(--accent-amber);
-      color: var(--accent-amber);
+      background: linear-gradient(135deg, rgba(245, 166, 35, 0.2), rgba(255, 42, 85, 0.2));
+      border-color: var(--veloran-gold);
+      color: var(--veloran-gold);
     }
     .btn-tamper:hover {
-      background: rgba(255, 170, 0, 0.3);
-      box-shadow: 0 0 15px rgba(255, 170, 0, 0.4);
+      background: rgba(245, 166, 35, 0.3);
+      box-shadow: 0 0 15px rgba(245, 166, 35, 0.4);
     }
 
     .btn-crash {
-      background: linear-gradient(135deg, rgba(255, 23, 68, 0.3), rgba(255, 51, 102, 0.3));
+      background: linear-gradient(135deg, rgba(255, 23, 68, 0.3), rgba(255, 42, 85, 0.3));
       border-color: var(--alarm-danger);
       color: #fff;
     }
@@ -898,39 +1024,30 @@
     .btn-silence {
       background: rgba(255, 255, 255, 0.06);
       border-color: var(--border-subtle);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
     }
     .btn-silence:hover {
       border-color: #fff;
       color: #fff;
     }
 
-    /* Security Log Console */
     .alarm-log-terminal {
-      background: #05070d;
-      border: 1px solid rgba(0, 242, 254, 0.2);
+      background: #030610;
+      border: 1px solid rgba(0, 136, 255, 0.25);
       border-radius: 10px;
       padding: 12px 16px;
       font-family: var(--font-mono);
       font-size: 0.75rem;
-      color: var(--accent-cyan);
+      color: var(--veloran-azure);
       max-height: 140px;
       overflow-y: auto;
       line-height: 1.5;
     }
-    .log-entry {
-      margin-bottom: 4px;
-      opacity: 0.9;
-    }
-    .log-warn {
-      color: var(--accent-amber);
-    }
-    .log-alert {
-      color: var(--alarm-danger);
-      font-weight: bold;
-    }
+    .log-entry { margin-bottom: 4px; opacity: 0.9; }
+    .log-warn { color: var(--veloran-gold); }
+    .log-alert { color: var(--alarm-danger); font-weight: bold; }
 
-    /* Emergency SOS Modal */
+    /* Emergency Crash SOS Modal */
     .sos-modal-backdrop {
       display: none;
       position: fixed;
@@ -938,26 +1055,24 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(4, 6, 12, 0.88);
-      backdrop-filter: blur(12px);
+      background: rgba(3, 7, 18, 0.9);
+      backdrop-filter: blur(14px);
       z-index: 1000;
       align-items: center;
       justify-content: center;
       padding: 1rem;
     }
-    .sos-modal-backdrop.active {
-      display: flex;
-    }
+    .sos-modal-backdrop.active { display: flex; }
 
     .sos-modal-card {
-      background: #0e121e;
+      background: #071026;
       border: 2px solid var(--alarm-danger);
       border-radius: 20px;
       max-width: 480px;
       width: 100%;
       padding: 2.2rem;
       text-align: center;
-      box-shadow: 0 0 50px rgba(255, 23, 68, 0.5);
+      box-shadow: 0 0 50px rgba(255, 23, 68, 0.55);
       animation: modalDrop 0.3s ease-out;
     }
     @keyframes modalDrop {
@@ -965,19 +1080,8 @@
       to { transform: scale(1) translateY(0); opacity: 1; }
     }
 
-    .sos-icon {
-      font-size: 3rem;
-      margin-bottom: 0.8rem;
-      animation: alertPulse 0.5s infinite alternate;
-    }
-
-    .sos-title {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      color: #fff;
-      margin-bottom: 0.5rem;
-    }
-
+    .sos-icon { font-size: 3rem; margin-bottom: 0.8rem; animation: alertPulse 0.5s infinite alternate; }
+    .sos-title { font-family: var(--font-display); font-size: 1.6rem; color: #fff; margin-bottom: 0.5rem; }
     .sos-timer-circle {
       font-family: var(--font-display);
       font-size: 3.5rem;
@@ -1001,36 +1105,28 @@
       box-shadow: 0 0 25px rgba(255, 23, 68, 0.6);
       transition: all 0.2s;
     }
-    .btn-abort-sos:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 35px rgba(255, 23, 68, 0.9);
-    }
+    .btn-abort-sos:hover { transform: scale(1.02); }
 
     /* =========================================================================
        12 SUBSYSTEMS COMPONENT CARDS & INSPECTOR
        ========================================================================= */
-    .section-header {
-      margin-bottom: 1.8rem;
-    }
-
+    .section-header { margin-bottom: 1.8rem; }
     .section-tag {
       font-family: var(--font-mono);
-      color: var(--accent-cyan);
+      color: var(--veloran-gold);
       font-size: 0.78rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       margin-bottom: 0.4rem;
     }
-
     .section-title {
       font-family: var(--font-display);
       font-size: clamp(1.6rem, 3.5vw, 2.3rem);
       font-weight: 800;
       color: #fff;
     }
-
     .section-subtitle {
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       font-size: 0.95rem;
       margin-top: 0.3rem;
     }
@@ -1056,15 +1152,15 @@
 
     .comp-card:hover {
       background: var(--bg-card-hover);
-      border-color: var(--accent-cyan);
+      border-color: var(--veloran-blue);
       transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.2);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 136, 255, 0.25);
     }
 
     .comp-card.active {
-      border-color: var(--accent-cyan);
-      background: rgba(18, 25, 45, 0.96);
-      box-shadow: 0 0 25px rgba(0, 242, 254, 0.3);
+      border-color: var(--veloran-gold);
+      background: rgba(14, 26, 52, 0.96);
+      box-shadow: 0 0 25px rgba(245, 166, 35, 0.25);
     }
 
     .comp-top {
@@ -1078,8 +1174,8 @@
       width: 44px;
       height: 44px;
       border-radius: 10px;
-      background: rgba(0, 242, 254, 0.1);
-      border: 1px solid rgba(0, 242, 254, 0.25);
+      background: rgba(0, 136, 255, 0.12);
+      border: 1px solid rgba(0, 136, 255, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1089,15 +1185,15 @@
     .comp-number {
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      color: var(--accent-cyan);
-      background: rgba(0, 242, 254, 0.08);
+      color: var(--veloran-gold);
+      background: rgba(245, 166, 35, 0.08);
       padding: 3px 8px;
       border-radius: 20px;
-      border: 1px solid rgba(0, 242, 254, 0.2);
+      border: 1px solid rgba(245, 166, 35, 0.25);
     }
 
     .comp-title {
-      font-family: var(--font-display);
+      font-family: var(--font-heading);
       font-size: 1.15rem;
       font-weight: 700;
       color: #fff;
@@ -1106,7 +1202,7 @@
     }
 
     .comp-desc {
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       font-size: 0.88rem;
       line-height: 1.55;
       margin-bottom: 1rem;
@@ -1126,18 +1222,18 @@
       border-radius: 5px;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-muted);
+      color: var(--veloran-silver);
     }
 
     /* Component Inspector Modal */
     .inspector-panel {
       display: none;
-      background: linear-gradient(135deg, rgba(14, 20, 36, 0.98), rgba(20, 30, 56, 0.98));
-      border: 1px solid var(--accent-cyan);
+      background: linear-gradient(135deg, rgba(8, 18, 38, 0.98), rgba(12, 26, 54, 0.98));
+      border: 1px solid var(--veloran-blue);
       border-radius: 20px;
       padding: 2.2rem;
       margin-bottom: 3rem;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 242, 254, 0.25);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(0, 136, 255, 0.25);
       position: relative;
     }
 
@@ -1158,12 +1254,12 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
     .spec-table td.label {
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       font-family: var(--font-mono);
       width: 40%;
     }
     .spec-table td.val {
-      color: var(--text-main);
+      color: var(--veloran-white);
       font-weight: 600;
     }
 
@@ -1177,18 +1273,18 @@
       position: relative;
       padding-left: 20px;
       font-size: 0.88rem;
-      color: var(--text-main);
+      color: var(--veloran-white);
     }
     .points-list li::before {
       content: '▹';
       position: absolute;
       left: 0;
-      color: var(--accent-cyan);
+      color: var(--veloran-gold);
       font-weight: bold;
     }
 
     /* =========================================================================
-       SPECS MATRIX TABLE (SWIPEABLE WRAPPER)
+       SPECS MATRIX TABLE
        ========================================================================= */
     .table-responsive-wrapper {
       position: relative;
@@ -1199,7 +1295,7 @@
       display: none;
       font-family: var(--font-mono);
       font-size: 0.72rem;
-      color: var(--accent-cyan);
+      color: var(--veloran-azure);
       margin-bottom: 6px;
       text-align: right;
     }
@@ -1220,12 +1316,12 @@
     }
 
     .matrix-table th {
-      background: rgba(10, 14, 25, 0.95);
+      background: rgba(6, 14, 30, 0.95);
       padding: 12px 18px;
       text-align: left;
       font-family: var(--font-display);
       font-size: 0.8rem;
-      color: var(--accent-cyan);
+      color: var(--veloran-azure);
       letter-spacing: 1px;
       border-bottom: 1px solid var(--border-subtle);
       white-space: nowrap;
@@ -1234,12 +1330,12 @@
     .matrix-table td {
       padding: 12px 18px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
+      color: var(--veloran-white);
       white-space: nowrap;
     }
 
     .matrix-table tr:hover {
-      background: rgba(0, 242, 254, 0.04);
+      background: rgba(0, 136, 255, 0.05);
     }
 
     .status-active {
@@ -1261,7 +1357,7 @@
 
     /* Production Callout Banner */
     .store-cta {
-      background: linear-gradient(135deg, rgba(14, 20, 36, 0.92), rgba(20, 29, 54, 0.92));
+      background: linear-gradient(135deg, rgba(8, 18, 38, 0.94), rgba(12, 28, 56, 0.94));
       border: 1px solid var(--border-glow);
       border-radius: 20px;
       padding: 2.5rem 2rem;
@@ -1270,7 +1366,7 @@
       align-items: center;
       gap: 1.5rem;
       flex-wrap: wrap;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
       margin-bottom: 3rem;
     }
 
@@ -1281,7 +1377,7 @@
       color: #fff;
     }
     .cta-text p {
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       max-width: 600px;
       font-size: 0.9rem;
     }
@@ -1293,16 +1389,16 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-      color: #07090f;
+      background: linear-gradient(135deg, var(--veloran-blue), var(--veloran-azure));
+      color: #030712;
       padding: 11px 24px;
       border-radius: 9px;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 800;
       font-family: var(--font-mono);
       font-size: 0.85rem;
       transition: all 0.25s;
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+      box-shadow: 0 0 20px rgba(0, 136, 255, 0.4);
       display: inline-flex;
       align-items: center;
       gap: 7px;
@@ -1311,54 +1407,66 @@
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
+      box-shadow: 0 0 30px rgba(0, 136, 255, 0.6);
     }
 
     .btn-secondary {
       background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
+      color: var(--veloran-white);
       padding: 11px 20px;
       border-radius: 9px;
       text-decoration: none;
       font-weight: 600;
       font-family: var(--font-mono);
       font-size: 0.85rem;
-      border: 1px solid var(--border-subtle);
+      border: 1px solid var(--border-gold);
       transition: all 0.25s;
       display: inline-flex;
       align-items: center;
       gap: 7px;
     }
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--accent-cyan);
+      background: rgba(245, 166, 35, 0.15);
+      border-color: var(--veloran-gold);
+      color: #fff;
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--border-subtle);
-      padding: 2.2rem 2rem;
+      padding: 2.8rem 2rem 2.2rem;
       text-align: center;
-      color: var(--text-muted);
+      color: var(--veloran-silver);
       font-size: 0.82rem;
       font-family: var(--font-mono);
+      background: rgba(3, 7, 18, 0.95);
+    }
+
+    .footer-logo-box {
+      margin-bottom: 1rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-logo-img {
+      height: 48px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 15px rgba(0, 136, 255, 0.3));
     }
 
     /* =========================================================================
-       RESPONSIVE BREAKPOINTS (ALL DEVICES SUPPORTED)
+       RESPONSIVE BREAKPOINTS
        ========================================================================= */
-
-    /* 1. Large Laptops & Desktops (max-width: 1200px) */
     @media (max-width: 1200px) {
-      header { padding: 1rem 1.8rem; }
+      header { padding: 0.9rem 1.8rem; }
       .container { padding: 2rem 1.5rem 3.5rem; }
       .components-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
     }
 
-    /* 2. Tablets (max-width: 992px) */
     @media (max-width: 992px) {
       header {
-        padding: 0.9rem 1.2rem;
+        padding: 0.8rem 1.2rem;
         flex-wrap: wrap;
         gap: 12px;
       }
@@ -1383,11 +1491,14 @@
       }
     }
 
-    /* 3. Mobile Landscape & Phablets (max-width: 768px) */
     @media (max-width: 768px) {
       .container { padding: 1.5rem 1rem 3rem; }
       .viewport-3d-wrapper { height: 440px; }
       
+      .brand-tagline { font-size: 0.6rem; }
+      .brand-sub { display: none; }
+      .brand-logo-img { height: 32px; }
+
       .view-switcher-bar {
         justify-content: flex-start;
         overflow-x: auto;
@@ -1416,11 +1527,9 @@
       .alarm-actions-grid { grid-template-columns: 1fr 1fr; }
     }
 
-    /* 4. Small Mobile Phones (max-width: 480px) */
     @media (max-width: 480px) {
-      .brand-title { font-size: 0.98rem; }
-      .brand-sub { font-size: 0.62rem; }
-      .brand-logo { width: 34px; height: 34px; font-size: 1rem; }
+      .brand-divider { display: none; }
+      .brand-logo-img { height: 28px; }
       
       .viewport-3d-wrapper { height: 390px; }
       .stage-title { font-size: 0.8rem; }
@@ -1448,13 +1557,16 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
+  <!-- Top Navigation Bar with Official Veloran Brand Logo -->
   <header>
     <a href="digital-helmet.html" class="brand">
-      <div class="brand-logo">A</div>
+      <div class="brand-logo-container">
+        <img src="assets/veloran_logo_white.png" alt="VELORAN • Ride Smarter. Go Further." class="brand-logo-img" />
+      </div>
+      <div class="brand-divider"></div>
       <div class="brand-info">
-        <span class="brand-title">AETHER H-1</span>
-        <span class="brand-sub">CYBERNETIC SMART HELMET</span>
+        <span class="brand-status-tag"><span class="badge-pulse"></span> SYSTEM ARMED</span>
+        <span class="brand-sub">CYBERNETIC DIGITAL HELMET</span>
       </div>
     </a>
     <nav class="nav-links">
@@ -1469,13 +1581,24 @@
   <main class="container">
     <!-- Hero Header -->
     <section class="hero" id="showcase">
+      <!-- Veloran Hero Brand Showcase Centerpiece -->
+      <div class="hero-brand-emblem-wrap">
+        <div class="hero-brand-emblem">
+          <img src="assets/veloran_logo_white.png" alt="VELORAN • Ride Smarter. Go Further." class="hero-brand-logo-img" />
+        </div>
+      </div>
+
       <div class="badge">
         <span class="badge-pulse"></span>
-        Interactive 3D WebGL Digital Helmet
+        VELORAN CYBERNETIC SMART HELMET
       </div>
-      <h1>Explore in Full 3D</h1>
+      <h1>Next-Gen Digital Helmet</h1>
+      <div class="hero-tagline-callout">
+        <span class="tag-ride">RIDE SMARTER.</span>
+        <span class="tag-go">GO FURTHER.</span>
+      </div>
       <p class="subtitle">
-        Rotate, zoom, and explode the AETHER H-1 Digital Smart Helmet in real-time 3D. Inspect CAD subsystems, test active anti-theft and crash detection alarms, and experience live Heads-Up Display telemetry.
+        Explore the VELORAN Cybernetic Smart Helmet in real-time 3D. Inspect CAD sub-assemblies, test active Guardian movement alarms, and experience live holographic Heads-Up Display telemetry.
       </p>
 
       <!-- View Switcher Controls -->
@@ -1534,6 +1657,12 @@
       <div class="viewport-3d-wrapper" id="stage-3d">
         <canvas id="webgl-canvas"></canvas>
         
+        <!-- Floating Holographic Veloran Brand Watermark -->
+        <div class="stage-brand-watermark">
+          <img src="assets/veloran_logo_white.png" alt="Veloran 3D" class="stage-watermark-logo" />
+          <span class="stage-watermark-label"><span class="badge-pulse"></span> 3D DIGITAL TWIN • 1:1 CAD</span>
+        </div>
+
         <!-- Interactive Drag Hint -->
         <div class="hint-pill" id="hint-3d">
           <span>👆</span> Drag to Rotate 360° • Scroll / Pinch to Zoom • Right-Click to Pan
@@ -1556,16 +1685,16 @@
               value="0" 
               oninput="handleExplodeSlider(this.value)"
             />
-            <span id="explode-val-txt" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-cyan); min-width:32px;">0%</span>
+            <span id="explode-val-txt" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-gold); min-width:32px;">0%</span>
           </div>
 
-          <!-- Color Finish Customizer -->
+          <!-- Color Finish Customizer (Veloran Signature Palette) -->
           <div class="tool-group">
             <span class="tool-label">🎨 Finish:</span>
-            <button class="tool-btn active" id="fbtn-carbon" onclick="setFinish('carbon', this)">3K Carbon</button>
+            <button class="tool-btn active" id="fbtn-veloran" onclick="setFinish('veloran', this)">Veloran Navy</button>
+            <button class="tool-btn" id="fbtn-carbon" onclick="setFinish('carbon', this)">3K Carbon</button>
             <button class="tool-btn" id="fbtn-black" onclick="setFinish('black', this)">Obsidian</button>
-            <button class="tool-btn" id="fbtn-cyan" onclick="setFinish('cyan', this)">Cyan</button>
-            <button class="tool-btn" id="fbtn-titanium" onclick="setFinish('titanium', this)">Titanium</button>
+            <button class="tool-btn" id="fbtn-gold" onclick="setFinish('gold', this)">Solar Gold</button>
           </div>
 
           <!-- Quick Camera Angles -->
@@ -1579,16 +1708,16 @@
         </div>
       </div>
 
-      <!-- 2. Static Image Viewport (Secondary Photographic Views) -->
+      <!-- 2. Static Image Viewport -->
       <div class="showcase-viewport-img" id="stage-img">
         <img 
           src="assets/smart_helmet_real_render.jpg" 
-          alt="AETHER H-1 Real Production Smart Helmet" 
+          alt="VELORAN Real Production Smart Helmet" 
           id="main-display-img"
         />
       </div>
 
-      <!-- 3. Live Visor HUD Simulator Stage -->
+      <!-- 3. Live Visor HUD Simulator Stage (Veloran Azure & Gold Palette) -->
       <div class="hud-stage" id="hud-stage">
         <div class="hud-visor-frame"></div>
         <div class="hud-reticle-center">
@@ -1608,14 +1737,14 @@
           <div class="hud-card">
             <div class="hud-card-title">
               <span>VEHICLE TELEMETRY</span>
-              <span>LIVE CAN-BUS</span>
+              <span style="color:var(--veloran-gold);">CAN-BUS LIVE</span>
             </div>
             <div style="display:flex; align-items:baseline; gap:6px;">
               <div class="hud-speed-big" id="hud-speed-val">74</div>
               <span class="hud-unit">KM/H</span>
-              <span style="margin-left:auto; font-family:var(--font-mono); font-size:1.1rem; color:var(--accent-green); font-weight:bold;">GEAR 4</span>
+              <span style="margin-left:auto; font-family:var(--font-mono); font-size:1.1rem; color:var(--veloran-gold); font-weight:bold;">GEAR 4</span>
             </div>
-            <div style="margin-top:10px; font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted); display:flex; justify-content:space-between;">
+            <div style="margin-top:10px; font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-silver); display:flex; justify-content:space-between;">
               <span>RPM: 6,420</span>
               <span>LEAN: 14.2° L</span>
             </div>
@@ -1630,20 +1759,20 @@
             <div style="font-family:var(--font-mono); font-size:0.85rem; line-height:1.6;">
               <div>▸ FRONT RADAR: <span style="color:#fff;">38.4m [TRUCK]</span></div>
               <div>▸ REAR BLIND SPOT: <span style="color:var(--accent-green);">CLEAR</span></div>
-              <div>▸ ROAD FRICTION: <span style="color:var(--accent-cyan);">OPTIMAL (DRY)</span></div>
+              <div>▸ ROAD FRICTION: <span style="color:var(--veloran-azure);">OPTIMAL (DRY)</span></div>
             </div>
           </div>
 
           <!-- Turn-by-Turn AR Navigation -->
           <div class="hud-card">
             <div class="hud-card-title">
-              <span>AR NAVIGATION</span>
+              <span>VELORAN AR NAV</span>
               <span>GPS L1/L5</span>
             </div>
             <div style="font-family:var(--font-display); font-size:1.05rem; color:#fff; margin-bottom:4px;">
               IN 250M ➔ RIGHT TURN
             </div>
-            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted);">
+            <div style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-gold);">
               MONIVONG BLVD • ETA 14 MIN (7.8 KM)
             </div>
           </div>
@@ -1652,7 +1781,7 @@
         <div class="hud-mode-pills">
           <button class="hud-mode-pill active" onclick="setHudMode('default', this)">Urban Cruise</button>
           <button class="hud-mode-pill" onclick="setHudMode('night', this)">Night Vision FLIR</button>
-          <button class="hud-mode-pill" onclick="setHudMode('city', this)">Track Apex</button>
+          <button class="hud-mode-pill" onclick="setHudMode('track', this)">Track Apex</button>
           <button class="hud-mode-pill" onclick="triggerAlarm('theft')">🚨 Security Hazard Alert</button>
         </div>
       </div>
@@ -1699,13 +1828,13 @@
     </div>
 
     <!-- =========================================================================
-         🚨 AETHER GUARDIAN™ ALARM & SECURITY COMMAND CENTER (NEW SECTION)
-         ========================================================================= -->
+         🚨 VELORAN GUARDIAN™ ALARM & SECURITY COMMAND CENTER
+         ========================================================================= */ -->
     <section class="alarm-section" id="alarm-center">
       <div class="alarm-badge-tag">
         <span>🚨</span> Active Vehicle Security &amp; Telemetry
       </div>
-      <h2 class="alarm-title">AETHER Guardian™ Smart Alarm &amp; SOS Center</h2>
+      <h2 class="alarm-title">VELORAN Guardian™ Smart Alarm &amp; SOS Center</h2>
       <p class="alarm-subtitle">
         Test the intelligent anti-theft movement alarm and high-G crash emergency dispatch system. Integrated 6-axis IMU sensors detect unauthorized helmet tampering when parked, sounding a 110dB acoustic siren and flashing emergency 3D strobe lights.
       </p>
@@ -1715,7 +1844,7 @@
         <div class="alarm-card">
           <div>
             <div class="alarm-status-header">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Guardian Security Status</span>
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-silver); text-transform:uppercase;">Guardian Security Status</span>
               <span id="alarm-status-badge" class="alarm-status-badge status-safe">🛡️ ARMED (MONITORING)</span>
             </div>
 
@@ -1756,12 +1885,12 @@
         <!-- Security Event Log Terminal -->
         <div class="alarm-card">
           <div class="alarm-status-header">
-            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-cyan); text-transform:uppercase;">Live Security Event Log</span>
+            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-azure); text-transform:uppercase;">Live Security Event Log</span>
             <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-green);">● ENCRYPTED MESH</span>
           </div>
 
           <div class="alarm-log-terminal" id="alarm-log-terminal">
-            <div class="log-entry">[00:00:01] AETHER Guardian™ Security Subsystem Initialized.</div>
+            <div class="log-entry">[00:00:01] VELORAN Guardian™ Security Subsystem Initialized.</div>
             <div class="log-entry">[00:00:02] IMU Gyro calibrated: X=0.0 Y=0.0 Z=1.0G.</div>
             <div class="log-entry">[00:00:03] GPS Geofence established at CADT Innovation Hub.</div>
             <div class="log-entry log-warn">[00:00:04] Anti-Theft Guardian Mode: ARMED. Tamper detection ready.</div>
@@ -1775,13 +1904,13 @@
       <div class="sos-modal-card">
         <div class="sos-icon">⚠️</div>
         <div class="sos-title">HIGH-G IMPACT DETECTED!</div>
-        <p style="color:var(--text-muted); font-size:0.85rem;">
+        <p style="color:var(--veloran-silver); font-size:0.85rem;">
           Autonomous eCall emergency dispatch will broadcast rider coordinates, impact force (28.4G), and blood type (O+) to local emergency services in:
         </p>
 
         <div class="sos-timer-circle" id="sos-countdown-txt">10s</div>
 
-        <p style="color:var(--accent-amber); font-family:var(--font-mono); font-size:0.75rem; margin-bottom:1.5rem;">
+        <p style="color:var(--veloran-gold); font-family:var(--font-mono); font-size:0.75rem; margin-bottom:1.5rem;">
           GPS: 11.5564° N, 104.9282° E • CADT Campus, Phnom Penh
         </p>
 
@@ -1796,12 +1925,12 @@
       <div class="badge" id="insp-badge">SUBSYSTEM SPECIFICATIONS</div>
       <div class="inspector-grid">
         <div>
-          <h2 id="insp-title" style="font-family:var(--font-display); font-size:1.8rem; margin-bottom:0.8rem; color:#fff;">Component Title</h2>
-          <p id="insp-desc" style="color:var(--text-muted); font-size:0.95rem; line-height:1.6; margin-bottom:1.2rem;">Detailed component engineering description.</p>
+          <h2 id="insp-title" style="font-family:var(--font-heading); font-size:1.8rem; margin-bottom:0.8rem; color:#fff;">Component Title</h2>
+          <p id="insp-desc" style="color:var(--veloran-silver); font-size:0.95rem; line-height:1.6; margin-bottom:1.2rem;">Detailed component engineering description.</p>
           <ul class="points-list" id="insp-points"></ul>
         </div>
         <div>
-          <h4 style="font-family:var(--font-mono); color:var(--accent-cyan); font-size:0.85rem; letter-spacing:1px; margin-bottom:0.6rem;">ENGINEERING BENCHMARKS</h4>
+          <h4 style="font-family:var(--font-mono); color:var(--veloran-azure); font-size:0.85rem; letter-spacing:1px; margin-bottom:0.6rem;">ENGINEERING BENCHMARKS</h4>
           <table class="spec-table" id="insp-specs"></table>
         </div>
       </div>
@@ -1901,9 +2030,9 @@
     <!-- Production Callout Banner -->
     <div class="store-cta">
       <div class="cta-text">
-        <div class="badge" style="margin-bottom:0.6rem;">AETHER H-1 • NEXT-GEN PLATFORM</div>
-        <h2>Experience the Future of Digital Protection</h2>
-        <p>Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, active anti-theft alarm, and 100m solid-state LiDAR perception.</p>
+        <div class="badge" style="margin-bottom:0.6rem;">VELORAN • NEXT-GEN PLATFORM</div>
+        <h2>RIDE SMARTER. GO FURTHER.</h2>
+        <p>Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, active Guardian anti-theft alarm, and 100m solid-state LiDAR perception.</p>
       </div>
       <div class="cta-actions">
         <button onclick="switchView('3d')" class="btn-primary">🌐 Launch 3D Explorer →</button>
@@ -1912,10 +2041,14 @@
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Veloran Official Footer -->
   <footer>
-    <p>AETHER H-1 Cybernetic Digital Smart Helmet • Advanced Wearable Robotics &amp; Heads-Up Display Project</p>
-    <p style="margin-top:6px; font-size:0.75rem; color:#5b6982;">Independent Component Architecture, Physics &amp; Real-Time WebGL 3D Simulation.</p>
+    <div class="footer-logo-box">
+      <img src="assets/veloran_logo_white.png" alt="VELORAN • Ride Smarter. Go Further." class="footer-logo-img" />
+    </div>
+    <p style="font-weight:700; color:#fff; letter-spacing:1px; margin-bottom:6px;">VELORAN • RIDE SMARTER. GO FURTHER.</p>
+    <p style="font-size:0.75rem; color:var(--veloran-silver);">CADT Faculty of Digital Engineering • Cybernetic Digital Smart Helmet Project</p>
+    <p style="margin-top:6px; font-size:0.72rem; color:#475569;">Physics Simulation, WebGL 3D Interactive Telemetry &amp; Guardian Security Engine.</p>
   </footer>
 
   <script>
@@ -2142,7 +2275,7 @@
           { label: "Impact Sensor", val: "64G High-Shock Crash Accelerometer" },
           { label: "Satellite Constellation", val: "GPS L1/L5, GLONASS, Galileo, BeiDou" },
           { label: "SOS Response Time", val: "Countdown timer (10s) before automated dispatch" },
-          { label: "Cloud Integration", val: "AETHER Cloud Emergency Dispatch Protocol" }
+          { label: "Cloud Integration", val: "VELORAN Cloud Emergency Dispatch Protocol" }
         ],
         points: [
           "Distinguishes between dropping the helmet on the floor and a genuine vehicular accident.",
@@ -2313,14 +2446,14 @@
       if (btn) btn.classList.add('active');
       const hud = document.getElementById('hud-stage');
       if (mode === 'night') {
-        hud.style.background = 'radial-gradient(circle at center, rgba(0, 255, 136, 0.15) 0%, rgba(2, 15, 6, 0.96) 85%)';
-        hud.style.color = '#00ff88';
-      } else if (mode === 'city') {
-        hud.style.background = 'radial-gradient(circle at center, rgba(79, 172, 254, 0.12) 0%, rgba(4, 9, 20, 0.95) 85%)';
-        hud.style.color = '#4facfe';
+        hud.style.background = 'radial-gradient(circle at center, rgba(0, 230, 118, 0.15) 0%, rgba(3, 10, 18, 0.96) 85%)';
+        hud.style.color = '#00e676';
+      } else if (mode === 'track') {
+        hud.style.background = 'radial-gradient(circle at center, rgba(245, 166, 35, 0.14) 0%, rgba(10, 8, 4, 0.96) 85%)';
+        hud.style.color = '#f5a623';
       } else {
-        hud.style.background = 'radial-gradient(circle at center, rgba(0, 242, 254, 0.05) 0%, rgba(5, 7, 12, 0.95) 85%)';
-        hud.style.color = '#00f2fe';
+        hud.style.background = 'radial-gradient(circle at center, rgba(0, 136, 255, 0.08) 0%, rgba(3, 7, 18, 0.96) 85%)';
+        hud.style.color = '#00a6fb';
       }
     }
 
@@ -2430,7 +2563,7 @@
         silenceAlarm();
         badge.className = 'alarm-status-badge';
         badge.style.background = 'rgba(255,255,255,0.06)';
-        badge.style.color = 'var(--text-muted)';
+        badge.style.color = 'var(--veloran-silver)';
         badge.innerText = '⚪ DISARMED';
         navBadge.innerText = 'DISARMED';
         armBtn.innerHTML = '<span>🛡️</span> Arm Guardian';
@@ -2443,7 +2576,6 @@
       alarmStrobeActive = true;
       startSirenSound();
 
-      // UI Indicators
       const badge = document.getElementById('alarm-status-badge');
       const navBadge = document.getElementById('nav-alarm-status');
       const navPill = document.getElementById('nav-alarm-pill');
@@ -2470,8 +2602,6 @@
         document.getElementById('telemetry-gforce').style.color = 'var(--alarm-danger)';
         appendAlarmLog("🚨 CRASH DETECTED: 28.4G Deceleration threshold exceeded!", "log-alert");
         appendAlarmLog("🚑 Autonomous eCall SOS sequence triggered. 10s cancellation window open.", "log-alert");
-
-        // Open Emergency Modal
         openCrashModal();
       }
     }
@@ -2510,9 +2640,9 @@
       sirenTelemetry.style.color = 'var(--accent-green)';
 
       document.getElementById('telemetry-imu').innerText = 'MPU-6050 (0.2° Tilt)';
-      document.getElementById('telemetry-imu').style.color = 'var(--text-main)';
+      document.getElementById('telemetry-imu').style.color = 'var(--veloran-white)';
       document.getElementById('telemetry-gforce').innerText = '1.02G (Baseline)';
-      document.getElementById('telemetry-gforce').style.color = 'var(--text-main)';
+      document.getElementById('telemetry-gforce').style.color = 'var(--veloran-white)';
 
       appendAlarmLog("Alarm silenced. Systems reset to normal standby.");
     }
@@ -2553,7 +2683,7 @@
           }
         } else if (mesh.name.includes('HUD') || mesh.name.includes('Halo')) {
           if (mesh.material && mesh.material.emissive) {
-            mesh.material.emissive.setHex(0x00f2fe);
+            mesh.material.emissive.setHex(0x0088ff);
             mesh.material.emissiveIntensity = 0.8;
           }
         }
@@ -2613,15 +2743,12 @@
       const container = document.getElementById('stage-3d');
       const canvas = document.getElementById('webgl-canvas');
 
-      // 1. Scene
       scene = new THREE.Scene();
 
-      // 2. Camera - Positioned for front 3/4 isometric perspective
       const aspect = container.clientWidth / container.clientHeight;
       camera = new THREE.PerspectiveCamera(40, aspect, 1, 3000);
-      camera.position.set(-340, 160, -420);
+      camera.position.set(-230, 110, -280);
 
-      // 3. Renderer
       renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
       renderer.setSize(container.clientWidth, container.clientHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -2629,17 +2756,16 @@
       renderer.toneMappingExposure = 1.25;
       renderer.outputEncoding = THREE.sRGBEncoding;
 
-      // 4. OrbitControls
       controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.06;
       controls.autoRotate = true;
       controls.autoRotateSpeed = 1.4;
-      controls.minDistance = 220;
-      controls.maxDistance = 1200;
+      controls.minDistance = 140;
+      controls.maxDistance = 850;
       controls.target.set(0, 0, 0);
 
-      // 5. Lighting Setup
+      // Lighting with Veloran electric blue & warm ambient highlights
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
       scene.add(ambientLight);
 
@@ -2647,28 +2773,25 @@
       keyLight.position.set(-180, 240, -200);
       scene.add(keyLight);
 
-      const fillLight = new THREE.DirectionalLight(0x4facfe, 0.7);
+      const fillLight = new THREE.DirectionalLight(0x0088ff, 0.7);
       fillLight.position.set(200, 140, 200);
       scene.add(fillLight);
 
-      const cyanRim = new THREE.PointLight(0x00f2fe, 1.8, 600);
-      cyanRim.position.set(0, 10, -220);
-      scene.add(cyanRim);
+      const blueRim = new THREE.PointLight(0x00a6fb, 1.8, 600);
+      blueRim.position.set(0, 10, -220);
+      scene.add(blueRim);
 
       rearLedLight = new THREE.PointLight(0xff3366, 1.5, 500);
       rearLedLight.position.set(0, 10, 220);
       scene.add(rearLedLight);
 
-      // 6. Load 3D Model
       loadHelmetModel();
 
-      // 7. Event listeners
       window.addEventListener('resize', onWindowResize);
       container.addEventListener('pointerdown', () => {
         document.getElementById('hint-3d').style.opacity = '0.3';
       });
 
-      // 8. Animation Loop
       animate3D();
     }
 
@@ -2683,7 +2806,7 @@
         const center = box.getCenter(new THREE.Vector3());
         helmetModel.position.set(-center.x, -center.y, -center.z);
 
-        // Apply rich PBR materials
+        // Apply rich PBR materials (Veloran Signature Default: Deep Navy Shell + Azure Visor)
         helmetModel.traverse((child) => {
           if (child.isMesh) {
             allMeshes.push(child);
@@ -2694,7 +2817,7 @@
             // Transparent Optical Visor
             if (name.includes('Visor')) {
               child.material = new THREE.MeshPhysicalMaterial({
-                color: 0x00f2fe,
+                color: 0x0088ff,
                 roughness: 0.05,
                 metalness: 0.1,
                 transmission: 0.82,
@@ -2704,11 +2827,11 @@
                 side: THREE.DoubleSide
               });
             } 
-            // Cyan Emissive HUD & Ring
+            // Azure Emissive HUD & Ring
             else if (name.includes('HUD') || name.includes('Halo')) {
               child.material = new THREE.MeshStandardMaterial({
-                color: 0x00f2fe,
-                emissive: 0x00f2fe,
+                color: 0x0088ff,
+                emissive: 0x0088ff,
                 emissiveIntensity: 0.8,
                 roughness: 0.2,
                 metalness: 0.4
@@ -2726,25 +2849,25 @@
             // Speakers & Contacts (Gold/Copper)
             else if (name.includes('Speaker')) {
               child.material = new THREE.MeshStandardMaterial({
-                color: 0xd97706,
+                color: 0xf5a623,
                 metalness: 0.85,
                 roughness: 0.2
               });
             }
-            // Shell - Carbon Finish
+            // Shell - Veloran Signature Deep Navy Finish
             else if (name.includes('Shell')) {
               child.material = new THREE.MeshStandardMaterial({
-                color: 0x111624,
-                roughness: 0.35,
-                metalness: 0.3
+                color: 0x051b3d,
+                roughness: 0.25,
+                metalness: 0.45
               });
             }
             // Default dark tech components
             else {
               child.material = new THREE.MeshStandardMaterial({
-                color: 0x1e293b,
+                color: 0x0e1c36,
                 roughness: 0.5,
-                metalness: 0.2
+                metalness: 0.25
               });
             }
           }
@@ -2752,9 +2875,43 @@
 
         scene.add(helmetModel);
         create3DHotspots();
+
+        // Apply Veloran Decals to 3D Helmet Shell
+        try {
+          const texLoader = new THREE.TextureLoader();
+          texLoader.load('assets/veloran_logo_white.png', function(logoTexture) {
+            logoTexture.anisotropy = 8;
+            const logoGeo = new THREE.PlaneGeometry(38, 9);
+            const logoMat = new THREE.MeshBasicMaterial({
+              map: logoTexture,
+              transparent: true,
+              opacity: 0.95,
+              depthTest: true,
+              side: THREE.DoubleSide
+            });
+            // Front Brow Brand Emblem
+            const browDecal = new THREE.Mesh(logoGeo, logoMat);
+            browDecal.position.set(0, 48, -108);
+            browDecal.rotation.x = -0.16;
+            helmetModel.add(browDecal);
+
+            // Left Temple Brand Emblem
+            const leftDecal = new THREE.Mesh(logoGeo.clone(), logoMat);
+            leftDecal.position.set(-106, 14, 0);
+            leftDecal.rotation.y = -Math.PI / 2;
+            helmetModel.add(leftDecal);
+
+            // Right Temple Brand Emblem
+            const rightDecal = new THREE.Mesh(logoGeo.clone(), logoMat);
+            rightDecal.position.set(106, 14, 0);
+            rightDecal.rotation.y = Math.PI / 2;
+            helmetModel.add(rightDecal);
+          });
+        } catch (e) {
+          console.warn("Could not load decal texture", e);
+        }
       };
 
-      // Load from local asset GLB, or fallback to base64
       loader.load(
         'assets/digital_helmet.glb',
         onModelLoaded,
@@ -2775,7 +2932,6 @@
       );
     }
 
-    // 3D Hotspot Creation
     function create3DHotspots() {
       const layer = document.getElementById('hotspots-layer');
       layer.innerHTML = '';
@@ -2797,7 +2953,6 @@
       });
     }
 
-    // Update 2D screen positions of 3D hotspots each frame
     function updateHotspotsPosition() {
       if (!camera || !renderer) return;
       const container = document.getElementById('stage-3d');
@@ -2809,7 +2964,6 @@
         const wp = h.pos.clone();
         if (helmetModel) wp.applyMatrix4(helmetModel.matrixWorld);
 
-        // Project 3D coordinate into screen 2D space
         wp.project(camera);
 
         if (wp.z > 1) {
@@ -2837,7 +2991,6 @@
       inspectComponent(h.compIdx);
     }
 
-    // 3D Explode Parts Slider
     function handleExplodeSlider(val) {
       const factor = val / 100.0;
       document.getElementById('explode-val-txt').innerText = `${val}%`;
@@ -2850,7 +3003,6 @@
       });
     }
 
-    // 3D Material Finish Customizer
     function setFinish(finish, btn) {
       document.querySelectorAll('.tool-btn').forEach(b => {
         if (b.id && b.id.startsWith('fbtn-')) b.classList.remove('active');
@@ -2859,41 +3011,40 @@
 
       allMeshes.forEach(mesh => {
         if (mesh.name.includes('Shell')) {
-          if (finish === 'carbon') {
-            mesh.material.color.setHex(0x111624);
+          if (finish === 'veloran') {
+            mesh.material.color.setHex(0x071e3d);
+            mesh.material.roughness = 0.22;
+            mesh.material.metalness = 0.55;
+          } else if (finish === 'carbon') {
+            mesh.material.color.setHex(0x0f172a);
             mesh.material.roughness = 0.35;
             mesh.material.metalness = 0.3;
           } else if (finish === 'black') {
-            mesh.material.color.setHex(0x05070a);
+            mesh.material.color.setHex(0x04060a);
             mesh.material.roughness = 0.08;
             mesh.material.metalness = 0.4;
-          } else if (finish === 'cyan') {
-            mesh.material.color.setHex(0x00384d);
-            mesh.material.roughness = 0.25;
-            mesh.material.metalness = 0.6;
-          } else if (finish === 'titanium') {
-            mesh.material.color.setHex(0x475569);
-            mesh.material.roughness = 0.3;
-            mesh.material.metalness = 0.75;
+          } else if (finish === 'gold') {
+            mesh.material.color.setHex(0xd49b28);
+            mesh.material.roughness = 0.18;
+            mesh.material.metalness = 0.85;
           }
         }
       });
     }
 
-    // Camera Angle Shortcuts
     function setCameraAngle(angle) {
       controls.autoRotate = false;
       autoRotateEnabled = false;
       document.getElementById('btn-autorotate-toggle').innerText = '🔄 Auto-Rotate: OFF';
 
-      if (angle === 'front') tweenCameraTo(0, 10, -500);
-      else if (angle === 'side') tweenCameraTo(-520, 0, 0);
-      else if (angle === 'top') tweenCameraTo(0, 520, -10);
-      else if (angle === 'iso') tweenCameraTo(-340, 160, -420);
+      if (angle === 'front') tweenCameraTo(0, 10, -320);
+      else if (angle === 'side') tweenCameraTo(-340, 0, 0);
+      else if (angle === 'top') tweenCameraTo(0, 350, -10);
+      else if (angle === 'iso') tweenCameraTo(-230, 110, -280);
     }
 
     function reset3DCamera() {
-      tweenCameraTo(-340, 160, -420);
+      tweenCameraTo(-230, 110, -280);
       controls.target.set(0, 0, 0);
       autoRotateEnabled = true;
       controls.autoRotate = true;
@@ -2935,7 +3086,6 @@
       requestAnimationFrame(animate3D);
       if (controls) controls.update();
       if (renderer && scene && camera) {
-        // Real-time alarm strobe
         if (alarmStrobeActive) {
           alarmStrobeTime += 0.16;
           const isFlash = Math.sin(alarmStrobeTime * 12) > 0;
@@ -2957,7 +3107,6 @@
       }
     }
 
-    // Initialize 3D when page loads
     window.addEventListener('DOMContentLoaded', () => {
       init3D();
     });
