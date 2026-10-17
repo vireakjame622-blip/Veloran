@@ -13,10 +13,10 @@
       "lng": 104.9282,
       "location": "CADT Innovation Hub, Phnom Penh"
     },
-    "isArmed": true,
+    "isArmed": false,
     "alarmStatus": "SAFE",
     "sirenActive": false,
-    "updatedAt": "2026-10-17T14:45:18.030Z"
+    "updatedAt": "2026-10-17T17:17:47.211Z"
   },
   "logs": [
     {
@@ -58,6 +58,84 @@
     {
       "id": 7,
       "time": "21:45:18",
+      "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
+      "type": "info"
+    },
+    {
+      "id": 8,
+      "time": "00:17:26",
+      "msg": "🚨 TAMPER DETECTED! Unauthorized helmet movement. 110dB Piezo siren active.",
+      "type": "alert"
+    },
+    {
+      "id": 9,
+      "time": "00:17:27",
+      "msg": "🚨 TAMPER DETECTED! Unauthorized helmet movement. 110dB Piezo siren active.",
+      "type": "alert"
+    },
+    {
+      "id": 10,
+      "time": "00:17:28",
+      "msg": "🚨 TAMPER DETECTED! Unauthorized helmet movement. 110dB Piezo siren active.",
+      "type": "alert"
+    },
+    {
+      "id": 11,
+      "time": "00:17:29",
+      "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
+      "type": "info"
+    },
+    {
+      "id": 12,
+      "time": "00:17:31",
+      "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
+      "type": "info"
+    },
+    {
+      "id": 13,
+      "time": "00:17:32",
+      "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
+      "type": "info"
+    },
+    {
+      "id": 14,
+      "time": "00:17:35",
+      "msg": "🚨 TAMPER DETECTED! Unauthorized helmet movement. 110dB Piezo siren active.",
+      "type": "alert"
+    },
+    {
+      "id": 15,
+      "time": "00:17:36",
+      "msg": "🚨 TAMPER DETECTED! Unauthorized helmet movement. 110dB Piezo siren active.",
+      "type": "alert"
+    },
+    {
+      "id": 16,
+      "time": "00:17:38",
+      "msg": "🔓 Guardian System DISARMED by web.",
+      "type": "info"
+    },
+    {
+      "id": 17,
+      "time": "00:17:38",
+      "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
+      "type": "info"
+    },
+    {
+      "id": 18,
+      "time": "00:17:39",
+      "msg": "💥 CRASH SOS! 28.4G impact registered. Autonomous eCall broadcast initialized.",
+      "type": "alert"
+    },
+    {
+      "id": 19,
+      "time": "00:17:45",
+      "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
+      "type": "info"
+    },
+    {
+      "id": 20,
+      "time": "00:17:47",
       "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
       "type": "info"
     }

@@ -318,7 +318,15 @@ app.post('/api/contact', (req, res) => {
   });
 });
 
-// Fallback to digital-helmet.html / index.html for root navigation
+// Clean routes for modular pages
+const modularPages = ['innovations', 'rider-lab', 'gallery', 'alarm', 'specs'];
+modularPages.forEach(page => {
+  app.get(`/${page}`, (req, res) => {
+    res.sendFile(path.join(__dirname, `${page}.html`));
+  });
+});
+
+// Fallback to index.html for root navigation
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });

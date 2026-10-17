@@ -2777,10 +2777,9 @@
   </style>
 </head>
 <body>
-
   <!-- Top Navigation Bar with Official Veloran Brand Logo & Live Cloud API Status -->
   <header id="main-header">
-    <a href="digital-helmet.html" class="brand">
+    <a href="index.html" class="brand">
       <div class="brand-logo-container">
         <img src="assets/veloran_logo_white.png" alt="VELORAN • Ride Smarter. Go Further." class="brand-logo-img" />
       </div>
@@ -2810,13 +2809,13 @@
         <span class="status-dot-pulse" id="status-dot-pulse"></span>
         <span id="backend-status-txt">API: CONNECTING...</span>
       </div>
-      <a href="#showcase" class="active" onclick="closeMobileNav()"><span>🌐</span> <span data-i18n="nav_studio">3D Studio</span></a>
-      <a href="#innovations" onclick="closeMobileNav()"><span>🔬</span> <span data-i18n="nav_innovations">Innovations</span></a>
-      <a href="#playground" onclick="closeMobileNav()"><span>🎮</span> <span data-i18n="nav_playground">Rider Lab</span></a>
-      <a href="#gallery" onclick="closeMobileNav()"><span>📸</span> <span data-i18n="nav_gallery">Gallery</span></a>
-      <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="closeMobileNav(); scrollToAlarm();"><span data-i18n="nav_alarm">🚨 Alarm: </span><span id="nav-alarm-status">ARMED</span></a>
-      <a href="#matrix" onclick="closeMobileNav()"><span>📊</span> <span data-i18n="nav_matrix">Specs Matrix</span></a>
-      <a href="#showcase" onclick="closeMobileNav(); switchView('hud'); scrollToStage();" class="nav-btn-highlight"><span>⚡</span> <span data-i18n="nav_hud">Visor HUD</span></a>
+      <a href="index.html" class="active"><span>🌐</span> <span data-i18n="nav_studio">3D Studio</span></a>
+      <a href="innovations.html" class=""><span>🔬</span> <span data-i18n="nav_innovations">Innovations</span></a>
+      <a href="rider-lab.html" class=""><span>🎮</span> <span data-i18n="nav_playground">Rider Lab</span></a>
+      <a href="gallery.html" class=""><span>📸</span> <span data-i18n="nav_gallery">Gallery</span></a>
+      <a href="alarm.html" id="nav-alarm-pill" class="alarm-pill-nav "><span data-i18n="nav_alarm">🚨 Alarm: </span><span id="nav-alarm-status">ARMED</span></a>
+      <a href="specs.html" class=""><span>📊</span> <span data-i18n="nav_matrix">Specs Matrix</span></a>
+      <a href="index.html?view=hud" class="nav-btn-highlight"><span>⚡</span> <span data-i18n="nav_hud">Visor HUD</span></a>
 
       <div class="lang-switch-pill desktop-only" style="margin-left: 6px;">
         <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">EN</button>
@@ -2826,8 +2825,7 @@
   </header>
 
   <main class="container">
-    <!-- Hero Header -->
-    <section class="hero" id="showcase">
+<section class="hero" id="showcase">
       <!-- Veloran Hero Brand Showcase Centerpiece -->
       <div class="hero-brand-emblem-wrap">
         <div class="hero-brand-emblem">
@@ -3087,568 +3085,67 @@
       </div>
     </div>
 
-    <!-- =========================================================================
-         🎮 INTERACTIVE RIDER LAB & FEATURE SIMULATOR
-         ========================================================================= -->
-    <section class="playground-section" id="playground">
-      <div class="section-header">
-        <div class="section-tag" id="pg-tag">INTERACTIVE RIDER LAB • TEST IN REAL-TIME</div>
-        <h2 class="section-title" id="pg-title">Experience Cybernetic Intelligence</h2>
-        <p class="section-subtitle" id="pg-subtitle">
-          Tap any real-world scenario below to experience how the VELORAN helmet automatically adapts in road conditions.
-        </p>
-      </div>
-
-      <div class="playground-grid">
-        <!-- 1. Electrochromic Tunnel Transition -->
-        <div class="pg-card" id="pg-card-tunnel">
-          <div class="pg-badge" id="pg-badge-tunnel">OPTICAL WAVEGUIDE</div>
-          <h3 class="pg-card-title" id="pg-title-tunnel">🕶️ Dark Tunnel Transition</h3>
-          <p class="pg-card-desc" id="pg-desc-tunnel">Simulate entering a pitch-black tunnel from blinding sun. Watch the visor clear up in real-time.</p>
-          
-          <div class="pg-visor-demo">
-            <div class="pg-visor-glass" id="pg-visor-glass">
-              <span class="pg-visor-status" id="pg-visor-status">TINT: 85% POLARIZED</span>
-            </div>
-          </div>
-          
-          <div class="pg-metric-row">
-            <span id="pg-lbl-speed">RESPONSE TIME:</span>
-            <strong id="pg-stopwatch" style="color:var(--accent-green);">⏱️ 0.1s (94ms)</strong>
-          </div>
-          <button class="pg-action-btn" onclick="testPlaygroundTunnel()">
-            <span>⚡</span> <span id="pg-btn-tunnel-txt">Test Tunnel Transition</span>
-          </button>
-        </div>
-
-        <!-- 2. LiDAR Blind-Spot Threat Detection -->
-        <div class="pg-card" id="pg-card-radar">
-          <div class="pg-badge" id="pg-badge-radar">360° LIDAR PERIMETER</div>
-          <h3 class="pg-card-title" id="pg-title-radar">📡 Blind-Spot Hazard Alert</h3>
-          <p class="pg-card-desc" id="pg-desc-radar">Simulate a high-speed vehicle sneaking into your blind spot. Experience live radar rings and audio beeps.</p>
-          
-          <div class="pg-radar-demo">
-            <div class="radar-sweep" id="radar-sweep"></div>
-            <div class="radar-blip" id="radar-blip" style="display:none;"></div>
-            <div class="radar-center-bike">🏍️</div>
-          </div>
-
-          <div class="pg-metric-row">
-            <span id="pg-lbl-threat">PERIMETER THREAT:</span>
-            <strong id="pg-threat-status" style="color:var(--accent-green);">ALL CLEAR (360°)</strong>
-          </div>
-          <button class="pg-action-btn" onclick="testPlaygroundRadar()">
-            <span>🚗</span> <span id="pg-btn-radar-txt">Simulate Approaching Truck</span>
-          </button>
-        </div>
-
-        <!-- 3. Active Storm Defogger Turbines -->
-        <div class="pg-card" id="pg-card-defog">
-          <div class="pg-badge" id="pg-badge-defog">CLIMATE &amp; VISIBILITY</div>
-          <h3 class="pg-card-title" id="pg-title-defog">💨 Rain Storm Visor Defogger</h3>
-          <p class="pg-card-desc" id="pg-desc-defog">Experience condensation fog buildup and tap the micro-fans to clear the visor in under 1.5 seconds.</p>
-
-          <div class="pg-fog-demo" id="pg-fog-box">
-            <div class="pg-fog-overlay" id="pg-fog-overlay"></div>
-            <span class="pg-fog-label" id="pg-fog-label">CRYSTAL CLEAR (100%)</span>
-          </div>
-
-          <div class="pg-metric-row">
-            <span id="pg-lbl-fan">MAG-LEV TURBINES:</span>
-            <strong id="pg-fan-status" style="color:var(--veloran-silver);">STANDBY (0 RPM)</strong>
-          </div>
-          <button class="pg-action-btn" id="pg-btn-defog" onclick="testPlaygroundDefog()">
-            <span>🌧️</span> <span id="pg-btn-defog-txt">Simulate Heavy Rain Fog</span>
-          </button>
-        </div>
-
-        <!-- 4. 110dB Anti-Theft Tamper Alarm -->
-        <div class="pg-card" id="pg-card-theft">
-          <div class="pg-badge" id="pg-badge-theft">GUARDIAN SECURITY</div>
-          <h3 class="pg-card-title" id="pg-title-theft">📳 Anti-Theft Movement Siren</h3>
-          <p class="pg-card-desc" id="pg-desc-theft">Test parking security. Simulate unauthorized helmet shaking with acoustic siren and 3D strobes.</p>
-
-          <div class="pg-theft-demo" id="pg-theft-box">
-            <div class="pg-helmet-icon" id="pg-helmet-wobble">🛡️</div>
-            <div class="pg-theft-status" id="pg-theft-status">PARKED • MONITORING (0.2° TILT)</div>
-          </div>
-
-          <div class="pg-metric-row">
-            <span id="pg-lbl-siren">ACOUSTIC SIREN:</span>
-            <strong id="pg-siren-meter" style="color:var(--accent-green);">ARMED (STANDBY)</strong>
-          </div>
-          <button class="pg-action-btn" onclick="testPlaygroundTheft()">
-            <span>🚨</span> <span id="pg-btn-theft-txt">Shake Helmet (Trigger Tamper)</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================================================
-         🚨 VELORAN GUARDIAN™ ALARM & SECURITY COMMAND CENTER
-         ========================================================================= */ -->
-    <section class="alarm-section" id="alarm-center">
-      <div class="alarm-badge-tag">
-        <span>🚨</span> <span data-i18n="alarm_badge">Active Vehicle Security &amp; Telemetry</span>
-      </div>
-      <h2 class="alarm-title" data-i18n="alarm_title">VELORAN Guardian™ Smart Alarm &amp; SOS Center</h2>
-      <p class="alarm-subtitle" data-i18n="alarm_desc">
-        Test the intelligent anti-theft movement alarm and high-G crash emergency dispatch system. Integrated 6-axis IMU sensors detect unauthorized helmet tampering when parked, sounding a 110dB acoustic siren and flashing emergency 3D strobe lights.
-      </p>
-
-      <div class="alarm-dashboard-grid">
-        <!-- Live Status Card -->
-        <div class="alarm-card">
-          <div>
-            <div class="alarm-status-header">
-              <span id="alarm-status-header-lbl" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-silver); text-transform:uppercase;">Guardian Security Status</span>
-              <span id="alarm-status-badge" class="alarm-status-badge status-safe">🛡️ ARMED (MONITORING)</span>
-            </div>
-
-            <div class="telemetry-row">
-              <span class="label" id="lbl-telemetry-imu">6-Axis Motion Sensor:</span>
-              <span class="val" id="telemetry-imu">MPU-6050 (0.2° Tilt)</span>
-            </div>
-            <div class="telemetry-row">
-              <span class="label" id="lbl-telemetry-gforce">Impact Accelerometer:</span>
-              <span class="val" id="telemetry-gforce">1.02G (Baseline)</span>
-            </div>
-            <div class="telemetry-row">
-              <span class="label" id="lbl-telemetry-gps">GPS Geofence:</span>
-              <span class="val" id="telemetry-gps">LOCKED (11.5564° N, 104.9282° E)</span>
-            </div>
-            <div class="telemetry-row">
-              <span class="label" id="lbl-telemetry-siren">Acoustic Piezo Siren:</span>
-              <span class="val" id="telemetry-siren" style="color:var(--accent-green);">110dB STANDBY</span>
-            </div>
-          </div>
-
-          <div class="alarm-actions-grid">
-            <button class="alarm-btn btn-arm" id="btn-toggle-arm" onclick="toggleGuardianArm()">
-              <span>🛡️</span> <span id="btn-toggle-arm-txt">Disarm System</span>
-            </button>
-            <button class="alarm-btn btn-tamper" id="btn-sim-tamper" onclick="triggerAlarm('theft')">
-              <span>📳</span> <span id="btn-sim-tamper-txt">Simulate Tamper</span>
-            </button>
-            <button class="alarm-btn btn-crash" id="btn-sim-crash" onclick="triggerAlarm('crash')">
-              <span>💥</span> <span id="btn-sim-crash-txt">Simulate Crash SOS</span>
-            </button>
-            <button class="alarm-btn btn-silence" id="btn-silence-alarm" onclick="silenceAlarm()">
-              <span>🔕</span> <span id="btn-silence-alarm-txt">Silence / Reset</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Security Event Log Terminal -->
-        <div class="alarm-card">
-          <div class="alarm-status-header">
-            <span id="alarm-log-header-lbl" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-azure); text-transform:uppercase;">Live Security Event Log</span>
-            <span id="alarm-mesh-badge" style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-green);">● ENCRYPTED MESH</span>
-          </div>
-
-          <div class="alarm-log-terminal" id="alarm-log-terminal">
-            <div class="log-entry">[00:00:01] VELORAN Guardian™ Security Subsystem Initialized.</div>
-            <div class="log-entry">[00:00:02] IMU Gyro calibrated: X=0.0 Y=0.0 Z=1.0G.</div>
-            <div class="log-entry">[00:00:03] GPS Geofence established at CADT Innovation Hub.</div>
-            <div class="log-entry log-warn">[00:00:04] Anti-Theft Guardian Mode: ARMED. Tamper detection ready.</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Emergency Crash SOS Countdown Modal -->
-    <div class="sos-modal-backdrop" id="sos-modal">
-      <div class="sos-modal-card">
-        <div class="sos-icon">⚠️</div>
-        <div class="sos-title" id="sos-title-txt">HIGH-G IMPACT DETECTED!</div>
-        <p id="sos-desc-txt" style="color:var(--veloran-silver); font-size:0.85rem;">
-          Autonomous eCall emergency dispatch will broadcast rider coordinates, impact force (28.4G), and blood type (O+) to local emergency services in:
-        </p>
-
-        <div class="sos-timer-circle" id="sos-countdown-txt">10s</div>
-
-        <p style="color:var(--veloran-gold); font-family:var(--font-mono); font-size:0.75rem; margin-bottom:1.5rem;">
-          GPS: 11.5564° N, 104.9282° E • CADT Campus, Phnom Penh
-        </p>
-
-        <button class="btn-abort-sos" id="btn-abort-sos" onclick="abortCrashSOS()">
-          🛑 I AM OK — CANCEL SOS ALARM
-        </button>
-      </div>
-    </div>
-
-
-
-    <!-- Active Component Inspector Panel -->
-    <div class="inspector-panel" id="inspector">
-      <div class="badge" id="insp-badge">SUBSYSTEM SPECIFICATIONS</div>
-      <div class="inspector-grid">
-        <div>
-          <h2 id="insp-title" style="font-family:var(--font-heading); font-size:1.8rem; margin-bottom:0.8rem; color:#fff;">Component Title</h2>
-          <p id="insp-desc" style="color:var(--veloran-silver); font-size:0.95rem; line-height:1.6; margin-bottom:1.2rem;">Detailed component engineering description.</p>
-          <ul class="points-list" id="insp-points"></ul>
-        </div>
-        <div>
-          <h4 id="insp-benchmarks-title" style="font-family:var(--font-mono); color:var(--veloran-azure); font-size:0.85rem; letter-spacing:1px; margin-bottom:0.6rem;">ENGINEERING BENCHMARKS</h4>
-          <table class="spec-table" id="insp-specs"></table>
-        </div>
-      </div>
-    </div>
-
-    <!-- =========================================================================
-         INNOVATIONS & 4 ENGINEERING PILLARS (APPLE / TESLA TABBED EXPERIENCE)
-         ========================================================================= -->
-    <section class="innovations-section" id="innovations">
-      <div class="section-header">
-        <div class="section-tag" data-i18n="inno_badge">NEXT-GEN SYSTEM ARCHITECTURE</div>
-        <h2 class="section-title" data-i18n="inno_title">Veloran Innovations</h2>
-        <p class="section-subtitle" data-i18n="inno_desc">
-          Explore the 4 core engineering pillars powering the cybernetic smart helmet. Select a pillar to inspect specs, CAD tolerances, and view it highlighted on the 3D model.
-        </p>
-      </div>
-
-      <!-- Innovation Category Tabs -->
-      <div class="innovations-tab-nav">
-        <button class="inno-tab-btn active" id="tab-btn-optics" onclick="switchInnoTab('optics')">
-          <span>🥽</span> <span id="tab-txt-optics">Optics &amp; Waveguide HUD</span>
-        </button>
-        <button class="inno-tab-btn" id="tab-btn-armor" onclick="switchInnoTab('armor')">
-          <span>🛡️</span> <span id="tab-txt-armor">Armor &amp; Aerodynamics</span>
-        </button>
-        <button class="inno-tab-btn" id="tab-btn-security" onclick="switchInnoTab('security')">
-          <span>🚨</span> <span id="tab-txt-security">Guardian Security &amp; SOS</span>
-        </button>
-        <button class="inno-tab-btn" id="tab-btn-neural" onclick="switchInnoTab('neural')">
-          <span>⚡</span> <span id="tab-txt-neural">Neural AI &amp; Spatial Audio</span>
-        </button>
-      </div>
-
-      <!-- Tab Content Grids -->
-      <div class="inno-tab-content active" id="inno-content-optics">
-        <div class="inno-grid" id="inno-grid-optics"></div>
-      </div>
-      <div class="inno-tab-content" id="inno-content-armor">
-        <div class="inno-grid" id="inno-grid-armor"></div>
-      </div>
-      <div class="inno-tab-content" id="inno-content-security">
-        <div class="inno-grid" id="inno-grid-security"></div>
-      </div>
-      <div class="inno-tab-content" id="inno-content-neural">
-        <div class="inno-grid" id="inno-grid-neural"></div>
-      </div>
-    </section>
-
-    <!-- =========================================================================
-         📸 ULTRA-HD VISUAL ARCHITECTURE & REAL-WORLD GALLERY
-         ========================================================================= -->
-    <section class="gallery-section" id="gallery">
-      <div class="gallery-header">
-        <div class="badge" data-i18n="gallery_badge">📸 ULTRA-HD VISUAL ARCHITECTURE</div>
-        <h2 class="section-title" data-i18n="gallery_title" style="margin-top:0.8rem;">Precision Engineering. Designed for the Future.</h2>
-        <p class="section-subtitle" data-i18n="gallery_desc">
-          Explore high-resolution studio photography, first-person holographic visor telemetry, and structural cutaways of the VELORAN cybernetic helmet.
-        </p>
-      </div>
-
-      <!-- Gallery Filter Tabs -->
-      <div class="gallery-filter-nav">
-        <button class="gallery-filter-btn active" onclick="filterGallery('all', this)" data-i18n="gallery_filter_all">All Views</button>
-        <button class="gallery-filter-btn" onclick="filterGallery('exterior', this)" data-i18n="gallery_filter_exterior">Exterior Profile</button>
-        <button class="gallery-filter-btn" onclick="filterGallery('cockpit', this)" data-i18n="gallery_filter_cockpit">HUD Cockpit</button>
-        <button class="gallery-filter-btn" onclick="filterGallery('internal', this)" data-i18n="gallery_filter_internal">Engineering Cutaway</button>
-      </div>
-
-      <!-- Gallery Cards Grid -->
-      <div class="gallery-grid" id="gallery-grid">
-        <!-- 1. Front Three-Quarter Beauty -->
-        <div class="gallery-card" data-category="exterior">
-          <div class="gallery-img-wrap" onclick="openLightbox('assets/helmet_front_beauty.jpg', 'VELORAN 3K Carbon Shell • Brow LiDAR & Angkor Wat Insignia')">
-            <span class="gallery-img-tag">AERODYNAMIC PROFILE</span>
-            <img src="assets/helmet_front_beauty.jpg" alt="VELORAN Carbon Smart Helmet Front View" class="gallery-img" loading="lazy" />
-          </div>
-          <div class="gallery-card-body">
+      <!-- Quick Portal to All 6 Dedicated Systems -->
+      <section style="margin-top: 3.5rem; margin-bottom: 2rem;">
+        <div class="section-tag">VELORAN ECOSYSTEM • 6 DEDICATED PLATFORMS</div>
+        <h2 class="section-title">Explore Specialized Helmet Systems</h2>
+        <p class="section-subtitle">Navigate to individual engineering deep-dives, real-time testing simulators, and telemetry command centers.</p>
+        
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.25rem; margin-top:1.75rem;">
+          <a href="innovations.html" class="inno-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <h3 class="gallery-card-title">Aerodynamic Toray 3K Shell &amp; Brow LiDAR</h3>
-              <p class="gallery-card-desc">
-                Ultra-lightweight aerospace carbon fiber composite with integrated front brow solid-state LiDAR perception and signature Angkor Wat emblem.
-              </p>
+              <div class="inno-top"><div class="inno-icon-box">🔬</div><div class="inno-number">#01</div></div>
+              <h3 class="inno-title">Veloran Innovations</h3>
+              <p class="inno-desc">Inspect 4 core engineering pillars: AR Waveguides, Carbon Shell, Guardian AI, and Spatial Audio.</p>
             </div>
-            <div class="gallery-card-actions">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-gold);">ECE 22.06 / DOT CERTIFIED</span>
-              <button class="btn-gallery-zoom" onclick="openLightbox('assets/helmet_front_beauty.jpg', 'VELORAN 3K Carbon Shell • Brow LiDAR & Angkor Wat Insignia')">
-                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
-              </button>
-            </div>
-          </div>
-        </div>
+            <div style="color:var(--veloran-azure); font-weight:700; font-size:0.85rem; margin-top:10px;">Explore Innovations ➔</div>
+          </a>
 
-        <!-- 2. First-Person Rider HUD Cockpit View -->
-        <div class="gallery-card" data-category="cockpit">
-          <div class="gallery-img-wrap" onclick="openLightbox('assets/helmet_hud_pov.jpg', 'Holographic Optical Visor • Live Speed, Navigation & AI Road Hazard Perception')">
-            <span class="gallery-img-tag">COCKPIT TELEMETRY (POV)</span>
-            <img src="assets/helmet_hud_pov.jpg" alt="VELORAN First-Person Rider Visor HUD" class="gallery-img" loading="lazy" />
-          </div>
-          <div class="gallery-card-body">
+          <a href="rider-lab.html" class="inno-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; border-color:rgba(255,183,3,0.3);">
             <div>
-              <h3 class="gallery-card-title">Holographic Visor Heads-Up Display (POV)</h3>
-              <p class="gallery-card-desc">
-                Real-time optical waveguide projection with 4,000 Nits micro-OLED, AI road hazard scanning, live speed, and turn-by-turn routing directly in rider field-of-view.
-              </p>
+              <div class="inno-top"><div class="inno-icon-box">🎮</div><div class="inno-number">#02</div></div>
+              <h3 class="inno-title">Interactive Rider Lab</h3>
+              <p class="inno-desc">Hands-on testing: 0.1s tunnel tint speed, LiDAR blind-spot alerts, storm defogger, and tamper siren.</p>
             </div>
-            <div class="gallery-card-actions">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--neon-cyan);">4,000 NITS MICRO-OLED</span>
-              <button class="btn-gallery-zoom" onclick="openLightbox('assets/helmet_hud_pov.jpg', 'Holographic Optical Visor • Live Speed, Navigation & AI Road Hazard Perception')">
-                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
-              </button>
-            </div>
-          </div>
-        </div>
+            <div style="color:var(--veloran-gold); font-weight:700; font-size:0.85rem; margin-top:10px;">Enter Simulator ➔</div>
+          </a>
 
-        <!-- 3. Rear Active Safety Light Bar -->
-        <div class="gallery-card" data-category="exterior">
-          <div class="gallery-img-wrap" onclick="openLightbox('assets/helmet_rear_lighting.jpg', 'Rear Active Dynamic LED Brake Bar & Sequential Warning Strobes')">
-            <span class="gallery-img-tag">ACTIVE VEHICLE LIGHTING</span>
-            <img src="assets/helmet_rear_lighting.jpg" alt="VELORAN Rear Active LED Brake Bar" class="gallery-img" loading="lazy" />
-          </div>
-          <div class="gallery-card-body">
+          <a href="gallery.html" class="inno-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <h3 class="gallery-card-title">Smart LED Brake Bar &amp; Strobe Warning Strips</h3>
-              <p class="gallery-card-desc">
-                High-mounted active deceleration light bar synchronized with helmet 6-axis IMU, sequential amber turn strobes, and magnetic quick-snap charge port.
-              </p>
+              <div class="inno-top"><div class="inno-icon-box">📸</div><div class="inno-number">#03</div></div>
+              <h3 class="inno-title">Ultra-HD Visual Gallery</h3>
+              <p class="inno-desc">Studio photography, holographic cockpit perspective, internal cutaways, and CAD exploded views.</p>
             </div>
-            <div class="gallery-card-actions">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-red);">IMU-SYNCED DECELERATION</span>
-              <button class="btn-gallery-zoom" onclick="openLightbox('assets/helmet_rear_lighting.jpg', 'Rear Active Dynamic LED Brake Bar & Sequential Warning Strobes')">
-                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
-              </button>
-            </div>
-          </div>
-        </div>
+            <div style="color:var(--veloran-azure); font-weight:700; font-size:0.85rem; margin-top:10px;">View Full HD Gallery ➔</div>
+          </a>
 
-        <!-- 4. Internal Energy Dissipation Cutaway Core -->
-        <div class="gallery-card" data-category="internal">
-          <div class="gallery-img-wrap" onclick="openLightbox('assets/smart_helmet_internal_cutaway.jpg', 'Internal Multi-Layer Energy Dissipation Core & MIPS Slip Plane')">
-            <span class="gallery-img-tag">SAFETY ENGINEERING</span>
-            <img src="assets/smart_helmet_internal_cutaway.jpg" alt="VELORAN Multi-Layer Internal Core" class="gallery-img" loading="lazy" />
-          </div>
-          <div class="gallery-card-body">
+          <a href="alarm.html" class="inno-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between; border-color:rgba(255,23,68,0.3);">
             <div>
-              <h3 class="gallery-card-title">Multi-Tier Energy Dissipation Core</h3>
-              <p class="gallery-card-desc">
-                Dual-density multi-directional EPS foam core paired with MIPS rotational slip plane to absorb up to 64G oblique and angular impacts.
-              </p>
+              <div class="inno-top"><div class="inno-icon-box">🚨</div><div class="inno-number">#04</div></div>
+              <h3 class="inno-title">Guardian™ Alarm Center</h3>
+              <p class="inno-desc">Active vehicle security telemetry, 110dB Piezo siren, 6-axis IMU gyro tilt, and High-G Crash SOS.</p>
             </div>
-            <div class="gallery-card-actions">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-green);">64G MULTI-AXIS ABSORPTION</span>
-              <button class="btn-gallery-zoom" onclick="openLightbox('assets/smart_helmet_internal_cutaway.jpg', 'Internal Multi-Layer Energy Dissipation Core & MIPS Slip Plane')">
-                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
-              </button>
-            </div>
-          </div>
-        </div>
+            <div style="color:var(--accent-red); font-weight:700; font-size:0.85rem; margin-top:10px;">Open Alarm Center ➔</div>
+          </a>
 
-        <!-- 5. Exploded CAD Sub-Assemblies -->
-        <div class="gallery-card" data-category="internal">
-          <div class="gallery-img-wrap" onclick="openLightbox('assets/digital_helmet_exploded.jpg', 'Exploded Sub-Assemblies • Modular Optical, Battery & Sensor Architecture')">
-            <span class="gallery-img-tag">CAD TWIN BREAKDOWN</span>
-            <img src="assets/digital_helmet_exploded.jpg" alt="VELORAN Exploded CAD Sub-Assemblies" class="gallery-img" loading="lazy" />
-          </div>
-          <div class="gallery-card-body">
+          <a href="specs.html" class="inno-card" style="text-decoration:none; display:flex; flex-direction:column; justify-content:space-between;">
             <div>
-              <h3 class="gallery-card-title">Precision Modular Sub-Assemblies</h3>
-              <p class="gallery-card-desc">
-                Independent modular replacement architecture enabling individual upgrades to the optical waveguide visor, Li-Po curved battery pack, and motherboard.
-              </p>
+              <div class="inno-top"><div class="inno-icon-box">📊</div><div class="inno-number">#05</div></div>
+              <h3 class="inno-title">Engineering Specs Matrix</h3>
+              <p class="inno-desc">Comprehensive hardware benchmarks across 8 subsystems, weight comparisons, and optical ratings.</p>
             </div>
-            <div class="gallery-card-actions">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-gold);">1:1 CAD TOLERANCE</span>
-              <button class="btn-gallery-zoom" onclick="openLightbox('assets/digital_helmet_exploded.jpg', 'Exploded Sub-Assemblies • Modular Optical, Battery & Sensor Architecture')">
-                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
-              </button>
-            </div>
-          </div>
+            <div style="color:var(--accent-green); font-weight:700; font-size:0.85rem; margin-top:10px;">View Full Specs Matrix ➔</div>
+          </a>
         </div>
+      </section>
 
-        <!-- 6. Side Profile Aerospace Silhouette -->
-        <div class="gallery-card" data-category="exterior">
-          <div class="gallery-img-wrap" onclick="openLightbox('assets/smart_helmet_real_render.jpg', 'Aerospace Side Profile • Bone Conduction Transducers & Acoustic Ducts')">
-            <span class="gallery-img-tag">AEROSPACE SIDE PROFILE</span>
-            <img src="assets/smart_helmet_real_render.jpg" alt="VELORAN Aerospace Side Silhouette" class="gallery-img" loading="lazy" />
-          </div>
-          <div class="gallery-card-body">
-            <div>
-              <h3 class="gallery-card-title">Dual Bone Conduction &amp; Wind Isolation</h3>
-              <p class="gallery-card-desc">
-                Integrated low-profile acoustic drivers with beamforming noise-cancelling microphones tuned for clear intercom communication up to 140 km/h.
-              </p>
-            </div>
-            <div class="gallery-card-actions">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-azure);">BEAMFORMING NOISE REDUCTION</span>
-              <button class="btn-gallery-zoom" onclick="openLightbox('assets/smart_helmet_real_render.jpg', 'Aerospace Side Profile • Bone Conduction Transducers & Acoustic Ducts')">
-                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Ultra-HD Lightbox Inspection Modal -->
-    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox(event)">
-      <div class="lightbox-content">
-        <button class="lightbox-close-btn" onclick="closeLightboxDirect()" title="Close">&times;</button>
-        <img src="" alt="High Definition View" class="lightbox-img" id="lightbox-img" />
-        <div class="lightbox-caption" id="lightbox-caption"></div>
-      </div>
-    </div>
-
-    <!-- Architecture Specs Matrix -->
-    <section class="section-header" id="matrix">
-      <div class="section-tag" data-i18n="matrix_badge">HARDWARE SPECIFICATIONS</div>
-      <h2 class="section-title" data-i18n="matrix_title">Engineering Specs Matrix</h2>
-      <p class="section-subtitle" data-i18n="matrix_desc">Complete technical benchmarks across all safety, optical, computing, and security hardware.</p>
-    </section>
-
-    <!-- Subsystem Filter Pills -->
-    <div class="matrix-filter-pills">
-      <button class="matrix-pill active" onclick="filterSpecsMatrix('all', this)" id="mpill-all">🌟 All Subsystems (8)</button>
-      <button class="matrix-pill" onclick="filterSpecsMatrix('armor', this)" id="mpill-armor">🛡️ Armor &amp; Impact</button>
-      <button class="matrix-pill" onclick="filterSpecsMatrix('optics', this)" id="mpill-optics">🥽 Optics &amp; HUD</button>
-      <button class="matrix-pill" onclick="filterSpecsMatrix('security', this)" id="mpill-security">🚨 Guardian &amp; AI</button>
-      <button class="matrix-pill" onclick="filterSpecsMatrix('power', this)" id="mpill-power">🔋 Battery &amp; Audio</button>
-    </div>
-
-    <!-- Quick Visual Benchmark Comparison -->
-    <div class="benchmark-comparison-card">
-      <div class="bench-col">
-        <div class="bench-label" id="bench-lbl-weight">TOTAL HELMET WEIGHT</div>
-        <div class="bench-bar-wrap">
-          <div class="bench-bar veloran" style="width: 77%;"><span>VELORAN 1,350g (3K Carbon)</span></div>
-          <div class="bench-bar standard" style="width: 100%;"><span>Standard Full-Face 1,750g</span></div>
-        </div>
-        <div class="bench-diff" id="bench-diff-weight">⚡ 400g Lighter (-23% Neck Strain)</div>
-      </div>
-
-      <div class="bench-col">
-        <div class="bench-label" id="bench-lbl-optics">HUD DAYLIGHT VISIBILITY</div>
-        <div class="bench-bar-wrap">
-          <div class="bench-bar veloran" style="width: 100%;"><span>VELORAN 4,000 Nits Micro-OLED</span></div>
-          <div class="bench-bar standard" style="width: 25%;"><span>Phone Mount 800 Nits</span></div>
-        </div>
-        <div class="bench-diff" id="bench-diff-optics">☀️ 5x Brighter in Direct Midday Sun</div>
-      </div>
-
-      <div class="bench-col">
-        <div class="bench-label" id="bench-lbl-sos">EMERGENCY SOS DISPATCH</div>
-        <div class="bench-bar-wrap">
-          <div class="bench-bar veloran" style="width: 18%;"><span>VELORAN eCall: 10 Seconds</span></div>
-          <div class="bench-bar standard" style="width: 95%;"><span>Bystander Call: 15+ Minutes</span></div>
-        </div>
-        <div class="bench-diff" id="bench-diff-sos">🚑 90x Faster Automated Lifeline</div>
-      </div>
-    </div>
-
-    <div class="table-responsive-wrapper">
-      <div class="table-swipe-hint" data-i18n="swipe_hint">👉 Swipe horizontally to view full matrix ⇄</div>
-      <div class="specs-table-container">
-        <table class="matrix-table" id="specs-matrix-table">
-          <thead id="specs-matrix-thead">
-            <tr>
-              <th>Subsystem Name</th>
-              <th>Hardware Component</th>
-              <th>Function / Benchmark</th>
-              <th>Weight &amp; Power</th>
-              <th>Certification / Status</th>
-            </tr>
-          </thead>
-          <tbody id="specs-matrix-tbody">
-            <tr>
-              <td><strong>Outer Shell</strong></td>
-              <td>3K Toray Carbon Fiber + Kevlar</td>
-              <td>Structural impact resistance &amp; aero stability</td>
-              <td>420g / Passive</td>
-              <td><span class="status-active">ECE 22.06 / DOT</span></td>
-            </tr>
-            <tr>
-              <td><strong>Impact Core</strong></td>
-              <td>Dual-Density EPS + MIPS C2</td>
-              <td>Multi-directional rotational concussion reduction</td>
-              <td>280g / Passive</td>
-              <td><span class="status-active">Snell M2025</span></td>
-            </tr>
-            <tr>
-              <td><strong>Optical Visor</strong></td>
-              <td>Geometric Optical Waveguide</td>
-              <td>110° FOV, 0.1s electrochromic variable tint</td>
-              <td>160g / 0.8W</td>
-              <td><span class="status-active">ANSI Z87.1+ Optical</span></td>
-            </tr>
-            <tr>
-              <td><strong>Projection Engine</strong></td>
-              <td>Dual Sony 4K Micro-OLED</td>
-              <td>4,000 Nits peak daylight luminance, 90Hz</td>
-              <td>45g / 2.2W</td>
-              <td><span class="status-active">HDR10 Certified</span></td>
-            </tr>
-            <tr>
-              <td><strong>LiDAR &amp; Vision</strong></td>
-              <td>Solid-State ToF LiDAR + Sony Starvis 2</td>
-              <td>100m obstacle detection, 4K 60fps EIS dashcam</td>
-              <td>85g / 3.4W</td>
-              <td><span class="status-active">Class 1 Eye-Safe</span></td>
-            </tr>
-            <tr>
-              <td><strong>Guardian Alarm &amp; IMU</strong></td>
-              <td>MPU-6050 6-Axis IMU + 110dB Piezo Siren</td>
-              <td>Anti-theft movement detection &amp; 64G crash alarm</td>
-              <td>25g / 0.4W</td>
-              <td><span class="status-active">GUARDIAN ARMED</span></td>
-            </tr>
-            <tr>
-              <td><strong>Smart Battery</strong></td>
-              <td>Curved Lithium-Polymer (7.4V 4,800mAh)</td>
-              <td>Up to 10 hours continuous HUD &amp; dashcam life</td>
-              <td>185g / 35.5Wh</td>
-              <td><span class="status-active">UN38.3 Safe Transport</span></td>
-            </tr>
-            <tr>
-              <td><strong>Audio Transducers</strong></td>
-              <td>Dual Bone Conduction + Beamforming Mics</td>
-              <td>Open-ear spatial comms &amp; voice commands</td>
-              <td>25g / 0.5W</td>
-              <td><span class="status-active">ENC NOISE CANCEL</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Production Callout Banner -->
-    <div class="store-cta">
-      <div class="cta-text">
-        <div class="badge" id="banner-badge-tag" style="margin-bottom:0.6rem;">VELORAN • NEXT-GEN PLATFORM</div>
-        <h2 id="banner-title-txt">RIDE SMARTER. GO FURTHER.</h2>
-        <p id="banner-desc-txt">Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, active Guardian anti-theft alarm, and 100m solid-state LiDAR perception.</p>
-      </div>
-      <div class="cta-actions">
-        <button onclick="switchView('3d')" class="btn-primary" id="banner-btn-3d">🌐 Launch 3D Explorer →</button>
-        <button onclick="scrollToAlarm()" class="btn-secondary" id="banner-btn-alarm">🚨 Test Guardian Alarm</button>
-      </div>
-    </div>
   </main>
 
-  <!-- Veloran Official Footer -->
-  <footer>
-    <div class="footer-logo-box">
-      <img src="assets/veloran_logo_white.png" alt="VELORAN • Ride Smarter. Go Further." class="footer-logo-img" />
-    </div>
-    <p style="font-weight:700; color:#fff; letter-spacing:1px; margin-bottom:6px;">VELORAN • RIDE SMARTER. GO FURTHER.</p>
-    <p style="font-size:0.75rem; color:var(--veloran-silver);" id="footer-sub-txt">CADT Faculty of Digital Engineering • Cybernetic Digital Smart Helmet Project</p>
-    <p style="margin-top:6px; font-size:0.72rem; color:#475569;" id="footer-note-txt">Physics Simulation, WebGL 3D Interactive Telemetry &amp; Guardian Security Engine.</p>
-  </footer>
+
 
   <script>
+
     /* =========================================================================
        12 COMPONENT SPECIFICATIONS
        ========================================================================= */
@@ -4207,6 +3704,10 @@
     }
 
     function inspectComponentIn3D(index) {
+      if (!document.getElementById('stage-3d')) {
+        window.location.href = 'index.html?inspect=' + index;
+        return;
+      }
       inspectComponent(index);
       
       document.querySelectorAll('.inno-card').forEach(card => card.classList.remove('active'));
@@ -4686,6 +4187,7 @@
     function init3D() {
       const container = document.getElementById('stage-3d');
       const canvas = document.getElementById('webgl-canvas');
+      if (!container || !canvas) return;
 
       scene = new THREE.Scene();
 
@@ -6385,12 +5887,28 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      init3D();
-      populateInnovationTabs();
-      switchInnoTab('optics');
+      if (document.getElementById('stage-3d')) {
+        init3D();
+      }
+      if (document.getElementById('grid-optics')) {
+        populateInnovationTabs();
+        switchInnoTab('optics');
+      }
       checkBackendHealth();
       setLanguage(currentLang);
+
+      // Handle deep-link query parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('view') === 'hud' && typeof switchView === 'function') {
+        switchView('hud');
+        scrollToStage();
+      }
+      const inspectIdx = urlParams.get('inspect');
+      if (inspectIdx !== null && typeof inspectComponentIn3D === 'function') {
+        setTimeout(() => inspectComponentIn3D(parseInt(inspectIdx, 10)), 500);
+      }
     });
+  
   </script>
 </body>
 </html>
