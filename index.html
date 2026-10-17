@@ -1965,9 +1965,284 @@
       background: var(--veloran-gold);
       box-shadow: 0 0 8px var(--veloran-gold);
     }
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
+    /* Language Switcher Pill */
+    .lang-switch-pill {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 20px;
+      padding: 3px;
+      gap: 3px;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--veloran-silver);
+      font-family: var(--font-heading);
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .lang-btn:hover {
+      color: #fff;
+    }
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--veloran-azure), #0072ff);
+      color: #020712;
+      font-weight: 800;
+      box-shadow: 0 0 10px rgba(0, 166, 251, 0.4);
+    }
+    .mobile-lang-wrap {
+      display: flex;
+      align-items: center;
+      margin-right: 4px;
+    }
+
+    /* 3D Clean View / Zen Mode */
+    #stage-3d.clean-view-active #hotspots-layer,
+    #stage-3d.clean-view-active #hint-3d,
+    #stage-3d.clean-view-active .stage-brand-watermark {
+      opacity: 0 !important;
+      pointer-events: none !important;
+      transition: opacity 0.3s ease;
+    }
+    #stage-3d.clean-view-active .floating-3d-toolbar {
+      opacity: 0.25;
+      transition: opacity 0.3s ease;
+    }
+    #stage-3d.clean-view-active .floating-3d-toolbar:hover {
+      opacity: 1;
+    }
+    .stage-btn.zen-active {
+      background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(0, 114, 255, 0.2)) !important;
+      border-color: var(--neon-cyan) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(0, 212, 255, 0.5) !important;
+    }
+
+    /* Ultra-HD Visual Architecture & Gallery Section */
+    .gallery-section {
+      margin: 4.5rem 0;
+      padding: 3.5rem 2.2rem;
+      background: linear-gradient(180deg, rgba(4, 10, 24, 0.95), rgba(2, 6, 16, 0.98));
+      border: 1px solid var(--border-glow);
+      border-radius: 28px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 166, 251, 0.1);
+    }
+    .gallery-section::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      right: -100px;
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(0, 166, 251, 0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .gallery-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 2.5rem;
+    }
+    .gallery-filter-nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 2.2rem;
+      flex-wrap: wrap;
+    }
+    .gallery-filter-btn {
+      padding: 8px 18px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--veloran-silver);
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .gallery-filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+    }
+    .gallery-filter-btn.active {
+      background: linear-gradient(135deg, var(--veloran-azure), #0072ff);
+      color: #020712;
+      border-color: transparent;
+      box-shadow: 0 0 15px rgba(0, 166, 251, 0.45);
+    }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.8rem;
+    }
+    @media (max-width: 768px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-section { padding: 2rem 1.2rem; }
+    }
+    .gallery-card {
+      background: rgba(6, 14, 32, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 166, 251, 0.3);
+    }
+    .gallery-img-wrap {
+      width: 100%;
+      height: 240px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      background: #02050f;
+    }
+    .gallery-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .gallery-card:hover .gallery-img {
+      transform: scale(1.06);
+    }
+    .gallery-img-tag {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(3, 8, 20, 0.85);
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      backdrop-filter: blur(8px);
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      letter-spacing: 1px;
+    }
+    .gallery-card-body {
+      padding: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+    .gallery-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 0.4rem;
+    }
+    .gallery-card-desc {
+      color: var(--veloran-silver);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      margin-bottom: 1.2rem;
+    }
+    .gallery-card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn-gallery-zoom {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: var(--font-heading);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-gallery-zoom:hover {
+      background: rgba(0, 166, 251, 0.2);
+      border-color: var(--veloran-azure);
+      color: var(--neon-cyan);
+    }
+
+    /* Lightbox Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(2, 5, 14, 0.95);
+      backdrop-filter: blur(20px);
+      z-index: 100000;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+    }
+    .lightbox-modal.active {
+      display: flex;
+      animation: modalDrop 0.25s ease;
+    }
+    .lightbox-content {
+      max-width: 1080px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .lightbox-img {
+      max-width: 100%;
+      max-height: 75vh;
+      border-radius: 16px;
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.9), 0 0 50px rgba(0, 166, 251, 0.3);
+      object-fit: contain;
+    }
+    .lightbox-caption {
+      margin-top: 1rem;
+      text-align: center;
+      color: #fff;
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+    }
+    .lightbox-close-btn {
+      position: absolute;
+      top: -45px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      transition: all 0.2s;
+    }
+    .lightbox-close-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: var(--accent-red);
     }
   </style>
 </head>
@@ -1986,8 +2261,12 @@
       </div>
     </a>
 
-    <!-- Mobile Hamburger Button -->
+    <!-- Mobile Language Switcher & Hamburger Button -->
     <div class="mobile-header-right">
+      <div class="lang-switch-pill mobile-lang-wrap">
+        <button class="lang-btn active" id="btn-lang-en-m" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" id="btn-lang-km-m" onclick="setLanguage('km')">ខ្មែរ</button>
+      </div>
       <button class="mobile-nav-toggle" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu">
         <span class="hamburger-bar"></span>
         <span class="hamburger-bar"></span>
@@ -2001,11 +2280,17 @@
         <span class="status-dot-pulse" id="status-dot-pulse"></span>
         <span id="backend-status-txt">API: CONNECTING...</span>
       </div>
-      <a href="#showcase" class="active" onclick="closeMobileNav()"><span>🌐</span> 3D Studio</a>
-      <a href="#innovations" onclick="closeMobileNav()"><span>🔬</span> Innovations</a>
-      <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="closeMobileNav(); scrollToAlarm();">🚨 Alarm: <span id="nav-alarm-status">ARMED</span></a>
-      <a href="#matrix" onclick="closeMobileNav()"><span>📊</span> Specs Matrix</a>
-      <a href="#showcase" onclick="closeMobileNav(); switchView('hud'); scrollToStage();" class="nav-btn-highlight"><span>⚡</span> Visor HUD</a>
+      <a href="#showcase" class="active" onclick="closeMobileNav()"><span>🌐</span> <span data-i18n="nav_studio">3D Studio</span></a>
+      <a href="#innovations" onclick="closeMobileNav()"><span>🔬</span> <span data-i18n="nav_innovations">Innovations</span></a>
+      <a href="#gallery" onclick="closeMobileNav()"><span>📸</span> <span data-i18n="nav_gallery">Gallery</span></a>
+      <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="closeMobileNav(); scrollToAlarm();"><span data-i18n="nav_alarm">🚨 Alarm: </span><span id="nav-alarm-status">ARMED</span></a>
+      <a href="#matrix" onclick="closeMobileNav()"><span>📊</span> <span data-i18n="nav_matrix">Specs Matrix</span></a>
+      <a href="#showcase" onclick="closeMobileNav(); switchView('hud'); scrollToStage();" class="nav-btn-highlight"><span>⚡</span> <span data-i18n="nav_hud">Visor HUD</span></a>
+
+      <div class="lang-switch-pill desktop-only" style="margin-left: 6px;">
+        <button class="lang-btn active" id="btn-lang-en" onclick="setLanguage('en')">EN</button>
+        <button class="lang-btn" id="btn-lang-km" onclick="setLanguage('km')">ខ្មែរ</button>
+      </div>
     </nav>
   </header>
 
@@ -2021,36 +2306,37 @@
 
       <div class="badge">
         <span class="badge-pulse"></span>
-        VELORAN CYBERNETIC SMART HELMET
+        <span data-i18n="hero_badge">VELORAN CYBERNETIC SMART HELMET</span>
       </div>
-      <h1>Next-Gen Digital Helmet</h1>
+      <h1 data-i18n="hero_title">Next-Gen Digital Helmet</h1>
       <div class="hero-tagline-callout">
-        <span class="tag-ride">RIDE SMARTER.</span>
-        <span class="tag-go">GO FURTHER.</span>
+        <span class="tag-ride" data-i18n="hero_subtitle_ride">RIDE SMARTER.</span>
+        <span class="tag-go" data-i18n="hero_subtitle_go">GO FURTHER.</span>
       </div>
-      <p class="subtitle">
+      <p class="subtitle" data-i18n="hero_desc">
         Explore the VELORAN Cybernetic Smart Helmet in real-time 3D. Inspect CAD sub-assemblies, test active Guardian movement alarms, and experience live holographic Heads-Up Display telemetry.
       </p>
 
       <!-- Clean Apple / Tesla Action CTAs (Eliminates the 11 cluttered buttons) -->
       <div class="hero-actions-row">
         <button class="hero-primary-btn" onclick="scrollToStage()">
-          <span>🌐</span> Launch 3D Explorer
+          <span>🌐</span> <span data-i18n="hero_btn_3d">Launch 3D Explorer</span>
         </button>
         <button class="hero-secondary-btn" onclick="scrollToAlarm()">
-          <span>🚨</span> Test Guardian Alarm
+          <span>🚨</span> <span data-i18n="hero_btn_alarm">Test Guardian Alarm</span>
         </button>
         <button class="hero-ghost-btn" onclick="switchView('hud'); scrollToStage();">
-          <span>⚡</span> Visor HUD Mode
+          <span>⚡</span> <span data-i18n="hero_btn_hud">Visor HUD Mode</span>
         </button>
       </div>
 
       <!-- Quick Highlights Strip -->
       <div class="hero-specs-strip">
-        <div class="spec-pill"><span class="pill-label">WEIGHT</span><span class="pill-val">1,350g 3K Carbon</span></div>
-        <div class="spec-pill"><span class="pill-label">OPTICS</span><span class="pill-val">4,000 Nits Micro-OLED</span></div>
-        <div class="spec-pill"><span class="pill-label">SECURITY</span><span class="pill-val">64G Crash SOS &amp; Alarm</span></div>
-        <div class="spec-pill"><span class="pill-label">BATTERY</span><span class="pill-val">10h Curved Li-Po</span></div>
+        <div class="spec-pill"><span class="pill-label" data-i18n="hero_spec_weight">WEIGHT</span><span class="pill-val">1,350g 3K Carbon</span></div>
+        <div class="spec-pill"><span class="pill-label" data-i18n="hero_spec_optics">OPTICS</span><span class="pill-val">4,000 Nits Micro-OLED</span></div>
+        <div class="spec-pill"><span class="pill-label" data-i18n="hero_spec_security">SECURITY</span><span class="pill-val">64G Crash SOS &amp; Alarm</span></div>
+        <div class="spec-pill"><span class="pill-label" data-i18n="hero_spec_battery">BATTERY</span><span class="pill-val">10h Curved Li-Po</span></div>
+      </div>
     </section>
 
     <!-- Visual Showcase Stage -->
@@ -2066,6 +2352,7 @@
           <button class="stage-view-pill" id="pill-mode-real" onclick="switchView('real')">🛡️ Studio Photo</button>
         </div>
         <div class="stage-actions">
+          <button class="stage-btn" id="btn-clean-view" onclick="toggleCleanView()" title="Hide text and labels around helmet for an unobstructed view"><span id="clean-view-icon">👁️</span> <span id="clean-view-txt" data-i18n="btn_clean_view">Clean View</span></button>
           <button class="stage-btn" id="btn-hotspots-toggle" onclick="toggleHotspots()">📍 Hotspots: ON</button>
           <button class="stage-btn" id="btn-sound-toggle" onclick="toggleAudioMute()">🔊 Sound: ON</button>
           <button class="stage-btn" id="btn-autorotate-toggle" onclick="toggleAutoRotate()">🔄 Auto-Rotate: ON</button>
@@ -2373,6 +2660,171 @@
         <div class="inno-grid" id="inno-grid-neural"></div>
       </div>
     </section>
+
+    <!-- =========================================================================
+         📸 ULTRA-HD VISUAL ARCHITECTURE & REAL-WORLD GALLERY
+         ========================================================================= -->
+    <section class="gallery-section" id="gallery">
+      <div class="gallery-header">
+        <div class="badge" data-i18n="gallery_badge">📸 ULTRA-HD VISUAL ARCHITECTURE</div>
+        <h2 class="section-title" data-i18n="gallery_title" style="margin-top:0.8rem;">Precision Engineering. Designed for the Future.</h2>
+        <p class="section-subtitle" data-i18n="gallery_desc">
+          Explore high-resolution studio photography, first-person holographic visor telemetry, and structural cutaways of the VELORAN cybernetic helmet.
+        </p>
+      </div>
+
+      <!-- Gallery Filter Tabs -->
+      <div class="gallery-filter-nav">
+        <button class="gallery-filter-btn active" onclick="filterGallery('all', this)" data-i18n="gallery_filter_all">All Views</button>
+        <button class="gallery-filter-btn" onclick="filterGallery('exterior', this)" data-i18n="gallery_filter_exterior">Exterior Profile</button>
+        <button class="gallery-filter-btn" onclick="filterGallery('cockpit', this)" data-i18n="gallery_filter_cockpit">HUD Cockpit</button>
+        <button class="gallery-filter-btn" onclick="filterGallery('internal', this)" data-i18n="gallery_filter_internal">Engineering Cutaway</button>
+      </div>
+
+      <!-- Gallery Cards Grid -->
+      <div class="gallery-grid" id="gallery-grid">
+        <!-- 1. Front Three-Quarter Beauty -->
+        <div class="gallery-card" data-category="exterior">
+          <div class="gallery-img-wrap" onclick="openLightbox('assets/helmet_front_beauty.jpg', 'VELORAN 3K Carbon Shell • Brow LiDAR & Angkor Wat Insignia')">
+            <span class="gallery-img-tag">AERODYNAMIC PROFILE</span>
+            <img src="assets/helmet_front_beauty.jpg" alt="VELORAN Carbon Smart Helmet Front View" class="gallery-img" loading="lazy" />
+          </div>
+          <div class="gallery-card-body">
+            <div>
+              <h3 class="gallery-card-title">Aerodynamic Toray 3K Shell &amp; Brow LiDAR</h3>
+              <p class="gallery-card-desc">
+                Ultra-lightweight aerospace carbon fiber composite with integrated front brow solid-state LiDAR perception and signature Angkor Wat emblem.
+              </p>
+            </div>
+            <div class="gallery-card-actions">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-gold);">ECE 22.06 / DOT CERTIFIED</span>
+              <button class="btn-gallery-zoom" onclick="openLightbox('assets/helmet_front_beauty.jpg', 'VELORAN 3K Carbon Shell • Brow LiDAR & Angkor Wat Insignia')">
+                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. First-Person Rider HUD Cockpit View -->
+        <div class="gallery-card" data-category="cockpit">
+          <div class="gallery-img-wrap" onclick="openLightbox('assets/helmet_hud_pov.jpg', 'Holographic Optical Visor • Live Speed, Navigation & AI Road Hazard Perception')">
+            <span class="gallery-img-tag">COCKPIT TELEMETRY (POV)</span>
+            <img src="assets/helmet_hud_pov.jpg" alt="VELORAN First-Person Rider Visor HUD" class="gallery-img" loading="lazy" />
+          </div>
+          <div class="gallery-card-body">
+            <div>
+              <h3 class="gallery-card-title">Holographic Visor Heads-Up Display (POV)</h3>
+              <p class="gallery-card-desc">
+                Real-time optical waveguide projection with 4,000 Nits micro-OLED, AI road hazard scanning, live speed, and turn-by-turn routing directly in rider field-of-view.
+              </p>
+            </div>
+            <div class="gallery-card-actions">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--neon-cyan);">4,000 NITS MICRO-OLED</span>
+              <button class="btn-gallery-zoom" onclick="openLightbox('assets/helmet_hud_pov.jpg', 'Holographic Optical Visor • Live Speed, Navigation & AI Road Hazard Perception')">
+                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Rear Active Safety Light Bar -->
+        <div class="gallery-card" data-category="exterior">
+          <div class="gallery-img-wrap" onclick="openLightbox('assets/helmet_rear_lighting.jpg', 'Rear Active Dynamic LED Brake Bar & Sequential Warning Strobes')">
+            <span class="gallery-img-tag">ACTIVE VEHICLE LIGHTING</span>
+            <img src="assets/helmet_rear_lighting.jpg" alt="VELORAN Rear Active LED Brake Bar" class="gallery-img" loading="lazy" />
+          </div>
+          <div class="gallery-card-body">
+            <div>
+              <h3 class="gallery-card-title">Smart LED Brake Bar &amp; Strobe Warning Strips</h3>
+              <p class="gallery-card-desc">
+                High-mounted active deceleration light bar synchronized with helmet 6-axis IMU, sequential amber turn strobes, and magnetic quick-snap charge port.
+              </p>
+            </div>
+            <div class="gallery-card-actions">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-red);">IMU-SYNCED DECELERATION</span>
+              <button class="btn-gallery-zoom" onclick="openLightbox('assets/helmet_rear_lighting.jpg', 'Rear Active Dynamic LED Brake Bar & Sequential Warning Strobes')">
+                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Internal Energy Dissipation Cutaway Core -->
+        <div class="gallery-card" data-category="internal">
+          <div class="gallery-img-wrap" onclick="openLightbox('assets/smart_helmet_internal_cutaway.jpg', 'Internal Multi-Layer Energy Dissipation Core & MIPS Slip Plane')">
+            <span class="gallery-img-tag">SAFETY ENGINEERING</span>
+            <img src="assets/smart_helmet_internal_cutaway.jpg" alt="VELORAN Multi-Layer Internal Core" class="gallery-img" loading="lazy" />
+          </div>
+          <div class="gallery-card-body">
+            <div>
+              <h3 class="gallery-card-title">Multi-Tier Energy Dissipation Core</h3>
+              <p class="gallery-card-desc">
+                Dual-density multi-directional EPS foam core paired with MIPS rotational slip plane to absorb up to 64G oblique and angular impacts.
+              </p>
+            </div>
+            <div class="gallery-card-actions">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-green);">64G MULTI-AXIS ABSORPTION</span>
+              <button class="btn-gallery-zoom" onclick="openLightbox('assets/smart_helmet_internal_cutaway.jpg', 'Internal Multi-Layer Energy Dissipation Core & MIPS Slip Plane')">
+                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Exploded CAD Sub-Assemblies -->
+        <div class="gallery-card" data-category="internal">
+          <div class="gallery-img-wrap" onclick="openLightbox('assets/digital_helmet_exploded.jpg', 'Exploded Sub-Assemblies • Modular Optical, Battery & Sensor Architecture')">
+            <span class="gallery-img-tag">CAD TWIN BREAKDOWN</span>
+            <img src="assets/digital_helmet_exploded.jpg" alt="VELORAN Exploded CAD Sub-Assemblies" class="gallery-img" loading="lazy" />
+          </div>
+          <div class="gallery-card-body">
+            <div>
+              <h3 class="gallery-card-title">Precision Modular Sub-Assemblies</h3>
+              <p class="gallery-card-desc">
+                Independent modular replacement architecture enabling individual upgrades to the optical waveguide visor, Li-Po curved battery pack, and motherboard.
+              </p>
+            </div>
+            <div class="gallery-card-actions">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-gold);">1:1 CAD TOLERANCE</span>
+              <button class="btn-gallery-zoom" onclick="openLightbox('assets/digital_helmet_exploded.jpg', 'Exploded Sub-Assemblies • Modular Optical, Battery & Sensor Architecture')">
+                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Side Profile Aerospace Silhouette -->
+        <div class="gallery-card" data-category="exterior">
+          <div class="gallery-img-wrap" onclick="openLightbox('assets/smart_helmet_real_render.jpg', 'Aerospace Side Profile • Bone Conduction Transducers & Acoustic Ducts')">
+            <span class="gallery-img-tag">AEROSPACE SIDE PROFILE</span>
+            <img src="assets/smart_helmet_real_render.jpg" alt="VELORAN Aerospace Side Silhouette" class="gallery-img" loading="lazy" />
+          </div>
+          <div class="gallery-card-body">
+            <div>
+              <h3 class="gallery-card-title">Dual Bone Conduction &amp; Wind Isolation</h3>
+              <p class="gallery-card-desc">
+                Integrated low-profile acoustic drivers with beamforming noise-cancelling microphones tuned for clear intercom communication up to 140 km/h.
+              </p>
+            </div>
+            <div class="gallery-card-actions">
+              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-azure);">BEAMFORMING NOISE REDUCTION</span>
+              <button class="btn-gallery-zoom" onclick="openLightbox('assets/smart_helmet_real_render.jpg', 'Aerospace Side Profile • Bone Conduction Transducers & Acoustic Ducts')">
+                <span>🔍</span> <span data-i18n="gallery_inspect">Inspect Full HD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ultra-HD Lightbox Inspection Modal -->
+    <div class="lightbox-modal" id="lightbox-modal" onclick="closeLightbox(event)">
+      <div class="lightbox-content">
+        <button class="lightbox-close-btn" onclick="closeLightboxDirect()" title="Close">&times;</button>
+        <img src="" alt="High Definition View" class="lightbox-img" id="lightbox-img" />
+        <div class="lightbox-caption" id="lightbox-caption"></div>
+      </div>
+    </div>
 
     <!-- Architecture Specs Matrix -->
     <section class="section-header" id="matrix">
@@ -3684,6 +4136,229 @@
     }
 
 
+    // =========================================================================
+    // 👁️ 3D CLEAN VIEW / ZEN FOCUS MODE (Hide text around helmet)
+    // =========================================================================
+    let isCleanViewActive = false;
+    function toggleCleanView() {
+      const stage = document.getElementById('stage-3d');
+      const btn = document.getElementById('btn-clean-view');
+      const icon = document.getElementById('clean-view-icon');
+      const txt = document.getElementById('clean-view-txt');
+      if (!stage) return;
+
+      isCleanViewActive = !isCleanViewActive;
+      if (isCleanViewActive) {
+        stage.classList.add('clean-view-active');
+        if (btn) btn.classList.add('zen-active');
+        if (icon) icon.innerText = '👁️‍🗨️';
+        if (txt) txt.innerText = currentLang === 'km' ? 'បង្ហាញអក្សរ' : 'Show Labels';
+      } else {
+        stage.classList.remove('clean-view-active');
+        if (btn) btn.classList.remove('zen-active');
+        if (icon) icon.innerText = '👁️';
+        if (txt) txt.innerText = currentLang === 'km' ? 'លាក់អក្សរ (ស្អាត)' : 'Clean View';
+      }
+    }
+
+    // =========================================================================
+    // 📸 ULTRA-HD VISUAL GALLERY & LIGHTBOX INSPECTION
+    // =========================================================================
+    function filterGallery(category, el) {
+      document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      const cards = document.querySelectorAll('.gallery-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function openLightbox(imgSrc, caption) {
+      const modal = document.getElementById('lightbox-modal');
+      const img = document.getElementById('lightbox-img');
+      const cap = document.getElementById('lightbox-caption');
+      if (!modal || !img) return;
+
+      img.src = imgSrc;
+      if (cap) cap.innerText = caption || '';
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox(e) {
+      if (e.target.id === 'lightbox-modal') {
+        closeLightboxDirect();
+      }
+    }
+
+    function closeLightboxDirect() {
+      const modal = document.getElementById('lightbox-modal');
+      if (modal) modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // =========================================================================
+    // 🌐 BILINGUAL TRANSLATION SYSTEM (ENGLISH 🇬🇧 ⇄ ខ្មែរ 🇰🇭)
+    // =========================================================================
+    const VELORAN_I18N = {
+      en: {
+        nav_studio: "3D Studio",
+        nav_innovations: "Innovations",
+        nav_gallery: "Gallery",
+        nav_alarm: "🚨 Alarm: ",
+        nav_matrix: "Specs Matrix",
+        nav_hud: "Visor HUD",
+
+        hero_badge: "VELORAN CYBERNETIC SMART HELMET",
+        hero_title: "Next-Gen Digital Helmet",
+        hero_subtitle_ride: "RIDE SMARTER.",
+        hero_subtitle_go: "GO FURTHER.",
+        hero_desc: "Explore the VELORAN Cybernetic Smart Helmet in real-time 3D. Inspect CAD sub-assemblies, test active Guardian movement alarms, and experience live holographic Heads-Up Display telemetry.",
+        hero_btn_3d: "Launch 3D Explorer",
+        hero_btn_alarm: "Test Guardian Alarm",
+        hero_btn_hud: "Visor HUD Mode",
+        hero_spec_weight: "WEIGHT",
+        hero_spec_optics: "OPTICS",
+        hero_spec_security: "SECURITY",
+        hero_spec_battery: "BATTERY",
+
+        studio_title: "Real-Time 3D Interactive Model",
+        pill_3d: "🌐 3D Interactive",
+        pill_hud: "⚡ Live Visor HUD",
+        pill_cutaway: "🔬 Engineering Cutaway",
+        pill_photo: "🛡️ Studio Photo",
+        btn_clean_view: "Clean View",
+        btn_show_labels: "Show Labels",
+        drag_hint: "👆 Drag to Rotate 360° • Scroll / Pinch to Zoom • Right-Click to Pan",
+
+        gallery_badge: "📸 ULTRA-HD VISUAL ARCHITECTURE",
+        gallery_title: "Precision Engineering. Designed for the Future.",
+        gallery_desc: "Explore high-resolution studio photography, first-person holographic visor telemetry, and structural cutaways of the VELORAN cybernetic helmet.",
+        gallery_filter_all: "All Views",
+        gallery_filter_exterior: "Exterior Profile",
+        gallery_filter_cockpit: "HUD Cockpit",
+        gallery_filter_internal: "Engineering Cutaway",
+        gallery_inspect: "Inspect Full HD",
+
+        inno_badge: "NEXT-GEN SYSTEM ARCHITECTURE",
+        inno_title: "Veloran Innovations",
+        inno_desc: "Explore the 4 core engineering pillars powering the cybernetic smart helmet. Select a pillar to inspect specs, CAD tolerances, and view it highlighted on the 3D model.",
+
+        alarm_badge: "Active Vehicle Security & Telemetry",
+        alarm_title: "VELORAN Guardian™ Smart Alarm & SOS Center",
+        alarm_desc: "Test the intelligent anti-theft movement alarm and high-G crash emergency dispatch system. Integrated 6-axis IMU sensors detect unauthorized helmet tampering when parked, sounding a 110dB acoustic siren and flashing emergency 3D strobe lights.",
+
+        matrix_badge: "HARDWARE SPECIFICATIONS",
+        matrix_title: "Engineering Specs Matrix",
+        matrix_desc: "Complete technical benchmarks across all safety, optical, computing, and security hardware.",
+        swipe_hint: "👉 Swipe horizontally to view full matrix ⇄"
+      },
+      km: {
+        nav_studio: "ស្ទូឌីយោ 3D",
+        nav_innovations: "ការច្នៃប្រឌិត",
+        nav_gallery: "វិចិត្រសាល",
+        nav_alarm: "🚨 សំឡេងរោទ៍: ",
+        nav_matrix: "តារាងបច្ចេកទេស",
+        nav_hud: "កញ្ចក់ឆ្លុះ HUD",
+
+        hero_badge: "មួកសុវត្ថិភាពឌីជីថលឆ្លាតវៃ VELORAN",
+        hero_title: "មួកសុវត្ថិភាពឌីជីថលជំនាន់ថ្មី",
+        hero_subtitle_ride: "បើកបរកាន់តែឆ្លាតវៃ។",
+        hero_subtitle_go: "ធ្វើដំណើរកាន់តែឆ្ងាយ។",
+        hero_desc: "ស្វែងយល់ពីមួកសុវត្ថិភាពឌីជីថល VELORAN ក្នុងទម្រង់ 3D ជាក់ស្ដែង។ ពិនិត្យមើលគ្រឿងបន្លាស់ CAD, តេស្តប្រព័ន្ធសំឡេងរោទ៍ការពារចោរកម្ម Guardian និងបទពិសោធន៍កញ្ចក់ឆ្លុះ Heads-Up Display បែប Holographic។",
+        hero_btn_3d: "បើកស្ទូឌីយោ 3D",
+        hero_btn_alarm: "តេស្តសំឡេងរោទ៍ Guardian",
+        hero_btn_hud: "ទិដ្ឋភាពកញ្ចក់ HUD",
+        hero_spec_weight: "ទម្ងន់",
+        hero_spec_optics: "កញ្ចក់ឆ្លុះ",
+        hero_spec_security: "ប្រព័ន្ធសុវត្ថិភាព",
+        hero_spec_battery: "ថាមពលថ្ម",
+
+        studio_title: "គំរូមួក 3D អន្តរកម្មជាក់ស្ដែង",
+        pill_3d: "🌐 3D អន្តរកម្ម",
+        pill_hud: "⚡ កញ្ចក់ឆ្លុះ HUD",
+        pill_cutaway: "🔬 ប្លង់កាត់ខាងក្នុង",
+        pill_photo: "🛡️ រូបថតស្ទូឌីយោ",
+        btn_clean_view: "លាក់អក្សរ (ស្អាត)",
+        btn_show_labels: "បង្ហាញអក្សរ",
+        drag_hint: "👆 អូសដើម្បីបង្វិល 360° • ពង្រីក/បង្រួម • ចុចកណ្ដុរស្ដាំដើម្បីរំកិល",
+
+        gallery_badge: "📸 ស្ថាបត្យកម្មរូបភាពកម្រិតច្បាស់ ULTRA-HD",
+        gallery_title: "វិស្វកម្មច្បាស់លាស់។ រចនាឡើងសម្រាប់អនាគត។",
+        gallery_desc: "ទស្សនារូបថតស្ទូឌីយោកម្រិតខ្ពស់ ទិដ្ឋភាពកញ្ចក់ឆ្លុះ Holographic HUD ពីក្រសែភ្នែកអ្នកបើកបរ និងប្លង់កាត់បង្ហាញស្រទាប់មួកសុវត្ថិភាព VELORAN។",
+        gallery_filter_all: "ទាំងអស់",
+        gallery_filter_exterior: "រូបភាពខាងក្រៅ",
+        gallery_filter_cockpit: "កញ្ចក់ឆ្លុះ POV",
+        gallery_filter_internal: "វិស្វកម្មខាងក្នុង",
+        gallery_inspect: "ពង្រីកមើល Full HD",
+
+        inno_badge: "ស្ថាបត្យកម្មប្រព័ន្ធជំនាន់ក្រោយ",
+        inno_title: "ការច្នៃប្រឌិតបច្ចេកវិទ្យា Veloran",
+        inno_desc: "ស្វែងយល់ពីសសរស្តម្ភវិស្វកម្មស្នូលទាំង ៤ ដែលផ្ដល់ថាមពលដល់មួកសុវត្ថិភាពឌីជីថល។ ចុចលើសសរស្តម្ភដើម្បីពិនិត្យមើលលក្ខណៈបច្ចេកទេស និងមើលការរំលេចលើគំរូ 3D។",
+
+        alarm_badge: "ប្រព័ន្ធសុវត្ថិភាព និងទិន្នន័យពីចម្ងាយ",
+        alarm_title: "មជ្ឈមណ្ឌលសំឡេងរោទ៍ និងសង្គ្រោះបន្ទាន់ VELORAN Guardian™",
+        alarm_desc: "ធ្វើតេស្តប្រព័ន្ធសំឡេងរោទ៍ការពារចោរកម្ម និងប្រព័ន្ធហៅសង្គ្រោះបន្ទាន់ពេលមានគ្រោះថ្នាក់ប៉ះទង្គិចកម្លាំង G ខ្លាំង។ សេនស័រ IMU 6-axis រកឃើញការប៉ះពាល់មួកពេលចត បន្លឺសំឡេងរោទ៍ 110dB និងភ្លើងសញ្ញាសង្គ្រោះបន្ទាន់ 3D។",
+
+        matrix_badge: "តារាងលក្ខណៈបច្ចេកទេសផ្នែករឹង",
+        matrix_title: "កម្រិតស្ដង់ដារបច្ចេកទេសពេញលេញ",
+        matrix_desc: "ទិន្នន័យបច្ចេកទេសគ្រប់ជ្រុងជ្រោយនៃប្រព័ន្ធសុវត្ថិភាព កញ្ចក់ឆ្លុះ បន្ទះឈីបកុំព្យូទ័រ និងផ្នែករឹងការពារ។",
+        swipe_hint: "👉 អូសផ្ដេកដើម្បីមើលតារាងពេញលេញ ⇄"
+      }
+    };
+
+    let currentLang = localStorage.getItem('veloran_lang') || 'en';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem('veloran_lang', lang);
+
+      // Update button active state
+      ['btn-lang-en', 'btn-lang-en-m'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', lang === 'en');
+      });
+      ['btn-lang-km', 'btn-lang-km-m'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.toggle('active', lang === 'km');
+      });
+
+      // Update data-i18n items
+      const dict = VELORAN_I18N[lang] || VELORAN_I18N.en;
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.innerText = dict[key];
+        }
+      });
+
+      // Update specific dynamic stage items
+      const stageTitle = document.getElementById('stage-title-text');
+      if (stageTitle) stageTitle.innerHTML = `<span>🌐</span> ${dict.studio_title}`;
+
+      const pill3d = document.getElementById('pill-mode-3d');
+      if (pill3d) pill3d.innerText = dict.pill_3d;
+      const pillHud = document.getElementById('pill-mode-hud');
+      if (pillHud) pillHud.innerText = dict.pill_hud;
+      const pillCut = document.getElementById('pill-mode-cutaway');
+      if (pillCut) pillCut.innerText = dict.pill_cutaway;
+      const pillReal = document.getElementById('pill-mode-real');
+      if (pillReal) pillReal.innerText = dict.pill_photo;
+
+      const cleanBtnTxt = document.getElementById('clean-view-txt');
+      if (cleanBtnTxt) {
+        cleanBtnTxt.innerText = isCleanViewActive ? dict.btn_show_labels : dict.btn_clean_view;
+      }
+
+      const hint3d = document.getElementById('hint-3d');
+      if (hint3d) hint3d.innerHTML = dict.drag_hint;
+    }
+
     function toggleMobileNav() {
       const toggle = document.getElementById('mobile-nav-toggle');
       const nav = document.getElementById('main-nav-links');
@@ -3711,6 +4386,7 @@
       populateInnovationTabs();
       switchInnoTab('optics');
       checkBackendHealth();
+      setLanguage(currentLang);
     });
   </script>
 </body>
