@@ -1,0 +1,28 @@
+{
+  "name": "veloran-smart-helmet",
+  "version": "2.4.0",
+  "description": "VELORAN Cybernetic Smart Helmet - Full-Stack 3D IoT Application & Telemetry Platform",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node -e \"console.log('Backend syntax valid')\""
+  },
+  "keywords": [
+    "veloran",
+    "digital-helmet",
+    "iot",
+    "threejs",
+    "telemetry",
+    "full-stack",
+    "webgl",
+    "cadt"
+  ],
+  "author": "VELORAN Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

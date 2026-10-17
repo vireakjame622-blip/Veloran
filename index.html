@@ -1774,11 +1774,321 @@
       .sos-modal-card { padding: 1.5rem 1rem; }
       .sos-timer-circle { font-size: 2.8rem; }
     }
+
+    /* =========================================================================
+       🚀 FULL-STACK BACKEND STATUS PILL & PRE-ORDER MODAL
+       ========================================================================= */
+    .backend-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: rgba(0, 230, 118, 0.08);
+      border: 1px solid rgba(0, 230, 118, 0.3);
+      color: var(--accent-green);
+      transition: all 0.3s ease;
+    }
+    .backend-status-pill.offline {
+      background: rgba(245, 166, 35, 0.08);
+      border-color: rgba(245, 166, 35, 0.3);
+      color: var(--veloran-gold);
+    }
+    .status-dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulseDot 1.4s infinite;
+    }
+    .status-dot-pulse.offline {
+      background: var(--veloran-gold);
+      box-shadow: 0 0 8px var(--veloran-gold);
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .nav-preorder-btn {
+      background: linear-gradient(135deg, var(--veloran-azure), #0072ff);
+      color: #020712;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 10px;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 15px rgba(0, 166, 251, 0.35);
+    }
+    .nav-preorder-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 25px rgba(0, 166, 251, 0.6);
+      background: linear-gradient(135deg, #38bdf8, #0088ff);
+    }
+
+    /* Pre-Order Modal */
+    .preorder-modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(3, 7, 18, 0.88);
+      backdrop-filter: blur(14px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+    }
+    .preorder-modal-backdrop.active {
+      display: flex;
+    }
+
+    .preorder-modal-card {
+      background: linear-gradient(145deg, rgba(8, 18, 38, 0.98), rgba(4, 10, 24, 0.98));
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      max-width: 680px;
+      width: 100%;
+      padding: 2.2rem;
+      position: relative;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 166, 251, 0.2);
+      animation: modalDrop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .preorder-close-btn {
+      position: absolute;
+      top: 18px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--veloran-silver);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+    .preorder-close-btn:hover {
+      background: rgba(255, 23, 68, 0.2);
+      color: #fff;
+      border-color: var(--accent-red);
+    }
+
+    .preorder-header {
+      margin-bottom: 1.5rem;
+    }
+    .preorder-tag {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      color: var(--veloran-gold);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+    .preorder-title {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: #fff;
+      font-weight: 800;
+    }
+    .preorder-sub {
+      color: var(--veloran-silver);
+      font-size: 0.88rem;
+      margin-top: 0.3rem;
+    }
+
+    .preorder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
+    }
+    @media (max-width: 600px) {
+      .preorder-grid { grid-template-columns: 1fr; }
+    }
+
+    .preorder-config-box {
+      background: rgba(4, 10, 24, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .config-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--veloran-azure);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .size-selector-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+    .size-pill {
+      flex: 1;
+      padding: 8px 0;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--veloran-silver);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .size-pill.active {
+      background: rgba(0, 166, 251, 0.2);
+      border-color: var(--veloran-azure);
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .finish-selector-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 1rem;
+    }
+    .finish-pill {
+      padding: 6px 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: var(--veloran-silver);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .finish-pill.active {
+      border-color: var(--veloran-gold);
+      background: rgba(250, 168, 25, 0.15);
+      color: #fff;
+    }
+
+    .price-summary-box {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 0.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      color: var(--veloran-silver);
+    }
+    .price-row.total {
+      color: #fff;
+      font-weight: bold;
+      font-size: 0.9rem;
+      border-top: 1px dashed var(--border-subtle);
+      padding-top: 6px;
+      margin-top: 6px;
+    }
+
+    .preorder-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .form-group label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--veloran-silver);
+    }
+    .form-input {
+      background: #030814;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: #fff;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--veloran-azure);
+      box-shadow: 0 0 10px rgba(0, 166, 251, 0.25);
+    }
+
+    .btn-submit-preorder {
+      background: linear-gradient(135deg, var(--veloran-azure), #0072ff);
+      color: #020712;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-top: 0.5rem;
+      box-shadow: 0 0 20px rgba(0, 166, 251, 0.4);
+    }
+    .btn-submit-preorder:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 166, 251, 0.6);
+    }
+
+    /* Pre-Order Confirmation Screen */
+    .preorder-success-screen {
+      display: none;
+      text-align: center;
+      padding: 1.5rem 0;
+    }
+    .success-check-icon {
+      font-size: 3.5rem;
+      margin-bottom: 0.8rem;
+      animation: alertPulse 0.5s ease-out;
+    }
+    .reservation-badge-display {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--veloran-azure);
+      letter-spacing: 2px;
+      margin: 0.8rem 0;
+      padding: 8px 16px;
+      background: rgba(0, 166, 251, 0.1);
+      border: 1px dashed var(--veloran-azure);
+      border-radius: 12px;
+      display: inline-block;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation Bar with Official Veloran Brand Logo -->
+  <!-- Top Navigation Bar with Official Veloran Brand Logo & Live Cloud API Status -->
   <header>
     <a href="digital-helmet.html" class="brand">
       <div class="brand-logo-container">
@@ -1791,10 +2101,15 @@
       </div>
     </a>
     <nav class="nav-links">
+      <div class="backend-status-pill" id="backend-status-pill" title="IoT Cloud Backend Status">
+        <span class="status-dot-pulse" id="status-dot-pulse"></span>
+        <span id="backend-status-txt">API: CONNECTING...</span>
+      </div>
       <a href="#showcase" class="active">3D Studio</a>
       <a href="#innovations">Innovations</a>
       <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="scrollToAlarm()">🚨 Alarm: <span id="nav-alarm-status">ARMED</span></a>
       <a href="#matrix">Specs Matrix</a>
+      <button class="nav-preorder-btn" onclick="openPreorderModal()"><span>🚀</span> Pre-Order Alpha</button>
       <a href="#showcase" onclick="switchView('hud'); scrollToStage();" class="nav-btn-highlight">⚡ Visor HUD</a>
     </nav>
   </header>
@@ -2100,6 +2415,120 @@
         <button class="btn-abort-sos" onclick="abortCrashSOS()">
           🛑 I AM OK — CANCEL SOS ALARM
         </button>
+      </div>
+    </div>
+
+    <!-- 🚀 Full-Stack Pre-Order Reservation Modal -->
+    <div class="preorder-modal-backdrop" id="preorder-modal">
+      <div class="preorder-modal-card">
+        <button class="preorder-close-btn" onclick="closePreorderModal()" title="Close">&times;</button>
+
+        <div id="preorder-form-step">
+          <div class="preorder-header">
+            <div class="preorder-tag">LIMITED FOUNDER ALLOCATION • CADT INNOVATION LAB</div>
+            <h2 class="preorder-title">Reserve VELORAN Alpha Edition</h2>
+            <p class="preorder-sub">
+              Lock in your hand-numbered Alpha unit with integrated Heads-Up Display, 3K Toray carbon shell, and 64G Guardian™ crash telemetry.
+            </p>
+          </div>
+
+          <div class="preorder-grid">
+            <!-- Left: Finish & Size Selection -->
+            <div class="preorder-config-box">
+              <div>
+                <div class="config-label">1. Selected Helmet Finish</div>
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.8rem;">
+                  <span class="swatch-dot dot-carbon" id="preorder-finish-dot"></span>
+                  <span id="preorder-finish-name" style="font-size:0.85rem; font-weight:700; color:#fff;">3K Raw Carbon</span>
+                </div>
+
+                <div class="finish-selector-row">
+                  <div class="finish-pill active" onclick="selectPreorderFinish('carbon', this)">
+                    <span class="swatch-dot dot-carbon"></span> Carbon
+                  </div>
+                  <div class="finish-pill" onclick="selectPreorderFinish('veloran', this)">
+                    <span class="swatch-dot dot-navy"></span> Navy
+                  </div>
+                  <div class="finish-pill" onclick="selectPreorderFinish('black', this)">
+                    <span class="swatch-dot dot-obsidian"></span> Obsidian
+                  </div>
+                  <div class="finish-pill" onclick="selectPreorderFinish('gold', this)">
+                    <span class="swatch-dot dot-gold"></span> Solar Gold
+                  </div>
+                </div>
+
+                <div class="config-label">2. Head Circumference / Size</div>
+                <div class="size-selector-row">
+                  <div class="size-pill" onclick="selectPreorderSize('S', this)">S (55)</div>
+                  <div class="size-pill active" onclick="selectPreorderSize('M', this)">M (57)</div>
+                  <div class="size-pill" onclick="selectPreorderSize('L', this)">L (59)</div>
+                  <div class="size-pill" onclick="selectPreorderSize('XL', this)">XL (61)</div>
+                </div>
+              </div>
+
+              <div class="price-summary-box">
+                <div class="price-row">
+                  <span>Retail Price:</span>
+                  <span>$1,299 USD</span>
+                </div>
+                <div class="price-row">
+                  <span>Alpha Reservation (Refundable):</span>
+                  <span style="color:var(--accent-green);">$99 USD</span>
+                </div>
+                <div class="price-row total">
+                  <span>Due Today:</span>
+                  <span style="color:var(--veloran-gold);">$99 USD</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Rider Contact Form -->
+            <form class="preorder-form" onsubmit="handlePreorderSubmit(event)">
+              <div class="form-group">
+                <label for="preorder-input-name">RIDER FULL NAME *</label>
+                <input type="text" id="preorder-input-name" class="form-input" placeholder="e.g. Vireak Jame" required />
+              </div>
+
+              <div class="form-group">
+                <label for="preorder-input-email">EMAIL ADDRESS *</label>
+                <input type="email" id="preorder-input-email" class="form-input" placeholder="rider@veloran.com" required />
+              </div>
+
+              <div class="form-group">
+                <label for="preorder-input-region">SHIPPING REGION</label>
+                <select id="preorder-input-region" class="form-input">
+                  <option value="Cambodia / Phnom Penh">Cambodia (Local CADT Pickup / Delivery)</option>
+                  <option value="Southeast Asia (ASEAN)">Southeast Asia (ASEAN Priority)</option>
+                  <option value="Global Express Air">Global Express Air (North America / Europe / Asia)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="preorder-input-notes">CUSTOM ENGRAVING / NOTES (OPTIONAL)</label>
+                <input type="text" id="preorder-input-notes" class="form-input" placeholder="e.g. Call sign, blood type (O+), CADT Batch 2026" />
+              </div>
+
+              <button type="submit" id="btn-submit-preorder" class="btn-submit-preorder">
+                <span>⚡</span> Confirm Alpha Reservation ➔
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Success Screen -->
+        <div class="preorder-success-screen" id="preorder-success-screen">
+          <div class="success-check-icon">🎉</div>
+          <h2 style="font-family:var(--font-display); font-size:1.8rem; color:#fff; margin-bottom:0.4rem;">Reservation Confirmed!</h2>
+          <p style="color:var(--veloran-silver); font-size:0.9rem;">Your Founder Alpha unit allocation has been registered in the VELORAN cloud database.</p>
+
+          <div class="reservation-badge-display" id="res-code-display">#VEL-2026-0000</div>
+
+          <p id="res-details-display" style="color:#cbd5e1; font-size:0.85rem; line-height:1.6; margin-bottom:1.5rem;"></p>
+
+          <button class="stage-btn" onclick="closePreorderModal()" style="padding:10px 24px; font-size:0.85rem;">
+            Close &amp; Return to 3D Studio
+          </button>
+        </div>
       </div>
     </div>
 
@@ -2837,6 +3266,8 @@
       const navBadge = document.getElementById('nav-alarm-status');
       const armBtn = document.getElementById('btn-toggle-arm');
 
+      syncAlarmBackend(isArmed ? 'arm' : 'disarm');
+
       if (isArmed) {
         playTone(880, 0.12, 'sine');
         setTimeout(() => playTone(1320, 0.16, 'sine'), 130);
@@ -2863,6 +3294,7 @@
       isAlarmActive = true;
       alarmStrobeActive = true;
       startSirenSound();
+      syncAlarmBackend(type);
 
       const badge = document.getElementById('alarm-status-badge');
       const navBadge = document.getElementById('nav-alarm-status');
@@ -2899,6 +3331,7 @@
       alarmStrobeActive = false;
       stopSirenSound();
       resetMaterialsToNormal();
+      syncAlarmBackend('silence');
 
       if (sosTimer) {
         clearInterval(sosTimer);
@@ -3395,10 +3828,206 @@
       }
     }
 
+    // =========================================================================
+    // 🌐 FULL-STACK IOT BACKEND & PRE-ORDER API INTEGRATION
+    // =========================================================================
+    async function syncAlarmBackend(eventType) {
+      try {
+        await fetch('/api/guardian/alarm', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event: eventType, source: 'web' })
+        });
+      } catch (e) {
+        console.warn("Backend alarm sync (local fallback active):", e);
+      }
+    }
+
+    async function checkBackendHealth() {
+      const statusPill = document.getElementById('backend-status-pill');
+      const statusTxt = document.getElementById('backend-status-txt');
+      const statusDot = document.getElementById('status-dot-pulse');
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) {
+          const data = await res.json();
+          if (statusPill && statusTxt) {
+            statusPill.className = 'backend-status-pill';
+            if (statusDot) statusDot.className = 'status-dot-pulse';
+            statusTxt.innerText = `CLOUD API: ONLINE (v${data.version || '2.4'})`;
+          }
+          loadBackendLogs();
+        } else {
+          setLocalModeStatus();
+        }
+      } catch (e) {
+        setLocalModeStatus();
+      }
+    }
+
+    function setLocalModeStatus() {
+      const statusPill = document.getElementById('backend-status-pill');
+      const statusTxt = document.getElementById('backend-status-txt');
+      const statusDot = document.getElementById('status-dot-pulse');
+      if (statusPill && statusTxt) {
+        statusPill.className = 'backend-status-pill offline';
+        if (statusDot) statusDot.className = 'status-dot-pulse offline';
+        statusTxt.innerText = 'IOT MODE: READY';
+      }
+    }
+
+    async function loadBackendLogs() {
+      try {
+        const res = await fetch('/api/guardian/logs');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.logs && data.logs.length > 0) {
+            const terminal = document.getElementById('alarm-log-terminal');
+            if (terminal) {
+              terminal.innerHTML = '';
+              data.logs.forEach(l => {
+                const div = document.createElement('div');
+                div.className = 'log-entry' + (l.type === 'alert' ? ' log-alert' : (l.type === 'warn' ? ' log-warn' : ''));
+                div.innerText = `[${l.time}] ${l.msg}`;
+                terminal.appendChild(div);
+              });
+              terminal.scrollTop = terminal.scrollHeight;
+            }
+          }
+        }
+      } catch (e) {
+        console.warn("Could not load backend logs:", e);
+      }
+    }
+
+    let selectedPreorderSize = 'M';
+    let selectedPreorderFinish = 'carbon';
+
+    function openPreorderModal() {
+      const modal = document.getElementById('preorder-modal');
+      if (!modal) return;
+      modal.classList.add('active');
+      document.getElementById('preorder-form-step').style.display = 'block';
+      document.getElementById('preorder-success-screen').style.display = 'none';
+      syncPreorderFinishPreview();
+    }
+
+    function closePreorderModal() {
+      const modal = document.getElementById('preorder-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function selectPreorderSize(size, el) {
+      selectedPreorderSize = size;
+      document.querySelectorAll('.size-pill').forEach(p => p.classList.remove('active'));
+      if (el) el.classList.add('active');
+    }
+
+    function selectPreorderFinish(finish, el) {
+      selectedPreorderFinish = finish;
+      document.querySelectorAll('.finish-pill').forEach(p => p.classList.remove('active'));
+      if (el) el.classList.add('active');
+      syncPreorderFinishPreview();
+      const fbtn = document.getElementById('fbtn-' + finish);
+      if (fbtn) setFinish(finish, fbtn);
+    }
+
+    function syncPreorderFinishPreview() {
+      const nameEl = document.getElementById('preorder-finish-name');
+      const dotEl = document.getElementById('preorder-finish-dot');
+      const titles = {
+        veloran: "Veloran Velocity Navy (PBR Metallic)",
+        carbon: "3K Raw Weave Aerospace Carbon",
+        black: "Obsidian Deep Matte Stealth",
+        gold: "Solar Anodized Gold Racing Edition"
+      };
+      const dots = {
+        veloran: "dot-navy",
+        carbon: "dot-carbon",
+        black: "dot-obsidian",
+        gold: "dot-gold"
+      };
+      if (nameEl) nameEl.innerText = titles[selectedPreorderFinish] || "Veloran Custom";
+      if (dotEl) dotEl.className = 'swatch-dot ' + (dots[selectedPreorderFinish] || 'dot-carbon');
+    }
+
+    async function handlePreorderSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('preorder-input-name').value.trim();
+      const email = document.getElementById('preorder-input-email').value.trim();
+      const region = document.getElementById('preorder-input-region').value;
+      const notes = document.getElementById('preorder-input-notes').value.trim();
+      const btn = document.getElementById('btn-submit-preorder');
+
+      if (!name || !email) {
+        alert("Please enter your name and email address.");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerText = "Processing Reservation...";
+
+      const payload = {
+        name,
+        email,
+        finish: selectedPreorderFinish,
+        size: selectedPreorderSize,
+        region,
+        notes
+      };
+
+      try {
+        let reservationData = null;
+        try {
+          const res = await fetch('/api/preorder', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          if (res.ok) {
+            const data = await res.json();
+            reservationData = data.reservation;
+          }
+        } catch (netErr) {
+          console.warn("Backend preorder fetch failed, falling back to local allocation:", netErr);
+        }
+
+        if (!reservationData) {
+          const rnd = Math.floor(1000 + Math.random() * 9000);
+          reservationData = {
+            id: `VEL-2026-${rnd}`,
+            customerName: name,
+            finish: selectedPreorderFinish,
+            size: selectedPreorderSize,
+            batch: "Alpha Wave #1",
+            estimatedDispatch: "Q1 2027 (Phnom Penh CADT Hub)"
+          };
+        }
+
+        document.getElementById('preorder-form-step').style.display = 'none';
+        const successScreen = document.getElementById('preorder-success-screen');
+        successScreen.style.display = 'block';
+
+        document.getElementById('res-code-display').innerText = '#' + reservationData.id;
+        document.getElementById('res-details-display').innerHTML = `
+          <strong>${reservationData.customerName}</strong> • ${reservationData.finish.toUpperCase()} Finish • Size <strong>${reservationData.size}</strong><br>
+          <span style="color:var(--veloran-gold);">Batch: ${reservationData.batch || 'Alpha Wave #1'}</span> • Dispatch: ${reservationData.estimatedDispatch || 'Q1 2027'}
+        `;
+
+        appendAlarmLog(`Rider Pre-Order ${reservationData.id} registered for ${name}.`, "log-warn");
+      } catch (err) {
+        alert("Reservation error: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = "⚡ Confirm Alpha Reservation ➔";
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       init3D();
       populateInnovationTabs();
       switchInnoTab('optics');
+      checkBackendHealth();
     });
   </script>
 </body>

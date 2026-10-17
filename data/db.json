@@ -1,0 +1,92 @@
+{
+  "telemetry": {
+    "imu": {
+      "pitch": 0.2,
+      "roll": -0.1,
+      "yaw": 184.2
+    },
+    "gForce": 1.02,
+    "speed": 74,
+    "battery": 94,
+    "gps": {
+      "lat": 11.5564,
+      "lng": 104.9282,
+      "location": "CADT Innovation Hub, Phnom Penh"
+    },
+    "isArmed": true,
+    "alarmStatus": "SAFE",
+    "sirenActive": false,
+    "updatedAt": "2026-10-17T14:45:18.030Z"
+  },
+  "logs": [
+    {
+      "id": 1,
+      "time": "00:00:01",
+      "msg": "VELORAN Guardian™ Cloud Security Subsystem Online.",
+      "type": "info"
+    },
+    {
+      "id": 2,
+      "time": "00:00:02",
+      "msg": "IMU 6-Axis Gyro calibrated: Baseline 1.02G.",
+      "type": "info"
+    },
+    {
+      "id": 3,
+      "time": "00:00:03",
+      "msg": "GPS Geofence established at CADT Innovation Campus.",
+      "type": "info"
+    },
+    {
+      "id": 4,
+      "time": "00:00:04",
+      "msg": "Anti-Theft Guardian Mode: ARMED. High-G Accelerometer Ready.",
+      "type": "warn"
+    },
+    {
+      "id": 5,
+      "time": "21:44:58",
+      "msg": "New Reservation [VEL-2026-3662] registered for Vireak Jame (CARBON, Size L).",
+      "type": "info"
+    },
+    {
+      "id": 6,
+      "time": "21:45:12",
+      "msg": "🚨 TAMPER DETECTED! Unauthorized helmet movement. 110dB Piezo siren active.",
+      "type": "alert"
+    },
+    {
+      "id": 7,
+      "time": "21:45:18",
+      "msg": "🔕 Alarm silenced and telemetry reset to baseline standby.",
+      "type": "info"
+    }
+  ],
+  "preorders": [
+    {
+      "id": "VEL-2026-0001",
+      "customerName": "Alex Vance",
+      "email": "alex.vance@veloran-riders.com",
+      "finish": "carbon",
+      "size": "L",
+      "region": "Cambodia / Southeast Asia",
+      "notes": "Early access test rider",
+      "createdAt": "2026-10-15T08:30:00.000Z",
+      "status": "CONFIRMED"
+    },
+    {
+      "id": "VEL-2026-3662",
+      "customerName": "Vireak Jame",
+      "email": "vireak@cadt.edu.kh",
+      "finish": "carbon",
+      "size": "L",
+      "region": "Cambodia / Phnom Penh",
+      "notes": "",
+      "createdAt": "2026-10-17T14:44:58.853Z",
+      "status": "CONFIRMED",
+      "batch": "Alpha Wave #1",
+      "estimatedDispatch": "Q1 2027 (Phnom Penh CADT Hub)"
+    }
+  ],
+  "inquiries": []
+}
