@@ -1745,7 +1745,7 @@
     }
 
     @media (max-width: 992px) {
-      /* Lock mobile header to a clean 60px height so it never blocks page content */
+      /* Lock mobile header to a clean 60px height and remove backdrop-filter to prevent trapping fixed position drawer */
       header {
         padding: 0 1.2rem;
         min-height: 60px;
@@ -1756,6 +1756,9 @@
         position: sticky;
         top: 0;
         z-index: 1000;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: #030814 !important;
       }
       .brand-logo-img { height: 34px; max-height: 34px; }
       .brand-sub { display: none; }
@@ -1774,27 +1777,29 @@
         display: none !important;
       }
 
-      /* Slide-down Mobile Navigation Drawer */
+      /* Slide-down Mobile Navigation Full Drawer */
       .nav-links {
         display: none;
         position: fixed;
         top: 60px;
         left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(3, 8, 20, 0.98);
-        border-bottom: 1px solid var(--border-glow);
-        backdrop-filter: blur(28px);
-        padding: 1.5rem 1.2rem 2.5rem;
+        width: 100vw;
+        height: calc(100vh - 60px);
+        max-height: calc(100vh - 60px);
+        background: #040916 !important;
+        border-top: 1px solid rgba(0, 212, 255, 0.2);
+        padding: 1.5rem 1.2rem 3.5rem;
         flex-direction: column;
         align-items: stretch;
         gap: 12px;
         overflow-y: auto;
-        z-index: 999;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
+        -webkit-overflow-scrolling: touch;
+        z-index: 99999;
+        box-shadow: 0 40px 80px rgba(0, 0, 0, 0.95);
+        box-sizing: border-box;
       }
       .nav-links.mobile-open {
-        display: flex;
+        display: flex !important;
         animation: mobileDrawerSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       }
       @keyframes mobileDrawerSlide {
@@ -1803,21 +1808,40 @@
       }
 
       .nav-links a {
-        padding: 13px 18px;
-        font-size: 1rem;
+        padding: 14px 18px;
+        font-size: 1.02rem;
+        font-weight: 600;
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        color: #f1f5f9;
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+      .nav-links a:hover, .nav-links a:active {
+        background: rgba(0, 212, 255, 0.15);
+        border-color: var(--neon-cyan);
+        color: var(--neon-cyan);
+      }
+      .nav-links .alarm-pill-nav {
+        background: rgba(239, 68, 68, 0.15) !important;
+        border-color: rgba(239, 68, 68, 0.4) !important;
+        color: #fca5a5 !important;
+      }
+      .nav-links .nav-btn-highlight {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05)) !important;
+        border-color: rgba(245, 158, 11, 0.4) !important;
+        color: #fde68a !important;
       }
       .backend-status-pill {
         justify-content: center;
         width: 100%;
-        padding: 10px 14px;
-        font-size: 0.8rem;
-        margin-bottom: 0.4rem;
+        padding: 11px 14px;
+        font-size: 0.82rem;
+        margin-bottom: 0.5rem;
       }
 
       .inspector-grid { grid-template-columns: 1fr; }
