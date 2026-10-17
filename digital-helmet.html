@@ -2514,10 +2514,10 @@
         </div>
 
         <div class="hud-mode-pills">
-          <button class="hud-mode-pill active" onclick="setHudMode('default', this)">Urban Cruise</button>
-          <button class="hud-mode-pill" onclick="setHudMode('night', this)">Night Vision FLIR</button>
-          <button class="hud-mode-pill" onclick="setHudMode('track', this)">Track Apex</button>
-          <button class="hud-mode-pill" onclick="triggerAlarm('theft')">🚨 Security Hazard Alert</button>
+          <button class="hud-mode-pill active" id="btn-hud-urban" onclick="setHudMode('default', this)">Urban Cruise</button>
+          <button class="hud-mode-pill" id="btn-hud-night" onclick="setHudMode('night', this)">Night Vision FLIR</button>
+          <button class="hud-mode-pill" id="btn-hud-track" onclick="setHudMode('track', this)">Track Apex</button>
+          <button class="hud-mode-pill" id="btn-hud-hazard" onclick="triggerAlarm('theft')">🚨 Security Hazard Alert</button>
         </div>
       </div>
     </div>
@@ -2527,10 +2527,10 @@
          ========================================================================= */ -->
     <section class="alarm-section" id="alarm-center">
       <div class="alarm-badge-tag">
-        <span>🚨</span> Active Vehicle Security &amp; Telemetry
+        <span>🚨</span> <span data-i18n="alarm_badge">Active Vehicle Security &amp; Telemetry</span>
       </div>
-      <h2 class="alarm-title">VELORAN Guardian™ Smart Alarm &amp; SOS Center</h2>
-      <p class="alarm-subtitle">
+      <h2 class="alarm-title" data-i18n="alarm_title">VELORAN Guardian™ Smart Alarm &amp; SOS Center</h2>
+      <p class="alarm-subtitle" data-i18n="alarm_desc">
         Test the intelligent anti-theft movement alarm and high-G crash emergency dispatch system. Integrated 6-axis IMU sensors detect unauthorized helmet tampering when parked, sounding a 110dB acoustic siren and flashing emergency 3D strobe lights.
       </p>
 
@@ -4974,6 +4974,16 @@
       if (fSub) fSub.innerText = s.footer_sub;
       const fNote = document.getElementById('footer-note-txt');
       if (fNote) fNote.innerText = s.footer_note;
+
+      // HUD Mode Pills
+      const hUrban = document.getElementById('btn-hud-urban');
+      if (hUrban) hUrban.innerText = s.hud_mode_urban;
+      const hNight = document.getElementById('btn-hud-night');
+      if (hNight) hNight.innerText = s.hud_mode_night;
+      const hTrack = document.getElementById('btn-hud-track');
+      if (hTrack) hTrack.innerText = s.hud_mode_track;
+      const hHazard = document.getElementById('btn-hud-hazard');
+      if (hHazard) hHazard.innerText = s.hud_mode_alert;
     }
 
     const VELORAN_I18N = {
