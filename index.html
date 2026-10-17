@@ -2259,6 +2259,521 @@
       font-family: var(--font-khmer), var(--font-display);
     }
 
+  
+    /* =====================================================================
+       🚀 INTERACTIVE PLAYGROUND, 3D TOUR & DYNAMIC CONTROLS
+       ===================================================================== */
+    /* 3D Guided Tour Floating Overlay Card */
+    .tour-overlay-card {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+      max-width: 420px;
+      background: rgba(4, 12, 28, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glow);
+      border-radius: 14px;
+      padding: 16px 18px;
+      z-index: 40;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 166, 251, 0.2);
+      animation: tourFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes tourFadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .tour-step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--veloran-gold);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .tour-step-title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: #fff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tour-step-desc {
+      font-size: 0.84rem;
+      color: var(--veloran-silver);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .tour-step-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tour-nav-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      font-size: 0.78rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+    .tour-nav-btn:hover {
+      background: rgba(0, 166, 251, 0.2);
+      border-color: var(--veloran-azure);
+    }
+    .tour-nav-btn.highlight {
+      background: var(--veloran-blue);
+      border-color: var(--veloran-azure);
+      color: #fff;
+    }
+    .tour-dots {
+      display: flex;
+      gap: 5px;
+      margin: 0 auto;
+    }
+    .tour-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: all 0.3s;
+    }
+    .tour-dot.active {
+      background: var(--veloran-gold);
+      width: 18px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px var(--veloran-gold);
+    }
+    .tour-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--veloran-silver);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 4px 8px;
+      margin-left: 4px;
+    }
+    .tour-close-btn:hover { color: #fff; }
+
+    /* Guided Tour stage button */
+    .btn-guided-tour {
+      background: linear-gradient(135deg, rgba(250, 168, 25, 0.2), rgba(0, 166, 251, 0.25)) !important;
+      border: 1px solid var(--border-gold) !important;
+      color: var(--veloran-gold) !important;
+      font-weight: 700 !important;
+    }
+    .btn-guided-tour:hover {
+      background: linear-gradient(135deg, rgba(250, 168, 25, 0.35), rgba(0, 166, 251, 0.4)) !important;
+      box-shadow: 0 0 16px rgba(250, 168, 25, 0.35);
+    }
+
+    /* 🎮 Interactive Rider Scenario Playground Section */
+    .playground-section {
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+      position: relative;
+    }
+    .playground-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .pg-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .pg-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-glow);
+      box-shadow: 0 14px 35px rgba(0, 136, 255, 0.15);
+    }
+    .pg-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--veloran-azure);
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .pg-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .pg-card-desc {
+      font-size: 0.85rem;
+      color: var(--veloran-silver);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+
+    /* Visor Transition Simulation Box */
+    .pg-visor-demo {
+      height: 70px;
+      background: #020610;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pg-visor-glass {
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 20, 40, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.12s ease-out;
+    }
+    .pg-visor-glass.clear-state {
+      background: rgba(0, 166, 251, 0.08);
+      backdrop-filter: blur(0px);
+      box-shadow: inset 0 0 20px rgba(0, 166, 251, 0.3);
+    }
+    .pg-visor-status {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #fff;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    /* Radar Simulation Box */
+    .pg-radar-demo {
+      height: 70px;
+      background: #020712;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .radar-sweep {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0, 230, 118, 0.15) 0%, transparent 70%);
+      animation: radarPulse 1.8s infinite;
+    }
+    @keyframes radarPulse {
+      0% { transform: scale(0.6); opacity: 0.8; }
+      100% { transform: scale(1.4); opacity: 0; }
+    }
+    .radar-center-bike {
+      font-size: 1.3rem;
+      z-index: 2;
+    }
+    .radar-blip {
+      position: absolute;
+      right: 24px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent-red);
+      box-shadow: 0 0 12px var(--accent-red);
+      animation: blipWarn 0.4s infinite alternate;
+      z-index: 3;
+    }
+    @keyframes blipWarn {
+      from { transform: scale(0.8); opacity: 0.7; }
+      to { transform: scale(1.3); opacity: 1; }
+    }
+
+    /* Fog Defogger Box */
+    .pg-fog-demo {
+      height: 70px;
+      background: #051025;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .pg-fog-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.0);
+      backdrop-filter: blur(0px);
+      transition: all 0.4s ease;
+    }
+    .pg-fog-overlay.fogged {
+      background: rgba(220, 240, 255, 0.55);
+      backdrop-filter: blur(8px);
+    }
+    .pg-fog-label {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+      z-index: 2;
+    }
+
+    /* Theft Shake Box */
+    .pg-theft-demo {
+      height: 70px;
+      background: #04091a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+    .pg-theft-demo.alarm-flash {
+      background: rgba(255, 23, 68, 0.2);
+      border-color: var(--accent-red);
+      box-shadow: 0 0 20px rgba(255, 23, 68, 0.4);
+      animation: theftStrobe 0.25s infinite alternate;
+    }
+    @keyframes theftStrobe {
+      from { background: rgba(255, 23, 68, 0.15); }
+      to { background: rgba(255, 23, 68, 0.4); }
+    }
+    .pg-helmet-icon {
+      font-size: 1.5rem;
+      transition: transform 0.1s;
+    }
+    .pg-helmet-icon.wobble {
+      animation: helmetShake 0.15s infinite;
+    }
+    @keyframes helmetShake {
+      0% { transform: rotate(0deg) scale(1.1); }
+      25% { transform: rotate(-8deg) scale(1.1); }
+      75% { transform: rotate(8deg) scale(1.1); }
+      100% { transform: rotate(0deg) scale(1.1); }
+    }
+    .pg-theft-status {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--veloran-silver);
+    }
+
+    .pg-metric-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--veloran-silver);
+      margin-bottom: 12px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+    .pg-action-btn {
+      width: 100%;
+      background: rgba(0, 166, 251, 0.1);
+      border: 1px solid var(--border-glow);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.25s;
+    }
+    .pg-action-btn:hover {
+      background: var(--veloran-azure);
+      color: #000;
+      box-shadow: 0 0 15px var(--border-glow);
+      transform: translateY(-2px);
+    }
+
+    /* 🚀 HUD Throttle Controller */
+    .hud-throttle-box {
+      margin-top: 1rem;
+      background: rgba(2, 8, 20, 0.85);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+    .hud-throttle-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--veloran-azure);
+      margin-bottom: 8px;
+      letter-spacing: 1px;
+    }
+    .hud-throttle-slider {
+      width: 100%;
+      -webkit-appearance: none;
+      height: 8px;
+      background: linear-gradient(90deg, var(--accent-green) 0%, var(--veloran-azure) 50%, var(--veloran-gold) 75%, var(--accent-red) 100%);
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+    .hud-throttle-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--veloran-azure);
+      box-shadow: 0 0 12px var(--veloran-azure);
+      cursor: grab;
+      transition: transform 0.1s;
+    }
+    .hud-throttle-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+    .hud-throttle-markers {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--veloran-silver);
+      margin-top: 6px;
+    }
+
+    /* 📊 Specs Matrix Filter Pills & Benchmark Comparisons */
+    .matrix-filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1.2rem;
+      justify-content: center;
+    }
+    .matrix-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--veloran-silver);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .matrix-pill:hover, .matrix-pill.active {
+      background: rgba(0, 166, 251, 0.2);
+      border-color: var(--veloran-azure);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(0, 166, 251, 0.25);
+    }
+
+    .benchmark-comparison-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+    .bench-col {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .bench-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--veloran-azure);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .bench-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .bench-bar {
+      height: 22px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: #fff;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bench-bar.veloran {
+      background: linear-gradient(90deg, var(--veloran-blue), var(--veloran-azure));
+      box-shadow: 0 0 10px rgba(0, 166, 251, 0.3);
+    }
+    .bench-bar.standard {
+      background: rgba(255, 255, 255, 0.15);
+      color: var(--veloran-silver);
+    }
+    .bench-diff {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--veloran-gold);
+      font-weight: 600;
+    }
+
+    /* Innovation Card Action Buttons Strip */
+    .inno-card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .inno-btn-sub {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .inno-btn-sub:hover {
+      background: rgba(0, 166, 251, 0.2);
+      border-color: var(--veloran-azure);
+    }
+
   </style>
 </head>
 <body>
@@ -2297,6 +2812,7 @@
       </div>
       <a href="#showcase" class="active" onclick="closeMobileNav()"><span>🌐</span> <span data-i18n="nav_studio">3D Studio</span></a>
       <a href="#innovations" onclick="closeMobileNav()"><span>🔬</span> <span data-i18n="nav_innovations">Innovations</span></a>
+      <a href="#playground" onclick="closeMobileNav()"><span>🎮</span> <span data-i18n="nav_playground">Rider Lab</span></a>
       <a href="#gallery" onclick="closeMobileNav()"><span>📸</span> <span data-i18n="nav_gallery">Gallery</span></a>
       <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="closeMobileNav(); scrollToAlarm();"><span data-i18n="nav_alarm">🚨 Alarm: </span><span id="nav-alarm-status">ARMED</span></a>
       <a href="#matrix" onclick="closeMobileNav()"><span>📊</span> <span data-i18n="nav_matrix">Specs Matrix</span></a>
@@ -2337,6 +2853,9 @@
         <button class="hero-primary-btn" onclick="scrollToStage()">
           <span>🌐</span> <span data-i18n="hero_btn_3d">Launch 3D Explorer</span>
         </button>
+        <button class="hero-ghost-btn" style="border-color:rgba(255,183,3,0.4); color:var(--veloran-gold);" onclick="document.getElementById('playground').scrollIntoView({behavior:'smooth'})">
+          <span>🎮</span> <span data-i18n="hero_btn_playground">Rider Lab</span>
+        </button>
         <button class="hero-secondary-btn" onclick="scrollToAlarm()">
           <span>🚨</span> <span data-i18n="hero_btn_alarm">Test Guardian Alarm</span>
         </button>
@@ -2367,6 +2886,7 @@
           <button class="stage-view-pill" id="pill-mode-real" onclick="switchView('real')">🛡️ Studio Photo</button>
         </div>
         <div class="stage-actions">
+          <button class="stage-btn btn-guided-tour" id="btn-guided-tour" onclick="startGuidedTour()"><span>🚀</span> <span id="btn-tour-txt">3D Guided Tour</span></button>
           <button class="stage-btn" id="btn-clean-view" onclick="toggleCleanView()" title="Hide text and labels around helmet for an unobstructed view"><span id="clean-view-icon">👁️</span> <span id="clean-view-txt" data-i18n="btn_clean_view">Clean View</span></button>
           <button class="stage-btn" id="btn-hotspots-toggle" onclick="toggleHotspots()">📍 Hotspots: ON</button>
           <button class="stage-btn" id="btn-sound-toggle" onclick="toggleAudioMute()">🔊 Sound: ON</button>
@@ -2381,6 +2901,25 @@
         <canvas id="webgl-canvas"></canvas>
         
         <!-- Floating Holographic Veloran Brand Watermark -->
+                <!-- 🚀 3D Guided Tour Overlay Card -->
+        <div class="tour-overlay-card" id="tour-overlay-card" style="display:none;">
+          <div class="tour-step-badge" id="tour-step-badge">STOP 1 OF 5</div>
+          <h4 class="tour-step-title" id="tour-step-title"><span>📡</span> Solid-State Brow LiDAR</h4>
+          <p class="tour-step-desc" id="tour-step-desc">Scans approaching road hazards up to 100 meters away with ±2cm precision.</p>
+          <div class="tour-step-actions">
+            <button class="tour-nav-btn" onclick="prevTourStop()" id="btn-tour-prev">◀ Back</button>
+            <div class="tour-dots" id="tour-dots">
+              <span class="tour-dot active"></span>
+              <span class="tour-dot"></span>
+              <span class="tour-dot"></span>
+              <span class="tour-dot"></span>
+              <span class="tour-dot"></span>
+            </div>
+            <button class="tour-nav-btn highlight" onclick="nextTourStop()" id="btn-tour-next">Next ▶</button>
+            <button class="tour-close-btn" onclick="endGuidedTour()" title="Exit Tour">✕</button>
+          </div>
+        </div>
+
         <div class="stage-brand-watermark">
           <img src="assets/veloran_logo_white.png" alt="Veloran 3D" class="stage-watermark-logo" />
           <span class="stage-watermark-label" id="stage-watermark-label"><span class="badge-pulse"></span> 3D DIGITAL TWIN • 1:1 CAD</span>
@@ -2428,6 +2967,16 @@
               oninput="handleExplodeSlider(this.value)"
             />
             <span id="explode-val-txt" class="explode-val-txt">0%</span>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <!-- Live Electrochromic Visor Tint -->
+          <div class="tool-group">
+            <span class="tool-label" id="label-tint">Visor:</span>
+            <button class="tool-btn active" id="btn-tint-clear" onclick="setVisorTint(0, this)">0% Clear</button>
+            <button class="tool-btn" id="btn-tint-mid" onclick="setVisorTint(0.5, this)">50% Day</button>
+            <button class="tool-btn" id="btn-tint-dark" onclick="setVisorTint(1.0, this)">85% Dark</button>
           </div>
 
           <div class="toolbar-divider"></div>
@@ -2513,6 +3062,22 @@
           </div>
         </div>
 
+        <!-- 🚀 Interactive Throttle & Rev Counter Controller -->
+        <div class="hud-throttle-box">
+          <div class="hud-throttle-top">
+            <span id="hud-throttle-title">⚡ DYNAMIC THROTTLE CONTROLLER</span>
+            <span id="hud-throttle-speed-disp" style="color:var(--veloran-gold); font-weight:700;">74 KM/H • GEAR 4</span>
+          </div>
+          <input type="range" class="hud-throttle-slider" id="hud-throttle-slider" min="0" max="160" value="74" oninput="handleThrottleDrag(this.value)">
+          <div class="hud-throttle-markers">
+            <span>0 (IDLE)</span>
+            <span>40 (CITY)</span>
+            <span>80 (CRUISE)</span>
+            <span>120 (HIGHWAY)</span>
+            <span>160 (APEX)</span>
+          </div>
+        </div>
+
         <div class="hud-mode-pills">
           <button class="hud-mode-pill active" id="btn-hud-urban" onclick="setHudMode('default', this)">Urban Cruise</button>
           <button class="hud-mode-pill" id="btn-hud-night" onclick="setHudMode('night', this)">Night Vision FLIR</button>
@@ -2521,6 +3086,103 @@
         </div>
       </div>
     </div>
+
+    <!-- =========================================================================
+         🎮 INTERACTIVE RIDER LAB & FEATURE SIMULATOR
+         ========================================================================= -->
+    <section class="playground-section" id="playground">
+      <div class="section-header">
+        <div class="section-tag" id="pg-tag">INTERACTIVE RIDER LAB • TEST IN REAL-TIME</div>
+        <h2 class="section-title" id="pg-title">Experience Cybernetic Intelligence</h2>
+        <p class="section-subtitle" id="pg-subtitle">
+          Tap any real-world scenario below to experience how the VELORAN helmet automatically adapts in road conditions.
+        </p>
+      </div>
+
+      <div class="playground-grid">
+        <!-- 1. Electrochromic Tunnel Transition -->
+        <div class="pg-card" id="pg-card-tunnel">
+          <div class="pg-badge" id="pg-badge-tunnel">OPTICAL WAVEGUIDE</div>
+          <h3 class="pg-card-title" id="pg-title-tunnel">🕶️ Dark Tunnel Transition</h3>
+          <p class="pg-card-desc" id="pg-desc-tunnel">Simulate entering a pitch-black tunnel from blinding sun. Watch the visor clear up in real-time.</p>
+          
+          <div class="pg-visor-demo">
+            <div class="pg-visor-glass" id="pg-visor-glass">
+              <span class="pg-visor-status" id="pg-visor-status">TINT: 85% POLARIZED</span>
+            </div>
+          </div>
+          
+          <div class="pg-metric-row">
+            <span id="pg-lbl-speed">RESPONSE TIME:</span>
+            <strong id="pg-stopwatch" style="color:var(--accent-green);">⏱️ 0.1s (94ms)</strong>
+          </div>
+          <button class="pg-action-btn" onclick="testPlaygroundTunnel()">
+            <span>⚡</span> <span id="pg-btn-tunnel-txt">Test Tunnel Transition</span>
+          </button>
+        </div>
+
+        <!-- 2. LiDAR Blind-Spot Threat Detection -->
+        <div class="pg-card" id="pg-card-radar">
+          <div class="pg-badge" id="pg-badge-radar">360° LIDAR PERIMETER</div>
+          <h3 class="pg-card-title" id="pg-title-radar">📡 Blind-Spot Hazard Alert</h3>
+          <p class="pg-card-desc" id="pg-desc-radar">Simulate a high-speed vehicle sneaking into your blind spot. Experience live radar rings and audio beeps.</p>
+          
+          <div class="pg-radar-demo">
+            <div class="radar-sweep" id="radar-sweep"></div>
+            <div class="radar-blip" id="radar-blip" style="display:none;"></div>
+            <div class="radar-center-bike">🏍️</div>
+          </div>
+
+          <div class="pg-metric-row">
+            <span id="pg-lbl-threat">PERIMETER THREAT:</span>
+            <strong id="pg-threat-status" style="color:var(--accent-green);">ALL CLEAR (360°)</strong>
+          </div>
+          <button class="pg-action-btn" onclick="testPlaygroundRadar()">
+            <span>🚗</span> <span id="pg-btn-radar-txt">Simulate Approaching Truck</span>
+          </button>
+        </div>
+
+        <!-- 3. Active Storm Defogger Turbines -->
+        <div class="pg-card" id="pg-card-defog">
+          <div class="pg-badge" id="pg-badge-defog">CLIMATE &amp; VISIBILITY</div>
+          <h3 class="pg-card-title" id="pg-title-defog">💨 Rain Storm Visor Defogger</h3>
+          <p class="pg-card-desc" id="pg-desc-defog">Experience condensation fog buildup and tap the micro-fans to clear the visor in under 1.5 seconds.</p>
+
+          <div class="pg-fog-demo" id="pg-fog-box">
+            <div class="pg-fog-overlay" id="pg-fog-overlay"></div>
+            <span class="pg-fog-label" id="pg-fog-label">CRYSTAL CLEAR (100%)</span>
+          </div>
+
+          <div class="pg-metric-row">
+            <span id="pg-lbl-fan">MAG-LEV TURBINES:</span>
+            <strong id="pg-fan-status" style="color:var(--veloran-silver);">STANDBY (0 RPM)</strong>
+          </div>
+          <button class="pg-action-btn" id="pg-btn-defog" onclick="testPlaygroundDefog()">
+            <span>🌧️</span> <span id="pg-btn-defog-txt">Simulate Heavy Rain Fog</span>
+          </button>
+        </div>
+
+        <!-- 4. 110dB Anti-Theft Tamper Alarm -->
+        <div class="pg-card" id="pg-card-theft">
+          <div class="pg-badge" id="pg-badge-theft">GUARDIAN SECURITY</div>
+          <h3 class="pg-card-title" id="pg-title-theft">📳 Anti-Theft Movement Siren</h3>
+          <p class="pg-card-desc" id="pg-desc-theft">Test parking security. Simulate unauthorized helmet shaking with acoustic siren and 3D strobes.</p>
+
+          <div class="pg-theft-demo" id="pg-theft-box">
+            <div class="pg-helmet-icon" id="pg-helmet-wobble">🛡️</div>
+            <div class="pg-theft-status" id="pg-theft-status">PARKED • MONITORING (0.2° TILT)</div>
+          </div>
+
+          <div class="pg-metric-row">
+            <span id="pg-lbl-siren">ACOUSTIC SIREN:</span>
+            <strong id="pg-siren-meter" style="color:var(--accent-green);">ARMED (STANDBY)</strong>
+          </div>
+          <button class="pg-action-btn" onclick="testPlaygroundTheft()">
+            <span>🚨</span> <span id="pg-btn-theft-txt">Shake Helmet (Trigger Tamper)</span>
+          </button>
+        </div>
+      </div>
+    </section>
 
     <!-- =========================================================================
          🚨 VELORAN GUARDIAN™ ALARM & SECURITY COMMAND CENTER
@@ -2847,6 +3509,45 @@
       <h2 class="section-title" data-i18n="matrix_title">Engineering Specs Matrix</h2>
       <p class="section-subtitle" data-i18n="matrix_desc">Complete technical benchmarks across all safety, optical, computing, and security hardware.</p>
     </section>
+
+    <!-- Subsystem Filter Pills -->
+    <div class="matrix-filter-pills">
+      <button class="matrix-pill active" onclick="filterSpecsMatrix('all', this)" id="mpill-all">🌟 All Subsystems (8)</button>
+      <button class="matrix-pill" onclick="filterSpecsMatrix('armor', this)" id="mpill-armor">🛡️ Armor &amp; Impact</button>
+      <button class="matrix-pill" onclick="filterSpecsMatrix('optics', this)" id="mpill-optics">🥽 Optics &amp; HUD</button>
+      <button class="matrix-pill" onclick="filterSpecsMatrix('security', this)" id="mpill-security">🚨 Guardian &amp; AI</button>
+      <button class="matrix-pill" onclick="filterSpecsMatrix('power', this)" id="mpill-power">🔋 Battery &amp; Audio</button>
+    </div>
+
+    <!-- Quick Visual Benchmark Comparison -->
+    <div class="benchmark-comparison-card">
+      <div class="bench-col">
+        <div class="bench-label" id="bench-lbl-weight">TOTAL HELMET WEIGHT</div>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar veloran" style="width: 77%;"><span>VELORAN 1,350g (3K Carbon)</span></div>
+          <div class="bench-bar standard" style="width: 100%;"><span>Standard Full-Face 1,750g</span></div>
+        </div>
+        <div class="bench-diff" id="bench-diff-weight">⚡ 400g Lighter (-23% Neck Strain)</div>
+      </div>
+
+      <div class="bench-col">
+        <div class="bench-label" id="bench-lbl-optics">HUD DAYLIGHT VISIBILITY</div>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar veloran" style="width: 100%;"><span>VELORAN 4,000 Nits Micro-OLED</span></div>
+          <div class="bench-bar standard" style="width: 25%;"><span>Phone Mount 800 Nits</span></div>
+        </div>
+        <div class="bench-diff" id="bench-diff-optics">☀️ 5x Brighter in Direct Midday Sun</div>
+      </div>
+
+      <div class="bench-col">
+        <div class="bench-label" id="bench-lbl-sos">EMERGENCY SOS DISPATCH</div>
+        <div class="bench-bar-wrap">
+          <div class="bench-bar veloran" style="width: 18%;"><span>VELORAN eCall: 10 Seconds</span></div>
+          <div class="bench-bar standard" style="width: 95%;"><span>Bystander Call: 15+ Minutes</span></div>
+        </div>
+        <div class="bench-diff" id="bench-diff-sos">🚑 90x Faster Automated Lifeline</div>
+      </div>
+    </div>
 
     <div class="table-responsive-wrapper">
       <div class="table-swipe-hint" data-i18n="swipe_hint">👉 Swipe horizontally to view full matrix ⇄</div>
@@ -3440,7 +4141,7 @@
 
     function populateInnovationTabs() {
       const compList = (currentLang === 'km' && typeof components_km !== 'undefined') ? components_km : components;
-      const btnLabel = currentLang === 'km' ? '<span>🔬</span> ពិនិត្យលម្អិតគ្រឿងបន្លាស់' : '<span>🔬</span> Inspect Subsystem Specs';
+      const isKm = currentLang === 'km';
 
       Object.keys(innovationPillars).forEach(pillarKey => {
         const pillar = innovationPillars[pillarKey];
@@ -3452,26 +4153,42 @@
           const c = compList[compIdx];
           if (!c) return;
 
+          // Extract punchline (first sentence only)
+          let punchline = '';
+          if (isKm) {
+            punchline = c.desc.includes('។') ? c.desc.split('។')[0] + '។' : (c.desc.split('. ')[0] + '.');
+          } else {
+            punchline = c.desc.split('. ')[0] + '.';
+          }
+
+          const btnFlyover = isKm ? '<span>🎯</span> មើល 3D' : '<span>🎯</span> 3D Flyover';
+          const btnSpecs = isKm ? '<span>🔬</span> បច្ចេកទេស' : '<span>🔬</span> Specs';
+
           const card = document.createElement('div');
           card.className = 'inno-card';
           card.id = 'inno-card-' + compIdx;
           card.onclick = () => inspectComponentIn3D(compIdx);
 
           card.innerHTML = `
-            <div>
+            <div style="flex:1;">
               <div class="inno-top">
                 <div class="inno-icon-box">${c.icon}</div>
                 <div class="inno-number">${c.number}</div>
               </div>
               <h3 class="inno-title">${c.title}</h3>
-              <p class="inno-desc">${c.desc}</p>
-              <div class="inno-tag-list">
-                ${c.tags.map(t => `<span class="inno-mini-tag">${t}</span>`).join('')}
+              <p class="inno-desc" style="font-size:0.86rem; color:#b0c4de; line-height:1.45; margin-bottom:10px;">${punchline}</p>
+              <div class="inno-tag-list" style="margin-bottom:12px;">
+                ${c.tags.slice(0, 3).map(t => `<span class="inno-mini-tag">${t}</span>`).join('')}
               </div>
             </div>
-            <button class="inno-action-btn" onclick="event.stopPropagation(); inspectComponentIn3D(${compIdx})">
-              ${btnLabel}
-            </button>
+            <div class="inno-card-actions">
+              <button class="inno-btn-sub" onclick="event.stopPropagation(); inspectComponentIn3D(${compIdx})" title="${isKm ? 'ហោះហើរទៅកាន់គ្រឿងបន្លាស់ 3D នេះ' : 'Fly 3D camera to this component'}">
+                ${btnFlyover}
+              </button>
+              <button class="inno-action-btn" style="margin-top:0;" onclick="event.stopPropagation(); inspectComponent(${compIdx})" title="${isKm ? 'បើកផ្ទាំងពិនិត្យលម្អិត' : 'Open engineering spec drawer'}">
+                ${btnSpecs}
+              </button>
+            </div>
           `;
 
           grid.appendChild(card);
@@ -4984,12 +5701,117 @@
       if (hTrack) hTrack.innerText = s.hud_mode_track;
       const hHazard = document.getElementById('btn-hud-hazard');
       if (hHazard) hHazard.innerText = s.hud_mode_alert;
+    
+      // 🚀 3D Guided Tour & Visor Tint Toolbar
+      const tourBtn = document.getElementById('btn-guided-tour');
+      if (tourBtn) tourBtn.innerText = isKm ? '🚀 ដំណើរទស្សនា 3D' : '🚀 3D Guided Tour';
+      const tintLbl = document.getElementById('lbl-tint-title');
+      if (tintLbl) tintLbl.innerText = isKm ? 'កម្រិតពណ៌កញ្ចក់:' : 'Visor Tint:';
+      const tClear = document.getElementById('btn-tint-clear');
+      if (tClear) tClear.innerText = isKm ? 'ថ្លា ០%' : 'Clear 0%';
+      const tMid = document.getElementById('btn-tint-mid');
+      if (tMid) tMid.innerText = isKm ? 'ថ្ងៃ ៥០%' : 'Day 50%';
+      const tDark = document.getElementById('btn-tint-dark');
+      if (tDark) tDark.innerText = isKm ? 'ងងឹត ៨៥%' : 'Dark 85%';
+
+      // ⚡ HUD Dynamic Throttle
+      const throtLbl = document.getElementById('lbl-throttle-title');
+      if (throtLbl) throtLbl.innerText = isKm ? 'ល្បឿនបង្វិលសាកល្បង' : 'Dynamic Throttle';
+
+      // 🎮 Interactive Rider Playground
+      const pgTag = document.getElementById('pg-tag');
+      if (pgTag) pgTag.innerText = isKm ? 'កន្លែងពិសោធន៍អន្តរកម្ម • តេស្តដោយផ្ទាល់' : 'INTERACTIVE RIDER LAB • TEST IN REAL-TIME';
+      const pgTitle = document.getElementById('pg-title');
+      if (pgTitle) pgTitle.innerText = isKm ? 'សាកល្បងមុខងារឆ្លាតវៃដោយផ្ទាល់' : 'Experience Cybernetic Intelligence';
+      const pgSub = document.getElementById('pg-subtitle');
+      if (pgSub) pgSub.innerText = isKm ? 'ចុចលើស្ថានភាពជាក់ស្ដែងណាមួយខាងក្រោម ដើម្បីសាកល្បងពីរបៀបដែលមួក VELORAN សម្របខ្លួនស្វ័យប្រវត្តិតាមស្ថានភាពផ្លូវ។' : 'Tap any real-world scenario below to experience how the VELORAN helmet automatically adapts in road conditions.';
+
+      // Tile 1: Tunnel Tint
+      const bTunnel = document.getElementById('pg-badge-tunnel');
+      if (bTunnel) bTunnel.innerText = isKm ? 'កញ្ចក់ឆ្លុះ WAVEGUIDE' : 'OPTICAL WAVEGUIDE';
+      const titTunnel = document.getElementById('pg-title-tunnel');
+      if (titTunnel) titTunnel.innerText = isKm ? '🕶️ បើកបរចូលផ្លូវរូងងងឹត' : '🕶️ Dark Tunnel Transition';
+      const descTunnel = document.getElementById('pg-desc-tunnel');
+      if (descTunnel) descTunnel.innerText = isKm ? 'សាកល្បងបើកបរចូលផ្លូវរូងក្រោមដីងងឹតចេញពីពន្លឺថ្ងៃខ្លាំង។ កញ្ចក់នឹងប្រែជាថ្លាក្នុងពេល 0.1 វិនាទី។' : 'Simulate entering a pitch-black tunnel from blinding sun. Watch the visor clear up in real-time.';
+      const lblSpeed = document.getElementById('pg-lbl-speed');
+      if (lblSpeed) lblSpeed.innerText = isKm ? 'ល្បឿនឆ្លើយតប:' : 'RESPONSE TIME:';
+      const btnTunnel = document.getElementById('pg-btn-tunnel-txt');
+      if (btnTunnel) btnTunnel.innerText = isKm ? 'តេស្តឆ្លងកាត់ផ្លូវរូងងងឹត' : 'Test Tunnel Transition';
+
+      // Tile 2: Blind-Spot Radar
+      const bRadar = document.getElementById('pg-badge-radar');
+      if (bRadar) bRadar.innerText = isKm ? 'សេនស័រ 360° LIDAR' : '360° LIDAR PERIMETER';
+      const titRadar = document.getElementById('pg-title-radar');
+      if (titRadar) titRadar.innerText = isKm ? '📡 ការព្រមានចំណុចខ្វាក់' : '📡 Blind-Spot Hazard Alert';
+      const descRadar = document.getElementById('pg-desc-radar');
+      if (descRadar) descRadar.innerText = isKm ? 'សាកល្បងរថយន្តវ៉ាជែងក្នុងចំណុចខ្វាក់កៀកមួក។ សេនស័របន្លឺសំឡេង និងលោតរង្វង់រ៉ាដាភ្លាមៗ។' : 'Simulate a high-speed vehicle sneaking into your blind spot. Experience live radar rings and audio beeps.';
+      const lblThreat = document.getElementById('pg-lbl-threat');
+      if (lblThreat) lblThreat.innerText = isKm ? 'ស្ថានភាពគ្រោះថ្នាក់:' : 'PERIMETER THREAT:';
+      const btnRadar = document.getElementById('pg-btn-radar-txt');
+      if (btnRadar) btnRadar.innerText = isKm ? 'បង្កើតរថយន្តវ៉ាកៀក' : 'Simulate Approaching Truck';
+
+      // Tile 3: Storm Defogger
+      const bDefog = document.getElementById('pg-badge-defog');
+      if (bDefog) bDefog.innerText = isKm ? 'អាកាសធាតុ & ទិដ្ឋភាព' : 'CLIMATE & VISIBILITY';
+      const titDefog = document.getElementById('pg-title-defog');
+      if (titDefog) titDefog.innerText = isKm ? '💨 កង្ហារបន្សាបអ័ព្ទទឹកភ្លៀង' : '💨 Rain Storm Visor Defogger';
+      const descDefog = document.getElementById('pg-desc-defog');
+      if (descDefog) descDefog.innerText = isKm ? 'សាកល្បងស្ថានភាពចុះអ័ព្ទពេលភ្លៀងធ្លាក់ ហើយបើកកង្ហារបន្សាបអ័ព្ទឱ្យថ្លាឡើងវិញក្នុង <១.៥ វិនាទី។' : 'Experience condensation fog buildup and tap the micro-fans to clear the visor in under 1.5 seconds.';
+      const lblFan = document.getElementById('pg-lbl-fan');
+      if (lblFan) lblFan.innerText = isKm ? 'កង្ហារខ្នាតតូច:' : 'MAG-LEV TURBINES:';
+      const btnDefog = document.getElementById('pg-btn-defog-txt');
+      if (btnDefog) btnDefog.innerText = isKm ? 'បង្កើតអ័ព្ទទឹកភ្លៀង' : 'Simulate Heavy Rain Fog';
+
+      // Tile 4: Tamper Alarm
+      const bTheft = document.getElementById('pg-badge-theft');
+      if (bTheft) bTheft.innerText = isKm ? 'ប្រព័ន្ធសុវត្ថិភាព GUARDIAN' : 'GUARDIAN SECURITY';
+      const titTheft = document.getElementById('pg-title-theft');
+      if (titTheft) titTheft.innerText = isKm ? '📳 ស៊ីរ៉ែនចាប់ចោរប៉ះពាល់' : '📳 Anti-Theft Movement Siren';
+      const descTheft = document.getElementById('pg-desc-theft');
+      if (descTheft) descTheft.innerText = isKm ? 'តេស្តប្រព័ន្ធសុវត្ថិភាពពេលចត។ សាកល្បងលើក ឬរង្គោះមួក ដើម្បីបន្លឺសំឡេងរោទ៍ 110dB និងភ្លើងស្ដ្រូប។' : 'Test parking security. Simulate unauthorized helmet shaking with acoustic siren and 3D strobes.';
+      const lblSiren = document.getElementById('pg-lbl-siren');
+      if (lblSiren) lblSiren.innerText = isKm ? 'សំឡេងស៊ីរ៉ែន:' : 'ACOUSTIC SIREN:';
+      const btnTheft = document.getElementById('pg-btn-theft-txt');
+      if (btnTheft) btnTheft.innerText = isKm ? 'អង្រួន / ប៉ះពាល់មួកពេលចត' : 'Shake Helmet (Trigger Tamper)';
+
+      // 📊 Specs Matrix Filter Pills & Benchmark Bars
+      const pAll = document.getElementById('mpill-all');
+      if (pAll) pAll.innerText = isKm ? '🌟 គ្រប់ផ្នែកទាំងអស់ (៨)' : '🌟 All Subsystems (8)';
+      const pArmor = document.getElementById('mpill-armor');
+      if (pArmor) pArmor.innerText = isKm ? '🛡️ សំបក & ការពារ' : '🛡️ Armor & Impact';
+      const pOptics = document.getElementById('mpill-optics');
+      if (pOptics) pOptics.innerText = isKm ? '🥽 កញ្ចក់ & HUD' : '🥽 Optics & HUD';
+      const pSecurity = document.getElementById('mpill-security');
+      if (pSecurity) pSecurity.innerText = isKm ? '🚨 សុវត្ថិភាព & AI' : '🚨 Guardian & AI';
+      const pPower = document.getElementById('mpill-power');
+      if (pPower) pPower.innerText = isKm ? '🔋 ថាមពលថ្ម & សំឡេង' : '🔋 Battery & Audio';
+
+      const bWeight = document.getElementById('bench-lbl-weight');
+      if (bWeight) bWeight.innerText = isKm ? 'ទម្ងន់មួកសរុប' : 'TOTAL HELMET WEIGHT';
+      const bDiffW = document.getElementById('bench-diff-weight');
+      if (bDiffW) bDiffW.innerText = isKm ? '⚡ ស្រាលជាង 400g (បន្ថយការចុកក -23%)' : '⚡ 400g Lighter (-23% Neck Strain)';
+
+      const bOptics = document.getElementById('bench-lbl-optics');
+      if (bOptics) bOptics.innerText = isKm ? 'កម្រិតពន្លឺកញ្ចក់ HUD ពេលថ្ងៃ' : 'HUD DAYLIGHT VISIBILITY';
+      const bDiffO = document.getElementById('bench-diff-optics');
+      if (bDiffO) bDiffO.innerText = isKm ? '☀️ ភ្លឺច្បាស់ជាង 5x ពេលថ្ងៃត្រង់' : '☀️ 5x Brighter in Direct Midday Sun';
+
+      const bSos = document.getElementById('bench-lbl-sos');
+      if (bSos) bSos.innerText = isKm ? 'ប្រព័ន្ធសង្គ្រោះបន្ទាន់ SOS' : 'EMERGENCY SOS DISPATCH';
+      const bDiffS = document.getElementById('bench-diff-sos');
+      if (bDiffS) bDiffS.innerText = isKm ? '🚑 លឿនជាង 90x ដោយប្រព័ន្ធស្វ័យប្រវត្តិ' : '🚑 90x Faster Automated Lifeline';
+
+      // If 3D tour is active, refresh the card
+      if (typeof isTourActive !== 'undefined' && isTourActive) {
+        renderTourStep();
+      }
     }
 
     const VELORAN_I18N = {
       en: {
         nav_studio: "3D Studio",
         nav_innovations: "Innovations",
+        nav_playground: "Rider Lab",
         nav_gallery: "Gallery",
         nav_alarm: "🚨 Alarm: ",
         nav_matrix: "Specs Matrix",
@@ -5001,6 +5823,7 @@
         hero_subtitle_go: "GO FURTHER.",
         hero_desc: "Explore the VELORAN Cybernetic Smart Helmet in real-time 3D. Inspect CAD sub-assemblies, test active Guardian movement alarms, and experience live holographic Heads-Up Display telemetry.",
         hero_btn_3d: "Launch 3D Explorer",
+        hero_btn_playground: "Rider Lab",
         hero_btn_alarm: "Test Guardian Alarm",
         hero_btn_hud: "Visor HUD Mode",
         hero_spec_weight: "WEIGHT",
@@ -5042,6 +5865,7 @@
       km: {
         nav_studio: "ស្ទូឌីយោ 3D",
         nav_innovations: "ការច្នៃប្រឌិត",
+        nav_playground: "ពិសោធន៍ផ្ទាល់",
         nav_gallery: "វិចិត្រសាល",
         nav_alarm: "🚨 សំឡេងរោទ៍: ",
         nav_matrix: "តារាងបច្ចេកទេស",
@@ -5053,6 +5877,7 @@
         hero_subtitle_go: "ធ្វើដំណើរកាន់តែឆ្ងាយ។",
         hero_desc: "ស្វែងយល់ពីមួកសុវត្ថិភាពឌីជីថល VELORAN ក្នុងទម្រង់ 3D ជាក់ស្ដែង។ ពិនិត្យមើលគ្រឿងបន្លាស់ CAD, តេស្តប្រព័ន្ធសំឡេងរោទ៍ការពារចោរកម្ម Guardian និងបទពិសោធន៍កញ្ចក់ឆ្លុះ Heads-Up Display បែប Holographic។",
         hero_btn_3d: "បើកស្ទូឌីយោ 3D",
+        hero_btn_playground: "កន្លែងពិសោធន៍",
         hero_btn_alarm: "តេស្តសំឡេងរោទ៍ Guardian",
         hero_btn_hud: "ទិដ្ឋភាពកញ្ចក់ HUD",
         hero_spec_weight: "ទម្ងន់",
@@ -5094,6 +5919,378 @@
     };
 
     let currentLang = localStorage.getItem('veloran_lang') || 'en';
+
+    // =========================================================================
+    // 🕶️ LIVE ELECTROCHROMIC VISOR TINT CONTROLLER
+    // =========================================================================
+    let currentVisorTint = 0;
+    function setVisorTint(level, btn) {
+      currentVisorTint = level;
+      document.querySelectorAll('#btn-tint-clear, #btn-tint-mid, #btn-tint-dark').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      playTone(level === 0 ? 1200 : (level === 0.5 ? 800 : 450), 0.12, 'sine', 0.12);
+
+      allMeshes.forEach(mesh => {
+        if (mesh.name && mesh.name.includes('Visor')) {
+          if (level === 0) { // 100% Crystal Clear
+            mesh.material.color.setHex(0x99ccff);
+            mesh.material.opacity = 0.35;
+            mesh.material.transmission = 0.95;
+            mesh.material.roughness = 0.03;
+          } else if (level === 1.0) { // 85% Polarized Dark
+            mesh.material.color.setHex(0x060c18);
+            mesh.material.opacity = 0.94;
+            mesh.material.transmission = 0.12;
+            mesh.material.roughness = 0.1;
+          } else { // 50% Daylight Azure
+            mesh.material.color.setHex(0x0088ff);
+            mesh.material.opacity = 0.75;
+            mesh.material.transmission = 0.70;
+            mesh.material.roughness = 0.05;
+          }
+        }
+      });
+    }
+
+    // =========================================================================
+    // 🚀 CINEMATIC 3D GUIDED TOUR
+    // =========================================================================
+    const TOUR_STOPS = [
+      {
+        target: { x: 0, y: 35, z: -250 },
+        title_en: "1/5: Solid-State Brow LiDAR & 4K Camera",
+        title_km: "១/៥: សេនស័រ LiDAR ចិញ្ចើមមួក & កាមេរ៉ា 4K",
+        desc_en: "Scans approaching road hazards up to 100m away with ±2cm precision.",
+        desc_km: "ស្កេនចាប់ឧបសគ្គខាងមុខចម្ងាយ ១០០ ម៉ែត្រ កម្រិតលម្អិត ±២ ស.ម។",
+        hotspotComp: 5
+      },
+      {
+        target: { x: -80, y: 20, z: -230 },
+        title_en: "2/5: Holographic Waveguide Optical Visor",
+        title_km: "២/៥: កញ្ចក់ឆ្លុះ Waveguide AR",
+        desc_en: "Dual Sony 4,000 Nits micro-OLED daylight projection with 0.1s electrochromic tint.",
+        desc_km: "ម៉ាស៊ីនបញ្ចាំង Sony 4K ពន្លឺ 4,000 Nits ប្ដូរពណ៌ងងឹត/ភ្លឺក្នុង 0.1 វិនាទី។",
+        hotspotComp: 3
+      },
+      {
+        target: { x: -280, y: -20, z: -40 },
+        title_en: "3/5: Temporal Bone Conduction & 4-Mic ENC",
+        title_km: "៣/៥: ប្រព័ន្ធសំឡេងតាមឆ្អឹង & មីក្រូហ្វូនកាត់ខ្យល់",
+        desc_en: "Listen to music & navigation while keeping ears 100% open to traffic sirens.",
+        desc_km: "ស្ដាប់ចម្រៀង និងផែនទីដោយមិនបិទត្រចៀក រក្សាសុវត្ថិភាពចរាចរណ៍។",
+        hotspotComp: 7
+      },
+      {
+        target: { x: 0, y: 15, z: 270 },
+        title_en: "4/5: Active IMU Deceleration LED & 77GHz Radar",
+        title_km: "៤/៥: ភ្លើងហ្វ្រាំង LED សកម្ម & រ៉ាដា 77GHz",
+        desc_en: "Eye-level brake bar lights up in <5ms when deceleration is detected.",
+        desc_km: "ភ្លើងហ្វ្រាំងកម្ពស់ស្មើភ្នែកដំណើរការស្វ័យប្រវត្តិក្នុង <៥ មិល្លីវិនាទីពេលចាប់ហ្វ្រាំង។",
+        hotspotComp: 8
+      },
+      {
+        target: { x: 0, y: -160, z: 180 },
+        title_en: "5/5: Curved Li-Po Power Core & Smart Balance",
+        title_km: "៥/៥: ថាមពលថ្មឆ្លាតវៃ Li-Po & លំនឹងទម្ងន់ស្មើ",
+        desc_en: "Curved 4,800mAh battery sculpted into neck base for neutral shoulder weight.",
+        desc_km: "ថ្មកោង 4,800mAh រាងតាមកញ្ចឹងកមួក រក្សាលំនឹងទម្ងន់ស្មើ មិនធ្វើឱ្យចុកក។",
+        hotspotComp: 6
+      }
+    ];
+
+    let currentTourIdx = 0;
+    let isTourActive = false;
+
+    function startGuidedTour() {
+      switchView('3d');
+      scrollToStage();
+      isTourActive = true;
+      currentTourIdx = 0;
+
+      controls.autoRotate = false;
+      autoRotateEnabled = false;
+      const rotateBtn = document.getElementById('btn-autorotate-toggle');
+      if (rotateBtn) rotateBtn.innerText = currentLang === 'km' ? '🔄 បង្វិលស្វ័យប្រវត្តិ: បិទ' : '🔄 Auto-Rotate: OFF';
+
+      const overlay = document.getElementById('tour-overlay-card');
+      if (overlay) overlay.style.display = 'block';
+
+      renderTourStep();
+    }
+
+    function renderTourStep() {
+      const step = TOUR_STOPS[currentTourIdx];
+      if (!step) return;
+
+      playTone(750 + currentTourIdx * 120, 0.15, 'sine', 0.15);
+
+      // Tween Camera
+      tweenCameraTo(step.target.x, step.target.y, step.target.z);
+
+      // Update Card Content
+      const badge = document.getElementById('tour-step-badge');
+      if (badge) badge.innerText = currentLang === 'km' ? `ចំណុច ${currentTourIdx + 1} នៃ ${TOUR_STOPS.length}` : `STOP ${currentTourIdx + 1} OF ${TOUR_STOPS.length}`;
+
+      const title = document.getElementById('tour-step-title');
+      if (title) title.innerText = currentLang === 'km' ? step.title_km : step.title_en;
+
+      const desc = document.getElementById('tour-step-desc');
+      if (desc) desc.innerText = currentLang === 'km' ? step.desc_km : step.desc_en;
+
+      // Update Dots
+      const dotsContainer = document.getElementById('tour-dots');
+      if (dotsContainer) {
+        dotsContainer.innerHTML = TOUR_STOPS.map((s, idx) => `
+          <span class="tour-dot ${idx === currentTourIdx ? 'active' : ''}"></span>
+        `).join('');
+      }
+
+      // Update Nav Buttons
+      const btnPrev = document.getElementById('btn-tour-prev');
+      if (btnPrev) {
+        btnPrev.innerText = currentLang === 'km' ? '◀ ថយក្រោយ' : '◀ Back';
+        btnPrev.disabled = currentTourIdx === 0;
+        btnPrev.style.opacity = currentTourIdx === 0 ? '0.35' : '1';
+        btnPrev.style.cursor = currentTourIdx === 0 ? 'not-allowed' : 'pointer';
+      }
+      const btnNext = document.getElementById('btn-tour-next');
+      if (btnNext) {
+        if (currentTourIdx === TOUR_STOPS.length - 1) {
+          btnNext.innerText = currentLang === 'km' ? 'បញ្ចប់ ✓' : 'Finish ✓';
+        } else {
+          btnNext.innerText = currentLang === 'km' ? 'បន្ទាប់ ▶' : 'Next ▶';
+        }
+      }
+
+      // Also highlight matching component in 3D inspector silently
+      inspectComponent(step.hotspotComp);
+    }
+
+    function nextTourStop() {
+      if (currentTourIdx < TOUR_STOPS.length - 1) {
+        currentTourIdx++;
+        renderTourStep();
+      } else {
+        endGuidedTour();
+      }
+    }
+
+    function prevTourStop() {
+      if (currentTourIdx > 0) {
+        currentTourIdx--;
+        renderTourStep();
+      }
+    }
+
+    function endGuidedTour() {
+      isTourActive = false;
+      const overlay = document.getElementById('tour-overlay-card');
+      if (overlay) overlay.style.display = 'none';
+      reset3DCamera();
+    }
+
+    // =========================================================================
+    // ⚡ HUD INTERACTIVE THROTTLE CONTROLLER
+    // =========================================================================
+    function handleThrottleDrag(val) {
+      const spd = parseInt(val, 10);
+      speed = spd;
+
+      // Update HUD Speedometer Number
+      const spdEl = document.getElementById('hud-speed-val');
+      if (spdEl) spdEl.innerText = spd;
+
+      // Calculate Gear
+      let gearTxt = 'GEAR N';
+      if (spd > 0 && spd <= 28) gearTxt = 'GEAR 1';
+      else if (spd > 28 && spd <= 55) gearTxt = 'GEAR 2';
+      else if (spd > 55 && spd <= 85) gearTxt = 'GEAR 3';
+      else if (spd > 85 && spd <= 115) gearTxt = 'GEAR 4';
+      else if (spd > 115 && spd <= 140) gearTxt = 'GEAR 5';
+      else if (spd > 140) gearTxt = 'GEAR 6';
+
+      const gearEl = document.querySelector('.hud-card span[style*="GEAR"]');
+      if (gearEl) gearEl.innerText = gearTxt;
+
+      // Calculate RPM
+      const rpm = Math.floor(1200 + spd * 64);
+      const rpmEl = document.querySelector('.hud-card span:nth-child(1)');
+      if (rpmEl && rpmEl.innerText.includes('RPM')) {
+        rpmEl.innerText = `RPM: ${rpm.toLocaleString()}`;
+      }
+
+      // Update Throttle Label
+      const disp = document.getElementById('hud-throttle-speed-disp');
+      if (disp) {
+        disp.innerText = `${spd} KM/H • ${gearTxt}`;
+      }
+
+      // Dynamic Audio Pitch Shift
+      if (!isAudioMuted && spd > 0) {
+        const pitch = 140 + spd * 3.5;
+        playTone(pitch, 0.08, 'sawtooth', 0.04);
+      }
+    }
+
+    // =========================================================================
+    // 🎮 PLAYGROUND INTERACTIVE SCENARIOS
+    // =========================================================================
+    let isTunnelActive = false;
+    function testPlaygroundTunnel() {
+      isTunnelActive = !isTunnelActive;
+      const glass = document.getElementById('pg-visor-glass');
+      const status = document.getElementById('pg-visor-status');
+      const stopwatch = document.getElementById('pg-stopwatch');
+      const btnTxt = document.getElementById('pg-btn-tunnel-txt');
+
+      if (isTunnelActive) {
+        glass.classList.add('clear-state');
+        status.innerText = currentLang === 'km' ? 'កញ្ចក់ថ្លា: ១០០% (ច្បាស់ល្អ)' : 'TINT: 0% CRYSTAL CLEAR';
+        stopwatch.innerText = currentLang === 'km' ? '⏱️ ល្បឿនឆ្លើយតប: 92ms (លឿនជាងមុន 37ដង)' : '⏱️ 0.09s (92ms) • FAST TRANSITION';
+        if (btnTxt) btnTxt.innerText = currentLang === 'km' ? 'ចេញពីផ្លូវរូងក្រោមដី (ពន្លឺថ្ងៃ)' : 'Exit Tunnel (Midday Sun)';
+        setVisorTint(0);
+      } else {
+        glass.classList.remove('clear-state');
+        status.innerText = currentLang === 'km' ? 'កម្រិតងងឹត: ៨៥% (ការពារចំណាំងថ្ងៃ)' : 'TINT: 85% POLARIZED';
+        stopwatch.innerText = currentLang === 'km' ? '⏱️ ល្បឿនឆ្លើយតប: 98ms' : '⏱️ 0.1s (98ms)';
+        if (btnTxt) btnTxt.innerText = currentLang === 'km' ? 'ជិះចូលផ្លូវរូងក្រោមដី (តេស្ត 0.1វិ)' : 'Test Tunnel Transition';
+        setVisorTint(1.0);
+      }
+    }
+
+    let isRadarActive = false;
+    function testPlaygroundRadar() {
+      const blip = document.getElementById('radar-blip');
+      const threat = document.getElementById('pg-threat-status');
+      const btnTxt = document.getElementById('pg-btn-radar-txt');
+      if (!blip || !threat) return;
+
+      blip.style.display = 'block';
+      threat.innerText = currentLang === 'km' ? '🚨 រកឃើញឡានមកពីក្រោយ (១៤.២ម)!' : '🚨 HAZARD: REAR APPROACH (14.2m)';
+      threat.style.color = 'var(--accent-red)';
+      if (btnTxt) btnTxt.innerText = currentLang === 'km' ? 'កំពុងព្រមានគ្រោះថ្នាក់...' : 'Hazard Warning Active...';
+
+      // 3 Radar Alert Beeps
+      playTone(1100, 0.1, 'square', 0.2);
+      setTimeout(() => playTone(1100, 0.1, 'square', 0.2), 160);
+      setTimeout(() => playTone(1100, 0.15, 'square', 0.25), 320);
+
+      // Flash rear LED light on helmet
+      if (rearLedLight) {
+        rearLedLight.intensity = 4.0;
+        setTimeout(() => rearLedLight.intensity = 1.5, 2000);
+      }
+
+      setTimeout(() => {
+        blip.style.display = 'none';
+        threat.innerText = currentLang === 'km' ? 'ផ្លូវសុវត្ថិភាព (៣៦០°)' : 'ALL CLEAR (360°)';
+        threat.style.color = 'var(--accent-green)';
+        if (btnTxt) btnTxt.innerText = currentLang === 'km' ? 'តេស្តឡានមកជិតចំណុចខ្វាក់' : 'Simulate Approaching Truck';
+      }, 3500);
+    }
+
+    let isFogActive = false;
+    function testPlaygroundDefog() {
+      const fogOverlay = document.getElementById('pg-fog-overlay');
+      const fogLabel = document.getElementById('pg-fog-label');
+      const fanStatus = document.getElementById('pg-fan-status');
+      const btnTxt = document.getElementById('pg-btn-defog-txt');
+      if (!fogOverlay || !fogLabel) return;
+
+      if (!isFogActive) {
+        // Fog up
+        isFogActive = true;
+        fogOverlay.classList.add('fogged');
+        fogLabel.innerText = currentLang === 'km' ? 'កញ្ចក់ស្រអាប់ខ្លាំង (ចំហាយទឹក ៨០%)' : 'VISOR FOGGED (CONDENSATION 80%)';
+        fogLabel.style.color = '#fff';
+        fanStatus.innerText = currentLang === 'km' ? 'រង់ចាំ (0 RPM)' : 'STANDBY (0 RPM)';
+        if (btnTxt) btnTxt.innerText = currentLang === 'km' ? '💨 បើកកង្ហារបូមចំហាយស្រអាប់ Turbo' : '💨 Activate Turbo Defogger';
+      } else {
+        // Turbo Defog
+        fanStatus.innerText = currentLang === 'km' ? 'កំពុងបូមកម្ដៅ (12,000 RPM)' : 'ACTIVE TURBO (12,000 RPM)';
+        fanStatus.style.color = 'var(--veloran-azure)';
+        playTone(320, 0.8, 'sine', 0.18); // Fan sound
+
+        setTimeout(() => {
+          fogOverlay.classList.remove('fogged');
+          fogLabel.innerText = currentLang === 'km' ? 'ថ្លាស្អាត ១០០% (ចំហាយទឹក ០%)' : 'CRYSTAL CLEAR (100%)';
+          fanStatus.innerText = currentLang === 'km' ? 'កម្ចាត់ស្រអាប់ជោគជ័យ (1.1s)' : 'CLEARED IN 1.1s (STANDBY)';
+          fanStatus.style.color = 'var(--accent-green)';
+          if (btnTxt) btnTxt.innerText = currentLang === 'km' ? 'តេស្តកញ្ចក់ស្រអាប់ពេលភ្លៀង' : 'Simulate Heavy Rain Fog';
+          isFogActive = false;
+        }, 1100);
+      }
+    }
+
+    function testPlaygroundTheft() {
+      const helmetIcon = document.getElementById('pg-helmet-wobble');
+      const box = document.getElementById('pg-theft-box');
+      const status = document.getElementById('pg-theft-status');
+      const meter = document.getElementById('pg-siren-meter');
+      const btnTxt = document.getElementById('pg-btn-theft-txt');
+      if (!helmetIcon || !box) return;
+
+      // Shake animation
+      helmetIcon.classList.add('wobble');
+      box.classList.add('alarm-flash');
+      status.innerText = currentLang === 'km' ? '🚨 រកឃើញការប៉ះពាល់មួក (ផ្អៀង ៣៨°)' : '🚨 TAMPER DETECTED (38.4° TILT)';
+      status.style.color = 'var(--accent-red)';
+      meter.innerText = currentLang === 'km' ? 'ស៊ីរ៉ែនបន្លឺឡើង 110dB!' : '110dB BLARING!';
+      meter.style.color = 'var(--accent-red)';
+      if (btnTxt) btnTxt.innerText = currentLang === 'km' ? 'កំពុងបន្លឺសំឡេងរោទ៍...' : 'Alarm Active...';
+
+      triggerAlarm('theft');
+
+      setTimeout(() => {
+        helmetIcon.classList.remove('wobble');
+        box.classList.remove('alarm-flash');
+        status.innerText = currentLang === 'km' ? 'បានចត • កំពុងតាមដាន (០.២°)' : 'PARKED • MONITORING (0.2° TILT)';
+        status.style.color = 'var(--veloran-silver)';
+        meter.innerText = currentLang === 'km' ? 'បានបើកដំណើរការ (រង់ចាំ)' : 'ARMED (STANDBY)';
+        meter.style.color = 'var(--accent-green)';
+        if (btnTxt) btnTxt.innerText = currentLang === 'km' ? 'អង្រួន / ប៉ះពាល់មួកពេលចត' : 'Shake Helmet (Trigger Tamper)';
+        silenceAlarm();
+      }, 3500);
+    }
+
+    // =========================================================================
+    // 📊 SPECS MATRIX FILTER & HIGHLIGHT CONTROLLER
+    // =========================================================================
+    const matrixFilterKeywords = {
+      'all': '',
+      'armor': ['Shell', 'Impact', 'សំបក', 'ស្នោរ'],
+      'optics': ['Optical', 'Projection', 'កញ្ចក់', 'ម៉ាស៊ីន'],
+      'security': ['Guardian', 'LiDAR', 'រោទ៍', 'សេនស័រ'],
+      'power': ['Battery', 'Audio', 'ថ្ម', 'សំឡេង']
+    };
+
+    function filterSpecsMatrix(category, el) {
+      document.querySelectorAll('.matrix-pill').forEach(b => b.classList.remove('active'));
+      if (el) el.classList.add('active');
+
+      playTone(600, 0.08, 'sine', 0.1);
+
+      const rows = document.querySelectorAll('#specs-matrix-tbody tr');
+      const keywords = matrixFilterKeywords[category] || [];
+
+      rows.forEach(tr => {
+        if (category === 'all') {
+          tr.style.display = '';
+          tr.style.background = '';
+        } else {
+          const text = tr.innerText;
+          const match = keywords.some(kw => text.includes(kw));
+          if (match) {
+            tr.style.display = '';
+            tr.style.background = 'rgba(0, 166, 251, 0.12)';
+          } else {
+            tr.style.display = 'none';
+            tr.style.background = '';
+          }
+        }
+      });
+    }
 
     function setLanguage(lang) {
       currentLang = lang;
