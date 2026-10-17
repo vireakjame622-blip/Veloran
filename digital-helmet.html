@@ -5561,6 +5561,7 @@
 
     function updateToolbarAndControlsLanguage(lang) {
       const s = UI_STRINGS[lang] || UI_STRINGS.en;
+      const isKm = (lang === 'km');
 
       // Brand
       const brandStatus = document.getElementById('brand-status-txt');
