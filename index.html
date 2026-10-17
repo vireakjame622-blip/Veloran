@@ -394,46 +394,117 @@
       white-space: nowrap;
     }
 
-    /* View Switcher Controls */
-    .view-switcher-bar {
+    /* Hero Action Buttons (Apple / Tesla Minimalist Presentation) */
+    .hero-actions-row {
       display: flex;
       justify-content: center;
-      gap: 8px;
-      margin: 1.2rem auto 2rem;
+      align-items: center;
+      gap: 14px;
+      margin: 1.6rem auto 1.6rem;
       flex-wrap: wrap;
-      max-width: 1200px;
     }
 
-    .switch-btn {
-      background: rgba(10, 20, 42, 0.85);
-      border: 1px solid var(--border-subtle);
-      color: var(--veloran-silver);
-      padding: 9px 16px;
-      border-radius: 10px;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
+    .hero-primary-btn {
+      background: linear-gradient(135deg, var(--veloran-blue) 0%, var(--veloran-azure) 100%);
+      color: #ffffff;
+      border: none;
+      padding: 13px 28px;
+      border-radius: 14px;
+      font-family: var(--font-heading);
+      font-size: 0.96rem;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.25s ease;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      backdrop-filter: blur(8px);
-      white-space: nowrap;
+      gap: 10px;
+      box-shadow: 0 8px 25px rgba(0, 136, 255, 0.4);
+      transition: all 0.25s ease;
+    }
+    .hero-primary-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(0, 136, 255, 0.6);
+      background: linear-gradient(135deg, #0096ff 0%, #00d2ff 100%);
     }
 
-    .switch-btn:hover {
-      border-color: var(--veloran-blue);
+    .hero-secondary-btn {
+      background: rgba(250, 168, 25, 0.12);
+      border: 1px solid var(--border-gold);
+      color: var(--veloran-gold);
+      padding: 13px 26px;
+      border-radius: 14px;
+      font-family: var(--font-heading);
+      font-size: 0.96rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(10px);
+    }
+    .hero-secondary-btn:hover {
+      background: rgba(250, 168, 25, 0.22);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(250, 168, 25, 0.35);
+      border-color: #ffc107;
+    }
+
+    .hero-ghost-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--veloran-silver);
+      padding: 13px 22px;
+      border-radius: 14px;
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+    .hero-ghost-btn:hover {
+      border-color: rgba(0, 166, 251, 0.4);
       color: #fff;
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(0, 136, 255, 0.2);
+      background: rgba(0, 166, 251, 0.1);
     }
 
-    .switch-btn.active {
-      background: linear-gradient(135deg, rgba(0, 136, 255, 0.22), rgba(245, 166, 35, 0.18));
-      border-color: var(--veloran-blue);
-      color: #ffffff;
+    /* Hero Quick Specs Strip */
+    .hero-specs-strip {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      margin: 0 auto 2.2rem;
+      flex-wrap: wrap;
+      max-width: 900px;
+    }
+    .spec-pill {
+      background: rgba(6, 16, 36, 0.7);
+      border: 1px solid var(--border-subtle);
+      border-radius: 50px;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+    }
+    .spec-pill:hover {
+      border-color: rgba(0, 166, 251, 0.35);
+      background: rgba(10, 24, 52, 0.85);
+    }
+    .spec-pill .pill-label {
+      color: var(--veloran-azure);
       font-weight: 700;
-      box-shadow: 0 0 20px rgba(0, 136, 255, 0.3);
+      letter-spacing: 0.5px;
+    }
+    .spec-pill .pill-val {
+      color: #e2e8f0;
     }
 
     /* =========================================================================
@@ -473,13 +544,49 @@
     }
 
     .stage-title {
-      font-family: var(--font-display);
-      font-size: 0.9rem;
+      font-family: var(--font-heading);
+      font-size: 0.92rem;
+      font-weight: 700;
       color: var(--veloran-azure);
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       display: flex;
       align-items: center;
       gap: 8px;
+    }
+
+    .stage-view-pills {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      background: rgba(2, 7, 18, 0.7);
+      padding: 3px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stage-view-pill {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--veloran-silver);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-family: var(--font-heading);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .stage-view-pill:hover {
+      color: #fff;
+    }
+
+    .stage-view-pill.active {
+      background: linear-gradient(135deg, rgba(0, 166, 251, 0.25), rgba(250, 168, 25, 0.15));
+      border-color: var(--veloran-azure);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(0, 166, 251, 0.3);
     }
 
     .stage-actions {
@@ -510,7 +617,7 @@
     .viewport-3d-wrapper {
       position: relative;
       width: 100%;
-      height: clamp(400px, 58vh, 660px);
+      height: clamp(420px, 60vh, 700px);
       background: transparent;
       overflow: hidden;
     }
@@ -558,14 +665,14 @@
       transform: translateX(-50%);
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: rgba(6, 14, 30, 0.94);
+      gap: 12px;
+      background: rgba(4, 11, 24, 0.94);
       border: 1px solid var(--border-glow);
-      padding: 8px 16px;
-      border-radius: 14px;
+      padding: 8px 18px;
+      border-radius: 16px;
       backdrop-filter: blur(16px);
       z-index: 10;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
       flex-wrap: wrap;
       justify-content: center;
       max-width: 95%;
@@ -574,12 +681,12 @@
     .tool-group {
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
     .tool-label {
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-family: var(--font-mono);
       color: var(--veloran-silver);
       text-transform: uppercase;
@@ -610,6 +717,37 @@
       border-color: var(--veloran-blue);
       color: #fff;
       font-weight: 700;
+    }
+
+    .finish-swatch {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .swatch-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      display: inline-block;
+    }
+    .dot-navy { background: #071e3d; }
+    .dot-carbon { background: #1e293b; }
+    .dot-obsidian { background: #080808; }
+    .dot-gold { background: #faa819; box-shadow: 0 0 6px #faa819; }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.12);
+      margin: 0 2px;
+    }
+
+    .explode-val-txt {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--veloran-gold);
+      min-width: 32px;
     }
 
     .slider-container {
@@ -1131,98 +1269,181 @@
       margin-top: 0.3rem;
     }
 
-    .components-grid {
+    /* =========================================================================
+       INNOVATION PILLARS (4 INTERACTIVE TABS)
+       ========================================================================= */
+    .innovations-tab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .inno-tab-btn {
+      background: rgba(6, 16, 36, 0.75);
+      border: 1px solid var(--border-subtle);
+      color: var(--veloran-silver);
+      padding: 12px 24px;
+      border-radius: 14px;
+      font-family: var(--font-heading);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      backdrop-filter: blur(10px);
+    }
+    .inno-tab-btn:hover {
+      border-color: rgba(0, 166, 251, 0.45);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 136, 255, 0.15);
+    }
+    .inno-tab-btn.active {
+      background: linear-gradient(135deg, rgba(0, 166, 251, 0.22), rgba(250, 168, 25, 0.15));
+      border-color: var(--veloran-azure);
+      color: #ffffff;
+      box-shadow: 0 0 25px rgba(0, 166, 251, 0.35);
+    }
+
+    .inno-tab-content {
+      display: none;
+      animation: fadeInTab 0.35s ease forwards;
+    }
+    .inno-tab-content.active {
+      display: block;
+    }
+    @keyframes fadeInTab {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .inno-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.5rem;
       margin-bottom: 3.5rem;
     }
 
-    .comp-card {
+    .inno-card {
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 1.5rem;
-      cursor: pointer;
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 18px;
+      padding: 1.8rem;
+      transition: all 0.3s ease;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
     }
-
-    .comp-card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--veloran-blue);
+    .inno-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--veloran-azure), var(--veloran-gold), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .inno-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 136, 255, 0.25);
+      border-color: var(--border-glow);
+      background: var(--bg-card-hover);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 166, 251, 0.18);
     }
-
-    .comp-card.active {
+    .inno-card:hover::before {
+      opacity: 1;
+    }
+    .inno-card.active {
       border-color: var(--veloran-gold);
-      background: rgba(14, 26, 52, 0.96);
-      box-shadow: 0 0 25px rgba(245, 166, 35, 0.25);
+      box-shadow: 0 0 30px rgba(250, 168, 25, 0.25);
     }
 
-    .comp-top {
+    .inno-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 0.9rem;
+      margin-bottom: 1.2rem;
     }
-
-    .comp-icon-box {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: rgba(0, 136, 255, 0.12);
-      border: 1px solid rgba(0, 136, 255, 0.3);
+    .inno-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(0, 166, 251, 0.12);
+      border: 1px solid rgba(0, 166, 251, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
+      font-size: 1.5rem;
     }
-
-    .comp-number {
+    .inno-number {
       font-family: var(--font-mono);
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       color: var(--veloran-gold);
-      background: rgba(245, 166, 35, 0.08);
-      padding: 3px 8px;
+      background: rgba(250, 168, 25, 0.1);
+      padding: 4px 12px;
       border-radius: 20px;
-      border: 1px solid rgba(245, 166, 35, 0.25);
+      border: 1px solid rgba(250, 168, 25, 0.3);
     }
 
-    .comp-title {
+    .inno-title {
       font-family: var(--font-heading);
-      font-size: 1.15rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: #fff;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
+      margin-bottom: 0.6rem;
     }
-
-    .comp-desc {
+    .inno-desc {
       color: var(--veloran-silver);
-      font-size: 0.88rem;
-      line-height: 1.55;
-      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
     }
 
-    .comp-badge-row {
+    .inno-tag-list {
       display: flex;
       flex-wrap: wrap;
-      gap: 5px;
-      margin-top: auto;
+      gap: 6px;
+      margin-bottom: 1.4rem;
     }
-
-    .comp-mini-tag {
+    .inno-mini-tag {
       font-family: var(--font-mono);
-      font-size: 0.7rem;
-      padding: 3px 7px;
-      border-radius: 5px;
+      font-size: 0.72rem;
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--veloran-silver);
+      padding: 4px 10px;
+      border-radius: 6px;
+      color: #cbd5e1;
+    }
+
+    .inno-action-btn {
+      width: 100%;
+      background: rgba(0, 166, 251, 0.08);
+      border: 1px solid rgba(0, 166, 251, 0.3);
+      color: var(--veloran-azure);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-family: var(--font-heading);
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .inno-action-btn:hover {
+      background: var(--veloran-azure);
+      color: #020712;
+      box-shadow: 0 0 20px rgba(0, 166, 251, 0.45);
     }
 
     /* Component Inspector Modal */
@@ -1570,11 +1791,11 @@
       </div>
     </a>
     <nav class="nav-links">
-      <a href="#showcase" class="active">Interactive 3D</a>
+      <a href="#showcase" class="active">3D Studio</a>
+      <a href="#innovations">Innovations</a>
       <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="scrollToAlarm()">🚨 Alarm: <span id="nav-alarm-status">ARMED</span></a>
-      <a href="#components">12 Subsystems</a>
       <a href="#matrix">Specs Matrix</a>
-      <a href="#hud-stage" onclick="switchView('hud')" class="nav-btn-highlight">⚡ Live Visor HUD</a>
+      <a href="#showcase" onclick="switchView('hud'); scrollToStage();" class="nav-btn-highlight">⚡ Visor HUD</a>
     </nav>
   </header>
 
@@ -1601,54 +1822,44 @@
         Explore the VELORAN Cybernetic Smart Helmet in real-time 3D. Inspect CAD sub-assemblies, test active Guardian movement alarms, and experience live holographic Heads-Up Display telemetry.
       </p>
 
-      <!-- View Switcher Controls -->
-      <div class="view-switcher-bar">
-        <button class="switch-btn active" id="btn-3d" onclick="switchView('3d')">
-          <span>🌐</span> Real-Time 3D Model
+      <!-- Clean Apple / Tesla Action CTAs (Eliminates the 11 cluttered buttons) -->
+      <div class="hero-actions-row">
+        <button class="hero-primary-btn" onclick="scrollToStage()">
+          <span>🌐</span> Launch 3D Explorer
         </button>
-        <button class="switch-btn" id="btn-alarm" onclick="scrollToAlarm()">
-          <span>🚨</span> Guardian Alarm Center
+        <button class="hero-secondary-btn" onclick="scrollToAlarm()">
+          <span>🚨</span> Test Guardian Alarm
         </button>
-        <button class="switch-btn" id="btn-real" onclick="switchView('real')">
-          <span>🛡️</span> Studio Photo View
-        </button>
-        <button class="switch-btn" id="btn-cutaway" onclick="switchView('cutaway')">
-          <span>🔬</span> Internal Cutaway
-        </button>
-        <button class="switch-btn" id="btn-exploded" onclick="switchView('exploded')">
-          <span>💥</span> 2D Exploded Blueprint
-        </button>
-        <button class="switch-btn" id="btn-audio" onclick="switchView('audio')">
-          <span>🎧</span> Comms &amp; Audio
-        </button>
-        <button class="switch-btn" id="btn-isometric" onclick="switchView('isometric')">
-          <span>📐</span> 3D Isometric CAD
-        </button>
-        <button class="switch-btn" id="btn-front" onclick="switchView('front')">
-          <span>👁️</span> 3D Front Angle
-        </button>
-        <button class="switch-btn" id="btn-side" onclick="switchView('side')">
-          <span>🏎️</span> 3D Side Profile
-        </button>
-        <button class="switch-btn" id="btn-top" onclick="switchView('top')">
-          <span>💨</span> 3D Top Aerodynamics
-        </button>
-        <button class="switch-btn" id="btn-hud" onclick="switchView('hud')">
-          <span>⚡</span> Live Visor HUD Simulator
+        <button class="hero-ghost-btn" onclick="switchView('hud'); scrollToStage();">
+          <span>⚡</span> Visor HUD Mode
         </button>
       </div>
+
+      <!-- Quick Highlights Strip -->
+      <div class="hero-specs-strip">
+        <div class="spec-pill"><span class="pill-label">WEIGHT</span><span class="pill-val">1,350g 3K Carbon</span></div>
+        <div class="spec-pill"><span class="pill-label">OPTICS</span><span class="pill-val">4,000 Nits Micro-OLED</span></div>
+        <div class="spec-pill"><span class="pill-label">SECURITY</span><span class="pill-val">64G Crash SOS &amp; Alarm</span></div>
+        <div class="spec-pill"><span class="pill-label">BATTERY</span><span class="pill-val">10h Curved Li-Po</span></div>
     </section>
 
     <!-- Visual Showcase Stage -->
     <div class="showcase-stage" id="showcase-stage-box">
       <div class="showcase-header">
         <div class="stage-title" id="stage-title-text">
-          <span>🌐</span> Real-Time 3D Interactive Model (Click &amp; Drag to Rotate 360°)
+          <span>🌐</span> Real-Time 3D Interactive Model
+        </div>
+        <div class="stage-view-pills">
+          <button class="stage-view-pill active" id="pill-mode-3d" onclick="switchView('3d')">🌐 3D Interactive</button>
+          <button class="stage-view-pill" id="pill-mode-hud" onclick="switchView('hud')">⚡ Live Visor HUD</button>
+          <button class="stage-view-pill" id="pill-mode-cutaway" onclick="switchView('cutaway')">🔬 Engineering Cutaway</button>
+          <button class="stage-view-pill" id="pill-mode-real" onclick="switchView('real')">🛡️ Studio Photo</button>
         </div>
         <div class="stage-actions">
+          <button class="stage-btn" id="btn-hotspots-toggle" onclick="toggleHotspots()">📍 Hotspots: ON</button>
           <button class="stage-btn" id="btn-sound-toggle" onclick="toggleAudioMute()">🔊 Sound: ON</button>
           <button class="stage-btn" id="btn-autorotate-toggle" onclick="toggleAutoRotate()">🔄 Auto-Rotate: ON</button>
-          <button class="stage-btn" onclick="reset3DCamera()">🎯 Reset View</button>
+          <button class="stage-btn" onclick="reset3DCamera()">🎯 Reset</button>
           <button class="stage-btn" onclick="openFullscreen()">⛶ Fullscreen</button>
         </div>
       </div>
@@ -1671,8 +1882,27 @@
         <!-- 3D Hotspots Over Canvas -->
         <div id="hotspots-layer"></div>
 
-        <!-- 3D Interactive Floating Toolbar -->
+        <!-- 3D Interactive Floating Toolbar (Apple / Tesla Minimalist Presentation) -->
         <div class="floating-3d-toolbar">
+          <!-- Color Finish Customizer -->
+          <div class="tool-group">
+            <span class="tool-label">Finish:</span>
+            <button class="tool-btn finish-swatch active" id="fbtn-veloran" onclick="setFinish('veloran', this)" title="Veloran Navy">
+              <span class="swatch-dot dot-navy"></span> Navy
+            </button>
+            <button class="tool-btn finish-swatch" id="fbtn-carbon" onclick="setFinish('carbon', this)" title="3K Carbon">
+              <span class="swatch-dot dot-carbon"></span> Carbon
+            </button>
+            <button class="tool-btn finish-swatch" id="fbtn-black" onclick="setFinish('black', this)" title="Obsidian">
+              <span class="swatch-dot dot-obsidian"></span> Obsidian
+            </button>
+            <button class="tool-btn finish-swatch" id="fbtn-gold" onclick="setFinish('gold', this)" title="Solar Gold">
+              <span class="swatch-dot dot-gold"></span> Solar Gold
+            </button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
           <!-- 3D Explode Parts Slider -->
           <div class="tool-group slider-container">
             <span class="tool-label">💥 Explode:</span>
@@ -1685,21 +1915,14 @@
               value="0" 
               oninput="handleExplodeSlider(this.value)"
             />
-            <span id="explode-val-txt" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-gold); min-width:32px;">0%</span>
+            <span id="explode-val-txt" class="explode-val-txt">0%</span>
           </div>
 
-          <!-- Color Finish Customizer (Veloran Signature Palette) -->
-          <div class="tool-group">
-            <span class="tool-label">🎨 Finish:</span>
-            <button class="tool-btn active" id="fbtn-veloran" onclick="setFinish('veloran', this)">Veloran Navy</button>
-            <button class="tool-btn" id="fbtn-carbon" onclick="setFinish('carbon', this)">3K Carbon</button>
-            <button class="tool-btn" id="fbtn-black" onclick="setFinish('black', this)">Obsidian</button>
-            <button class="tool-btn" id="fbtn-gold" onclick="setFinish('gold', this)">Solar Gold</button>
-          </div>
+          <div class="toolbar-divider"></div>
 
           <!-- Quick Camera Angles -->
           <div class="tool-group">
-            <span class="tool-label">📷 Angle:</span>
+            <span class="tool-label">Angle:</span>
             <button class="tool-btn" onclick="setCameraAngle('front')">Front</button>
             <button class="tool-btn" onclick="setCameraAngle('side')">Side</button>
             <button class="tool-btn" onclick="setCameraAngle('top')">Top</button>
@@ -1783,46 +2006,6 @@
           <button class="hud-mode-pill" onclick="setHudMode('night', this)">Night Vision FLIR</button>
           <button class="hud-mode-pill" onclick="setHudMode('track', this)">Track Apex</button>
           <button class="hud-mode-pill" onclick="triggerAlarm('theft')">🚨 Security Hazard Alert</button>
-        </div>
-      </div>
-
-      <!-- Gallery Thumbnails Strip -->
-      <div class="thumb-strip">
-        <div class="thumb-item active" onclick="switchView('3d')">
-          <img src="assets/render_isometric.png" alt="3D Model" />
-          <div class="thumb-label">🌐 Real-Time 3D</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('real')">
-          <img src="assets/smart_helmet_real_render.jpg" alt="Real Render" />
-          <div class="thumb-label">Studio Photo</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('cutaway')">
-          <img src="assets/smart_helmet_internal_cutaway.jpg" alt="Cutaway" />
-          <div class="thumb-label">Cutaway Internal</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('exploded')">
-          <img src="assets/digital_helmet_exploded.jpg" alt="Exploded" />
-          <div class="thumb-label">2D Exploded</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('audio')">
-          <img src="assets/smart_helmet_audio_comms.jpg" alt="Audio & Comms" />
-          <div class="thumb-label">Audio &amp; Comms</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('isometric')">
-          <img src="assets/render_isometric.png" alt="Isometric" />
-          <div class="thumb-label">3D Isometric</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('front')">
-          <img src="assets/render_front.png" alt="Front View" />
-          <div class="thumb-label">3D Front Angle</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('side')">
-          <img src="assets/render_side.png" alt="Side View" />
-          <div class="thumb-label">3D Side Profile</div>
-        </div>
-        <div class="thumb-item" onclick="switchView('top')">
-          <img src="assets/render_top.png" alt="Top View" />
-          <div class="thumb-label">3D Top Aero</div>
         </div>
       </div>
     </div>
@@ -1936,14 +2119,48 @@
       </div>
     </div>
 
-    <!-- 12 Subsystems Grid Section -->
-    <section class="section-header" id="components">
-      <div class="section-tag">PHYSICAL &amp; ELECTRONIC ARCHITECTURE</div>
-      <h2 class="section-title">12 Modular Subsystems</h2>
-      <p class="section-subtitle">Click on any module to inspect CAD tolerances, sensor specs, and material compositions.</p>
-    </section>
+    <!-- =========================================================================
+         INNOVATIONS & 4 ENGINEERING PILLARS (APPLE / TESLA TABBED EXPERIENCE)
+         ========================================================================= -->
+    <section class="innovations-section" id="innovations">
+      <div class="section-header">
+        <div class="section-tag">NEXT-GEN SYSTEM ARCHITECTURE</div>
+        <h2 class="section-title">Veloran Innovations</h2>
+        <p class="section-subtitle">
+          Explore the 4 core engineering pillars powering the cybernetic smart helmet. Select a pillar to inspect specs, CAD tolerances, and view it highlighted on the 3D model.
+        </p>
+      </div>
 
-    <div class="components-grid" id="components-container"></div>
+      <!-- Innovation Category Tabs -->
+      <div class="innovations-tab-nav">
+        <button class="inno-tab-btn active" id="tab-btn-optics" onclick="switchInnoTab('optics')">
+          <span>🥽</span> Optics &amp; Waveguide HUD
+        </button>
+        <button class="inno-tab-btn" id="tab-btn-armor" onclick="switchInnoTab('armor')">
+          <span>🛡️</span> Armor &amp; Aerodynamics
+        </button>
+        <button class="inno-tab-btn" id="tab-btn-security" onclick="switchInnoTab('security')">
+          <span>🚨</span> Guardian Security &amp; SOS
+        </button>
+        <button class="inno-tab-btn" id="tab-btn-neural" onclick="switchInnoTab('neural')">
+          <span>⚡</span> Neural AI &amp; Spatial Audio
+        </button>
+      </div>
+
+      <!-- Tab Content Grids -->
+      <div class="inno-tab-content active" id="inno-content-optics">
+        <div class="inno-grid" id="inno-grid-optics"></div>
+      </div>
+      <div class="inno-tab-content" id="inno-content-armor">
+        <div class="inno-grid" id="inno-grid-armor"></div>
+      </div>
+      <div class="inno-tab-content" id="inno-content-security">
+        <div class="inno-grid" id="inno-grid-security"></div>
+      </div>
+      <div class="inno-tab-content" id="inno-content-neural">
+        <div class="inno-grid" id="inno-grid-neural"></div>
+      </div>
+    </section>
 
     <!-- Architecture Specs Matrix -->
     <section class="section-header" id="matrix">
@@ -2286,29 +2503,107 @@
       }
     ];
 
-    // Populate components grid
-    const compContainer = document.getElementById('components-container');
-    components.forEach((c, index) => {
-      const card = document.createElement('div');
-      card.className = 'comp-card';
-      card.id = 'comp-card-' + index;
-      card.onclick = () => inspectComponent(index);
+    // =========================================================================
+    // 🥽 4-PILLAR INNOVATIONS TAB ENGINE (APPLE / TESLA STREAMLINED UX)
+    // =========================================================================
+    const innovationPillars = {
+      optics: {
+        indices: [3, 4, 5],
+        gridId: 'inno-grid-optics'
+      },
+      armor: {
+        indices: [0, 1, 9],
+        gridId: 'inno-grid-armor'
+      },
+      security: {
+        indices: [8, 11, 6],
+        gridId: 'inno-grid-security'
+      },
+      neural: {
+        indices: [2, 7, 10],
+        gridId: 'inno-grid-neural'
+      }
+    };
 
-      card.innerHTML = `
-        <div>
-          <div class="comp-top">
-            <div class="comp-icon-box">${c.icon}</div>
-            <div class="comp-number">${c.number}</div>
-          </div>
-          <h3 class="comp-title">${c.title}</h3>
-          <p class="comp-desc">${c.desc}</p>
-        </div>
-        <div class="comp-badge-row">
-          ${c.tags.map(t => `<span class="comp-mini-tag">${t}</span>`).join('')}
-        </div>
-      `;
-      compContainer.appendChild(card);
-    });
+    function populateInnovationTabs() {
+      Object.keys(innovationPillars).forEach(pillarKey => {
+        const pillar = innovationPillars[pillarKey];
+        const grid = document.getElementById(pillar.gridId);
+        if (!grid) return;
+        grid.innerHTML = '';
+
+        pillar.indices.forEach(compIdx => {
+          const c = components[compIdx];
+          if (!c) return;
+
+          const card = document.createElement('div');
+          card.className = 'inno-card';
+          card.id = 'inno-card-' + compIdx;
+          card.onclick = () => inspectComponentIn3D(compIdx);
+
+          card.innerHTML = `
+            <div>
+              <div class="inno-top">
+                <div class="inno-icon-box">${c.icon}</div>
+                <div class="inno-number">${c.number}</div>
+              </div>
+              <h3 class="inno-title">${c.title}</h3>
+              <p class="inno-desc">${c.desc}</p>
+              <div class="inno-tag-list">
+                ${c.tags.map(t => `<span class="inno-mini-tag">${t}</span>`).join('')}
+              </div>
+            </div>
+            <button class="inno-action-btn" onclick="event.stopPropagation(); inspectComponentIn3D(${compIdx})">
+              <span>🔬</span> Inspect Subsystem Specs
+            </button>
+          `;
+
+          grid.appendChild(card);
+        });
+      });
+    }
+
+    function switchInnoTab(pillarKey) {
+      document.querySelectorAll('.inno-tab-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('tab-btn-' + pillarKey);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.querySelectorAll('.inno-tab-content').forEach(content => content.classList.remove('active'));
+      const activeContent = document.getElementById('inno-content-' + pillarKey);
+      if (activeContent) activeContent.classList.add('active');
+    }
+
+    function inspectComponentIn3D(index) {
+      inspectComponent(index);
+      
+      document.querySelectorAll('.inno-card').forEach(card => card.classList.remove('active'));
+      const activeCard = document.getElementById('inno-card-' + index);
+      if (activeCard) activeCard.classList.add('active');
+
+      const matchingHotspot = hotspots3D.find(h => h.compIdx === index);
+      if (matchingHotspot && currentView === '3d') {
+        focusHotspot(matchingHotspot);
+      }
+    }
+
+    function scrollToStage() {
+      const el = document.getElementById('showcase-stage-box') || document.getElementById('stage-3d');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function scrollToAlarm() {
+      const el = document.getElementById('alarm-center');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    let hotspotsVisible = true;
+    function toggleHotspots() {
+      hotspotsVisible = !hotspotsVisible;
+      const layer = document.getElementById('hotspots-layer');
+      if (layer) layer.style.display = hotspotsVisible ? 'block' : 'none';
+      const btn = document.getElementById('btn-hotspots-toggle');
+      if (btn) btn.innerText = hotspotsVisible ? '📍 Hotspots: ON' : '📍 Hotspots: OFF';
+    }
 
     // View Switcher logic (3D WebGL vs Static Render vs Live HUD)
     const viewMap = {
@@ -2350,15 +2645,9 @@
 
     function switchView(view) {
       currentView = view;
-      document.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
-      const activeBtn = document.getElementById('btn-' + view);
-      if (activeBtn) activeBtn.classList.add('active');
-
-      document.querySelectorAll('.thumb-item').forEach(th => th.classList.remove('active'));
-      const activeThumb = Array.from(document.querySelectorAll('.thumb-item')).find(th => 
-        th.getAttribute('onclick') && th.getAttribute('onclick').includes(view)
-      );
-      if (activeThumb) activeThumb.classList.add('active');
+      document.querySelectorAll('.stage-view-pill').forEach(btn => btn.classList.remove('active'));
+      const activePill = document.getElementById('pill-mode-' + view);
+      if (activePill) activePill.classList.add('active');
 
       const stage3D = document.getElementById('stage-3d');
       const stageImg = document.getElementById('stage-img');
@@ -2367,24 +2656,26 @@
       const titleEl = document.getElementById('stage-title-text');
 
       if (view === '3d') {
-        stage3D.style.display = 'block';
-        stageImg.style.display = 'none';
-        hudStage.classList.remove('active');
-        if (titleEl) titleEl.innerHTML = '🌐 Real-Time 3D Interactive Model (Click &amp; Drag to Rotate 360°)';
+        if (stage3D) stage3D.style.display = 'block';
+        if (stageImg) stageImg.style.display = 'none';
+        if (hudStage) hudStage.classList.remove('active');
+        if (titleEl) titleEl.innerHTML = '<span>🌐</span> Real-Time 3D Interactive Model (Click &amp; Drag to Rotate 360°)';
         onWindowResize();
       } else if (view === 'hud') {
-        stage3D.style.display = 'none';
-        stageImg.style.display = 'none';
-        hudStage.classList.add('active');
-        if (titleEl) titleEl.innerHTML = '⚡ Live Interactive Cyberpunk Visor HUD Simulator';
+        if (stage3D) stage3D.style.display = 'none';
+        if (stageImg) stageImg.style.display = 'none';
+        if (hudStage) hudStage.classList.add('active');
+        if (titleEl) titleEl.innerHTML = '<span>⚡</span> Live Interactive Cyberpunk Visor HUD Simulator';
       } else {
-        stage3D.style.display = 'none';
-        hudStage.classList.remove('active');
-        stageImg.style.display = 'flex';
+        if (stage3D) stage3D.style.display = 'none';
+        if (hudStage) hudStage.classList.remove('active');
+        if (stageImg) stageImg.style.display = 'flex';
         const vData = viewMap[view];
         if (vData) {
-          mainImg.src = vData.img;
-          mainImg.alt = vData.title;
+          if (mainImg) {
+            mainImg.src = vData.img;
+            mainImg.alt = vData.title;
+          }
           if (titleEl) titleEl.innerHTML = vData.title;
         }
       }
@@ -2392,7 +2683,9 @@
 
     function inspectComponent(index) {
       const data = components[index];
+      if (!data) return;
       const panel = document.getElementById('inspector');
+      if (!panel) return;
       panel.style.display = 'block';
 
       document.getElementById('insp-badge').innerText = data.badge;
@@ -2413,11 +2706,6 @@
         const li = document.createElement('li');
         li.innerText = p;
         pointsContainer.appendChild(li);
-      });
-
-      document.querySelectorAll('.comp-card').forEach((card, idx) => {
-        if (idx === index) card.classList.add('active');
-        else card.classList.remove('active');
       });
 
       panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -3109,6 +3397,8 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       init3D();
+      populateInnovationTabs();
+      switchInnoTab('optics');
     });
   </script>
 </body>
