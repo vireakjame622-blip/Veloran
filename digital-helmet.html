@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AETHER H-1 • Digital Smart Helmet | Real-Time Interactive 3D & Component Explorer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Local & Fallback CDN Three.js Libraries -->
+  <script src="assets/three.min.js"></script>
+  <script src="assets/OrbitControls.js"></script>
+  <script src="assets/GLTFLoader.js"></script>
+  <script src="assets/digital_helmet_data.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #07090f;
+      --bg-surface: #0e121e;
+      --bg-card: rgba(15, 20, 34, 0.85);
+      --bg-card-hover: rgba(24, 32, 54, 0.95);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(0, 242, 254, 0.35);
+      --accent-cyan: #00f2fe;
+      --accent-blue: #4facfe;
+      --accent-purple: #9d4edd;
+      --accent-red: #ff3366;
+      --accent-green: #00ff88;
+      --accent-amber: #ffaa00;
+      --text-main: #f3f6fb;
+      --text-muted: #8e9bb0;
+      --font-display: 'Orbitron', -apple-system, sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(0, 242, 254, 0.07) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(79, 172, 254, 0.07) 0%, transparent 45%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1c253b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--accent-cyan);
+    }
+
+    /* Navigation */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 2.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 9, 15, 0.88);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: #07090f;
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .brand-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      font-size: 1.15rem;
+      background: linear-gradient(90deg, #ffffff, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-sub {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.25s ease;
+      padding: 7px 15px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--accent-cyan);
+      border-color: rgba(0, 242, 254, 0.3);
+      background: rgba(0, 242, 254, 0.08);
+      box-shadow: 0 0 15px rgba(0, 242, 254, 0.15);
+    }
+
+    .nav-btn-highlight {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.2), rgba(79, 172, 254, 0.2)) !important;
+      border-color: var(--accent-cyan) !important;
+      color: #fff !important;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 5rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.2rem;
+    }
+
+    .badge-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.7); }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+      font-weight: 900;
+      letter-spacing: 1px;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 30%, #4facfe 75%, #00f2fe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p.subtitle {
+      max-width: 820px;
+      margin: 0 auto 1.8rem;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    /* View Switcher Carousel / Tab Controls */
+    .view-switcher-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 1.8rem;
+      background: rgba(14, 18, 30, 0.7);
+      padding: 8px;
+      border-radius: 14px;
+      border: 1px solid var(--border-subtle);
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .switch-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .switch-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .switch-btn.active {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.18), rgba(79, 172, 254, 0.18));
+      color: var(--accent-cyan);
+      border-color: rgba(0, 242, 254, 0.5);
+      font-weight: 700;
+      box-shadow: 0 0 16px rgba(0, 242, 254, 0.2);
+    }
+
+    /* Primary Showcase Stage */
+    .showcase-stage {
+      position: relative;
+      border-radius: 20px;
+      border: 1px solid var(--border-glow);
+      background: radial-gradient(circle at center, #101525 0%, #080a12 85%);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(0, 242, 254, 0.12);
+      overflow: hidden;
+      margin-bottom: 3.5rem;
+    }
+
+    .showcase-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 1.8rem;
+      background: rgba(10, 14, 24, 0.9);
+      border-bottom: 1px solid var(--border-subtle);
+      z-index: 10;
+      position: relative;
+    }
+
+    .stage-title {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--accent-cyan);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stage-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stage-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .stage-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.1);
+    }
+
+    .stage-btn.active {
+      background: rgba(0, 242, 254, 0.2);
+      color: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+    }
+
+    /* 3D WebGL Canvas Stage */
+    .viewport-3d-wrapper {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      display: block;
+      background: radial-gradient(circle at 50% 40%, #131a2e 0%, #070912 85%);
+      overflow: hidden;
+    }
+
+    #webgl-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+      outline: none;
+    }
+    #webgl-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* 3D Interaction Hints Overlay */
+    .hint-pill {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 16, 28, 0.8);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+      z-index: 5;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    /* 3D Interactive Floating Toolbar */
+    .floating-3d-toolbar {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(12, 16, 28, 0.88);
+      border: 1px solid var(--border-glow);
+      padding: 10px 18px;
+      border-radius: 16px;
+      backdrop-filter: blur(16px);
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .tool-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tool-label {
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    .tool-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tool-btn:hover {
+      border-color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.15);
+      color: var(--accent-cyan);
+    }
+
+    .tool-btn.active {
+      background: linear-gradient(135deg, rgba(0, 242, 254, 0.3), rgba(79, 172, 254, 0.3));
+      border-color: var(--accent-cyan);
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slider-range {
+      -webkit-appearance: none;
+      width: 100px;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.2);
+      outline: none;
+    }
+
+    .slider-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    /* 3D Hotspot Dots on the Canvas */
+    #hotspots-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 6;
+    }
+
+    .hotspot-point {
+      position: absolute;
+      pointer-events: auto;
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s;
+    }
+
+    .hotspot-point:hover {
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    .hotspot-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 15px var(--accent-cyan), 0 0 30px var(--accent-cyan);
+      border: 2px solid #fff;
+      animation: pulse 1.6s infinite;
+    }
+
+    .hotspot-bubble {
+      background: rgba(10, 16, 28, 0.9);
+      border: 1px solid var(--accent-cyan);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: #fff;
+      white-space: nowrap;
+      pointer-events: none;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Image Viewport (Secondary Views) */
+    .showcase-viewport-img {
+      display: none;
+      position: relative;
+      min-height: 560px;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .showcase-img {
+      max-width: 100%;
+      max-height: 560px;
+      object-fit: contain;
+      border-radius: 12px;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.8));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .showcase-img:hover {
+      transform: scale(1.02);
+    }
+
+    /* Thumbnail Strip */
+    .thumb-strip {
+      display: flex;
+      gap: 12px;
+      padding: 1rem 1.8rem;
+      background: rgba(8, 10, 18, 0.95);
+      border-top: 1px solid var(--border-subtle);
+      overflow-x: auto;
+    }
+
+    .thumb-item {
+      flex: 0 0 110px;
+      height: 70px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      background: #141a29;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .thumb-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.65;
+      transition: opacity 0.25s;
+    }
+
+    .thumb-item:hover img, .thumb-item.active img {
+      opacity: 1;
+    }
+
+    .thumb-item.active {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 14px rgba(0, 242, 254, 0.4);
+    }
+
+    .thumb-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(7, 9, 15, 0.85);
+      font-size: 0.62rem;
+      font-family: var(--font-mono);
+      text-align: center;
+      padding: 2px 4px;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Live HUD Simulator Mode */
+    .hud-simulator {
+      display: none;
+      width: 100%;
+      height: 560px;
+      position: relative;
+      background: radial-gradient(circle at center, rgba(0, 242, 254, 0.05) 0%, rgba(5, 7, 12, 0.95) 85%);
+      overflow: hidden;
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+      border-radius: 12px;
+    }
+
+    .hud-simulator.active {
+      display: block;
+    }
+
+    .hud-reticle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 240px;
+      height: 240px;
+      border: 1px dashed rgba(0, 242, 254, 0.4);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hud-reticle::before, .hud-reticle::after {
+      content: '';
+      position: absolute;
+      background: var(--accent-cyan);
+    }
+    .hud-reticle::before { top: 50%; left: -15px; width: 30px; height: 1px; }
+    .hud-reticle::after { top: -15px; left: 50%; width: 1px; height: 30px; }
+
+    .hud-center-cross {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+    }
+    .hud-center-cross::before, .hud-center-cross::after {
+      content: '';
+      position: absolute;
+      background: var(--accent-red);
+    }
+    .hud-center-cross::before { top: 8px; left: 0; width: 18px; height: 2px; }
+    .hud-center-cross::after { top: 0; left: 8px; width: 2px; height: 18px; }
+
+    .hud-speedometer {
+      position: absolute;
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, 60px);
+      text-align: center;
+      text-shadow: 0 0 15px var(--accent-cyan);
+    }
+
+    .hud-speed {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .hud-unit {
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      color: var(--accent-cyan);
+    }
+
+    .hud-widget {
+      position: absolute;
+      background: rgba(10, 16, 28, 0.75);
+      border: 1px solid rgba(0, 242, 254, 0.3);
+      padding: 14px 18px;
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.1);
+    }
+
+    .hud-widget-tl { top: 25px; left: 25px; }
+    .hud-widget-tr { top: 25px; right: 25px; text-align: right; }
+    .hud-widget-bl { bottom: 25px; left: 25px; }
+    .hud-widget-br { bottom: 25px; right: 25px; text-align: right; }
+
+    .hud-radar {
+      width: 85px;
+      height: 85px;
+      border: 1px solid var(--accent-red);
+      border-radius: 50%;
+      margin: 8px auto 0;
+      position: relative;
+      overflow: hidden;
+      background: rgba(255, 51, 102, 0.05);
+    }
+
+    .hud-radar-sweep {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: conic-gradient(from 0deg, rgba(255, 51, 102, 0.5) 0deg, transparent 60deg);
+      border-radius: 50%;
+      animation: spin 2.5s linear infinite;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    .hud-modes-bar {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      background: rgba(7, 9, 15, 0.8);
+      padding: 6px 12px;
+      border-radius: 30px;
+      border: 1px solid rgba(0, 242, 254, 0.3);
+    }
+
+    .hud-mode-pill {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .hud-mode-pill.active {
+      background: var(--accent-cyan);
+      color: #000;
+      font-weight: 700;
+    }
+
+    /* Inspector Component Detail Box */
+    .inspector-panel {
+      display: none;
+      background: rgba(14, 20, 36, 0.95);
+      border: 1px solid var(--accent-cyan);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 3.5rem;
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.2);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .inspector-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    .inspector-title {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--accent-cyan);
+      margin-bottom: 0.8rem;
+    }
+
+    .inspector-desc {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.2rem;
+      font-size: 0.88rem;
+    }
+
+    .spec-table tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .spec-table td {
+      padding: 8px 12px;
+    }
+
+    .spec-table td.label {
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      width: 40%;
+    }
+
+    .spec-table td.val {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .points-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .points-list li {
+      position: relative;
+      padding-left: 24px;
+      font-size: 0.92rem;
+      color: var(--text-main);
+    }
+
+    .points-list li::before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
+      font-weight: bold;
+    }
+
+    /* Section Header */
+    .section-header {
+      margin-bottom: 2rem;
+    }
+
+    .section-tag {
+      font-family: var(--font-mono);
+      color: var(--accent-cyan);
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-top: 0.4rem;
+    }
+
+    /* Grid of Components */
+    .components-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 4rem;
+    }
+
+    .comp-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 1.8rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .comp-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-cyan);
+      transform: translateY(-6px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 242, 254, 0.2);
+    }
+
+    .comp-card.active {
+      border-color: var(--accent-cyan);
+      background: rgba(18, 25, 45, 0.95);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.3);
+    }
+
+    .comp-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .comp-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .comp-number {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.08);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+    }
+
+    .comp-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.6rem;
+      line-height: 1.3;
+    }
+
+    .comp-desc {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+
+    .comp-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+    }
+
+    .comp-mini-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    /* Architecture Matrix Section */
+    .specs-table-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 4rem;
+    }
+
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+
+    .matrix-table th {
+      background: rgba(10, 14, 25, 0.9);
+      padding: 14px 20px;
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 0.82rem;
+      color: var(--accent-cyan);
+      letter-spacing: 1px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .matrix-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+    }
+
+    .matrix-table tr:hover {
+      background: rgba(0, 242, 254, 0.04);
+    }
+
+    .status-active {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--accent-green);
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
+    .status-active::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+    }
+
+    /* Production Callout Banner */
+    .store-cta {
+      background: linear-gradient(135deg, rgba(14, 20, 36, 0.9), rgba(20, 29, 54, 0.9));
+      border: 1px solid var(--border-glow);
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      margin-bottom: 3rem;
+    }
+
+    .cta-text h2 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .cta-text p {
+      color: var(--text-muted);
+      max-width: 600px;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #07090f;
+      padding: 12px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      transition: all 0.25s;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--accent-cyan);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-family: var(--font-mono);
+    }
+
+    @media (max-width: 900px) {
+      .inspector-grid {
+        grid-template-columns: 1fr;
+      }
+      .hud-widget {
+        position: static;
+        margin-bottom: 10px;
+      }
+      .hud-simulator {
+        height: auto;
+        padding: 1.5rem;
+      }
+      .floating-3d-toolbar {
+        width: 95%;
+        padding: 8px 12px;
+      }
+      header {
+        padding: 1rem 1.5rem;
+      }
+      .container {
+        padding: 1.5rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <header>
+    <a href="digital-helmet.html" class="brand">
+      <div class="brand-logo">A</div>
+      <div class="brand-info">
+        <span class="brand-title">AETHER H-1</span>
+        <span class="brand-sub">CYBERNETIC AR SMART HELMET</span>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="#showcase" class="active">Interactive 3D</a>
+      <a href="#components">12 Subsystems</a>
+      <a href="#matrix">Specs Matrix</a>
+      <a href="#hud-stage" onclick="switchView('hud')" class="nav-btn-highlight">⚡ Live Visor HUD</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- Hero Header -->
+    <section class="hero" id="showcase">
+      <div class="badge">
+        <span class="badge-pulse"></span>
+        Interactive 3D WebGL Digital Helmet
+      </div>
+      <h1>Explore in Full 3D</h1>
+      <p class="subtitle">
+        Rotate, zoom, and explode the AETHER H-1 Digital Smart Helmet in real-time 3D. Click on components to isolate subsystems, test custom carbon finishes, and experience the live Heads-Up Display simulator.
+      </p>
+
+      <!-- View Switcher Controls -->
+      <div class="view-switcher-bar">
+        <button class="switch-btn active" id="btn-3d" onclick="switchView('3d')">
+          <span>🌐</span> Real-Time 3D Model
+        </button>
+        <button class="switch-btn" id="btn-real" onclick="switchView('real')">
+          <span>🛡️</span> Studio Photo View
+        </button>
+        <button class="switch-btn" id="btn-cutaway" onclick="switchView('cutaway')">
+          <span>🔬</span> Internal Cutaway
+        </button>
+        <button class="switch-btn" id="btn-exploded" onclick="switchView('exploded')">
+          <span>💥</span> 2D Exploded Blueprint
+        </button>
+        <button class="switch-btn" id="btn-audio" onclick="switchView('audio')">
+          <span>🎧</span> Comms &amp; Audio
+        </button>
+        <button class="switch-btn" id="btn-isometric" onclick="switchView('isometric')">
+          <span>📐</span> 3D Isometric CAD
+        </button>
+        <button class="switch-btn" id="btn-front" onclick="switchView('front')">
+          <span>👁️</span> 3D Front Angle
+        </button>
+        <button class="switch-btn" id="btn-side" onclick="switchView('side')">
+          <span>🏎️</span> 3D Side Profile
+        </button>
+        <button class="switch-btn" id="btn-top" onclick="switchView('top')">
+          <span>💨</span> 3D Top Aerodynamics
+        </button>
+        <button class="switch-btn" id="btn-hud" onclick="switchView('hud')">
+          <span>⚡</span> Live Visor HUD Simulator
+        </button>
+      </div>
+    </section>
+
+    <!-- Visual Showcase Stage -->
+    <div class="showcase-stage">
+      <div class="showcase-header">
+        <div class="stage-title" id="stage-title-text">
+          <span>🌐</span> Real-Time 3D Interactive Model (Click &amp; Drag to Rotate 360°)
+        </div>
+        <div class="stage-actions">
+          <button class="stage-btn" id="btn-autorotate-toggle" onclick="toggleAutoRotate()">🔄 Auto-Rotate: ON</button>
+          <button class="stage-btn" onclick="reset3DCamera()">🎯 Reset View</button>
+          <button class="stage-btn" onclick="openFullscreen()">⛶ Fullscreen</button>
+        </div>
+      </div>
+
+      <!-- 1. Real-Time 3D WebGL Canvas Viewport -->
+      <div class="viewport-3d-wrapper" id="stage-3d">
+        <canvas id="webgl-canvas"></canvas>
+        
+        <!-- Interactive Drag Hint -->
+        <div class="hint-pill" id="hint-3d">
+          <span>👆</span> Drag to Rotate 360° • Scroll / Pinch to Zoom • Right-Click to Pan
+        </div>
+
+        <!-- 3D Hotspots Over Canvas -->
+        <div id="hotspots-layer"></div>
+
+        <!-- 3D Interactive Floating Toolbar -->
+        <div class="floating-3d-toolbar">
+          <!-- 3D Explode Parts Slider -->
+          <div class="tool-group slider-container">
+            <span class="tool-label">💥 3D Explode:</span>
+            <input 
+              type="range" 
+              class="slider-range" 
+              id="explode-slider" 
+              min="0" 
+              max="100" 
+              value="0" 
+              oninput="handleExplodeSlider(this.value)"
+            />
+            <span id="explode-val-txt" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--accent-cyan); min-width:32px;">0%</span>
+          </div>
+
+          <!-- Color Finish Customizer -->
+          <div class="tool-group">
+            <span class="tool-label">🎨 Finish:</span>
+            <button class="tool-btn active" id="fbtn-carbon" onclick="setFinish('carbon', this)">3K Carbon</button>
+            <button class="tool-btn" id="fbtn-black" onclick="setFinish('black', this)">Gloss Obsidian</button>
+            <button class="tool-btn" id="fbtn-cyan" onclick="setFinish('cyan', this)">Cyber Cyan</button>
+            <button class="tool-btn" id="fbtn-titanium" onclick="setFinish('titanium', this)">Titanium</button>
+          </div>
+
+          <!-- Quick Camera Angles -->
+          <div class="tool-group">
+            <span class="tool-label">📷 Angle:</span>
+            <button class="tool-btn" onclick="setCameraAngle('front')">Front</button>
+            <button class="tool-btn" onclick="setCameraAngle('side')">Side</button>
+            <button class="tool-btn" onclick="setCameraAngle('top')">Top</button>
+            <button class="tool-btn" onclick="setCameraAngle('iso')">3D Iso</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Static Image Viewport (Secondary Photographic Views) -->
+      <div class="showcase-viewport-img" id="stage-img">
+        <img 
+          id="main-display-img" 
+          class="showcase-img" 
+          src="assets/smart_helmet_real_render.jpg" 
+          alt="Digital Smart Helmet View"
+        />
+      </div>
+
+      <!-- 3. Live Visor HUD Simulator Mode -->
+      <div class="hud-simulator" id="hud-stage">
+        <div class="hud-reticle"></div>
+        <div class="hud-center-cross"></div>
+        
+        <div class="hud-speedometer">
+          <div class="hud-speed" id="hud-speed-val">74</div>
+          <div class="hud-unit">KM / H • TELEMETRY OK</div>
+        </div>
+
+        <!-- Top Left Widget: Telemetry -->
+        <div class="hud-widget hud-widget-tl">
+          <div style="color:var(--accent-cyan); font-weight:700; margin-bottom:4px;">AETHER OS v4.8 &bull; NEURAL LINK</div>
+          <div>CPU LOAD: <span style="color:#00ff88">21%</span> | EDGE AI: <span style="color:#00ff88">ONLINE</span></div>
+          <div>IMU FUSION: 9-AXIS STABILIZED</div>
+          <div>DATA LATENCY: 2.8 ms (5G ULTRA)</div>
+        </div>
+
+        <!-- Top Right Widget: Environment -->
+        <div class="hud-widget hud-widget-tr">
+          <div style="color:var(--accent-green); font-weight:700; margin-bottom:4px;">ACTIVE SENSOR ARRAY</div>
+          <div>SOLID-STATE LIDAR: <span style="color:#00f2fe">85m SCAN</span></div>
+          <div>EXTERNAL AMBIENT: 28°C | CLEAR</div>
+          <div>STRUCTURAL INTEGRITY: 100%</div>
+        </div>
+
+        <!-- Bottom Left Widget: Collision Alert Radar -->
+        <div class="hud-widget hud-widget-bl">
+          <div style="color:var(--accent-red); font-weight:700;">PROXIMITY RADAR SCAN</div>
+          <div class="hud-radar">
+            <div class="hud-radar-sweep"></div>
+          </div>
+          <div style="margin-top:6px; font-size:0.75rem; text-align:center;">CLEAR ZONE • 360° SECURE</div>
+        </div>
+
+        <!-- Bottom Right Widget: Navigation -->
+        <div class="hud-widget hud-widget-br">
+          <div style="color:var(--accent-blue); font-weight:700; margin-bottom:4px;">AR ROUTE GUIDANCE</div>
+          <div>DESTINATION: METROPOLIS HIGHWAY WAYPOINT 04</div>
+          <div>NEXT MANEUVER: TURN RIGHT IN 180m</div>
+          <div>BATTERY: <span style="color:#00ff88">89%</span> (~7.4 hrs)</div>
+        </div>
+
+        <!-- HUD Mode Toggle Bar -->
+        <div class="hud-modes-bar">
+          <button class="hud-mode-pill active" onclick="setHudMode('telemetry', this)">Combat/Race HUD</button>
+          <button class="hud-mode-pill" onclick="setHudMode('night', this)">Night Vision FLIR</button>
+          <button class="hud-mode-pill" onclick="setHudMode('city', this)">Urban Commute AR</button>
+        </div>
+      </div>
+
+      <!-- Thumbnail Strip -->
+      <div class="thumb-strip">
+        <div class="thumb-item active" onclick="switchView('3d')">
+          <img src="assets/render_isometric.png" alt="Interactive 3D">
+          <span class="thumb-label">🌐 Real-Time 3D</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('real')">
+          <img src="assets/smart_helmet_real_render.jpg" alt="Real Assembled">
+          <span class="thumb-label">Studio Photo</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('cutaway')">
+          <img src="assets/smart_helmet_internal_cutaway.jpg" alt="Internal Cutaway">
+          <span class="thumb-label">Cutaway Internal</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('exploded')">
+          <img src="assets/digital_helmet_exploded.jpg" alt="Exploded View">
+          <span class="thumb-label">2D Exploded</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('audio')">
+          <img src="assets/smart_helmet_audio_comms.jpg" alt="Audio Comms">
+          <span class="thumb-label">Audio & Comms</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('isometric')">
+          <img src="assets/render_isometric.png" alt="3D Isometric">
+          <span class="thumb-label">3D Isometric</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('front')">
+          <img src="assets/render_front.png" alt="3D Front">
+          <span class="thumb-label">3D Front Angle</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('side')">
+          <img src="assets/render_side.png" alt="3D Side">
+          <span class="thumb-label">3D Side Profile</span>
+        </div>
+        <div class="thumb-item" onclick="switchView('top')">
+          <img src="assets/render_top.png" alt="3D Top">
+          <span class="thumb-label">3D Top Aero</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inspector Highlight Box (Appears on 3D click or Card click) -->
+    <div class="inspector-panel" id="inspector">
+      <div class="inspector-grid">
+        <div>
+          <div class="badge" id="insp-badge">SUBSYSTEM INSPECTION</div>
+          <h2 class="inspector-title" id="insp-title">Component Title</h2>
+          <p class="inspector-desc" id="insp-desc">Detailed description of this component's engineering purpose and working mechanism.</p>
+          <table class="spec-table" id="insp-specs">
+            <!-- Populated via JS -->
+          </table>
+        </div>
+        <div>
+          <h3 style="font-family:var(--font-display); font-size:1.1rem; color:#fff; margin-bottom:1rem;">Key Engineering Highlights</h3>
+          <ul class="points-list" id="insp-points">
+            <!-- Populated via JS -->
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 12 Components Deep Dive Grid -->
+    <section class="section-header" id="components">
+      <div class="section-tag">Anatomy &amp; Subsystems</div>
+      <h2 class="section-title">All 12 Real Components Breakdown</h2>
+      <p class="section-subtitle">Click on any subsystem card below or click any 3D hotspot on the model above to inspect its engineering specifications.</p>
+    </section>
+
+    <div class="components-grid" id="components-container">
+      <!-- Injected via JavaScript for clean maintainability -->
+    </div>
+
+    <!-- Technical Architecture Matrix -->
+    <section class="section-header" id="matrix">
+      <div class="section-tag">Engineering Specifications</div>
+      <h2 class="section-title">Component Integration Matrix</h2>
+      <p class="section-subtitle">Comparative operational data across physical, electrical, and optical domains.</p>
+    </section>
+
+    <div class="specs-table-container">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Subsystem</th>
+            <th>Material / Hardware</th>
+            <th>Primary Function</th>
+            <th>Weight / Power</th>
+            <th>Operational Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Outer Shell</strong></td>
+            <td>3K Prepreg Carbon Fiber &amp; Kevlar</td>
+            <td>Penetration protection &amp; aerodynamic channeling</td>
+            <td>420g / Passive</td>
+            <td><span class="status-active">MIL-SPEC CERTIFIED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Impact Absorber</strong></td>
+            <td>Dual-Density EPS + MIPS C2 Core</td>
+            <td>Rotational and linear force dissipation</td>
+            <td>280g / Passive</td>
+            <td><span class="status-active">DOT &amp; ECE 22.06</span></td>
+          </tr>
+          <tr>
+            <td><strong>AI Edge Core</strong></td>
+            <td>Quad-Core ARM Cortex + 8 TOPS NPU</td>
+            <td>LiDAR vision analysis, HUD projection logic</td>
+            <td>65g / 4.5W TDP</td>
+            <td><span class="status-active">ACTIVE TELEMETRY</span></td>
+          </tr>
+          <tr>
+            <td><strong>Waveguide Visor</strong></td>
+            <td>Electrochromic Curved Polycarbonate</td>
+            <td>Holographic augmented reality projection</td>
+            <td>140g / 0.8W tint</td>
+            <td><span class="status-active">OPTICAL CALIBRATED</span></td>
+          </tr>
+          <tr>
+            <td><strong>Micro-OLED Engines</strong></td>
+            <td>Twin 0.71-inch Sony Micro-OLEDs</td>
+            <td>Dual 4K ultra-bright HUD imagery</td>
+            <td>35g / 2.2W</td>
+            <td><span class="status-active">4,000 NITS PEAK</span></td>
+          </tr>
+          <tr>
+            <td><strong>LiDAR &amp; Camera Array</strong></td>
+            <td>Solid-state ToF LiDAR + 4K Starvis Sensor</td>
+            <td>Obstacle detection &amp; 60fps dashcam recording</td>
+            <td>48g / 1.8W</td>
+            <td><span class="status-active">360° SURVEILLANCE</span></td>
+          </tr>
+          <tr>
+            <td><strong>Power Cell</strong></td>
+            <td>Curved Li-Polymer Smart Battery</td>
+            <td>Balanced 6,200 mAh energy storage</td>
+            <td>185g / 6,200 mAh</td>
+            <td><span class="status-active">8.5H RUNTIME</span></td>
+          </tr>
+          <tr>
+            <td><strong>Audio Transducers</strong></td>
+            <td>Dual Bone Conduction + Beamforming Mics</td>
+            <td>Open-ear spatial comms &amp; voice commands</td>
+            <td>25g / 0.5W</td>
+            <td><span class="status-active">ENC NOISE CANCEL</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Production Callout Banner -->
+    <div class="store-cta">
+      <div class="cta-text">
+        <div class="badge" style="margin-bottom:0.6rem;">AETHER H-1 • NEXT-GEN PLATFORM</div>
+        <h2>Experience the Future of Digital Protection</h2>
+        <p>Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, and 100m solid-state LiDAR detection.</p>
+      </div>
+      <div class="cta-actions">
+        <button onclick="switchView('3d')" class="btn-primary">🌐 Launch 3D Explorer →</button>
+        <a href="assets/smart_helmet_real_render.jpg" download class="btn-secondary">Download 4K CAD Renders</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>AETHER H-1 Cybernetic Digital Smart Helmet • Advanced Wearable Robotics &amp; Heads-Up Display Project</p>
+    <p style="margin-top:6px; font-size:0.75rem; color:#5b6982;">Independent Component Architecture, Physics &amp; Real-Time WebGL 3D Simulation.</p>
+  </footer>
+
+  <script>
+    // 12 Full Component Specifications
+    const components = [
+      {
+        icon: "🛡️",
+        number: "PART #01",
+        title: "Carbon Fiber Outer Shell",
+        badge: "STRUCTURAL PROTECTION",
+        desc: "Aerodynamic woven 3K prepreg carbon-fiber and ballistic Kevlar exoskeleton. Engineered for ultra-lightweight structural defense, minimal wind resistance at high speeds, and high-temperature tolerance.",
+        specs: [
+          { label: "Material Composition", val: "3K Toray Carbon Fiber + Ballistic Kevlar" },
+          { label: "Total Shell Weight", val: "420 grams (±10g)" },
+          { label: "Tensile Strength", val: "4,900 MPa" },
+          { label: "Finish Coating", val: "Matte Anti-Scratch UV Resistant Polyurethane" }
+        ],
+        points: [
+          "Wind-tunnel sculpted airflow vortex fins that eliminate head buffeting at highway speeds.",
+          "Integrated mounting recesses for flush-fitting front camera and LiDAR sensors without drag.",
+          "High thermal dissipation properties that keep internal components and electronics cool."
+        ],
+        tags: ["3K Carbon", "420g", "Kevlar Ballistic", "Aero Fins"]
+      },
+      {
+        icon: "🪖",
+        number: "PART #02",
+        title: "Dual-Density EPS Liner & MIPS",
+        badge: "IMPACT ABSORPTION",
+        desc: "Multi-density expanded polystyrene internal safety core engineered with a low-friction MIPS C2 rotational slip plane. Absorbs both high-speed blunt impacts and angular rotational concussion stresses.",
+        specs: [
+          { label: "Foam Density", val: "Dual-Zone (45g/L outer, 30g/L inner)" },
+          { label: "Safety Standard", val: "ECE 22.06, DOT FMVSS 218 & Snell M2025" },
+          { label: "Slip Plane Travel", val: "10-15mm omni-directional rotation" },
+          { label: "Lining Layer", val: "Anti-microbial Silver-Ion moisture wicking" }
+        ],
+        points: [
+          "Reduces rotational acceleration transmitted to the rider's brain by over 38% during diagonal crashes.",
+          "Laser-cut internal airflow channels routed directly across the scalp for active ventilation.",
+          "Removable and washable ergonomic cheek pads tailored with memory foam contouring."
+        ],
+        tags: ["Dual-Density EPS", "MIPS C2", "ECE 22.06", "Memory Foam"]
+      },
+      {
+        icon: "🧠",
+        number: "PART #03",
+        title: "Neural Motherboard & AI Core",
+        badge: "COMPUTING & SENSORS",
+        desc: "The central computer of the helmet. Features a low-power quad-core ARM processor, an 8 TOPS Edge Neural Processing Unit (NPU), 5G ultra-low latency mesh radio, and sensor fusion algorithms.",
+        specs: [
+          { label: "Processor", val: "Quad-Core ARM Cortex-A78 + 8 TOPS NPU" },
+          { label: "Memory / Storage", val: "8GB LPDDR5 RAM + 128GB UFS 3.1" },
+          { label: "Wireless Stack", val: "5G Sub-6GHz, Wi-Fi 6E, Bluetooth 5.4, UWB" },
+          { label: "Sensor Fusion", val: "9-Axis IMU (Gyro + Accelerometer + Magnetometer)" }
+        ],
+        points: [
+          "Runs on-device computer vision models for real-time pedestrian and vehicle hazard alerts in under 3ms.",
+          "Automatic collision telemetry triggering emergency SOS text and GPS coordinates via cellular mesh.",
+          "Over-the-air (OTA) firmware update capabilities for constant HUD feature enhancements."
+        ],
+        tags: ["8 TOPS NPU", "5G Mesh", "9-Axis IMU", "Fall Detection"]
+      },
+      {
+        icon: "👓",
+        number: "PART #04",
+        title: "Holographic Waveguide Visor",
+        badge: "OPTICAL DISPLAY",
+        desc: "Curved optical-grade polycarbonate visor embedded with geometric optical waveguides and electrochromic liquid crystal layers that adjust tint in 0.1 seconds from transparent to dark polarized.",
+        specs: [
+          { label: "Field of View (FOV)", val: "110° diagonal ultra-wide" },
+          { label: "Optical Transparency", val: "8% to 85% variable transmission" },
+          { label: "Switching Speed", val: "100 milliseconds electrochromic" },
+          { label: "Protective Surface", val: "Hard-coated Diamond-Carbon Anti-Scratch & Anti-Fog" }
+        ],
+        points: [
+          "Zero focal parallax: virtual navigation arrows appear glued directly to the asphalt in front of the rider.",
+          "Automatic glare dimming when facing oncoming high-beam headlights or low-angle sunset rays.",
+          "Pinlock 120 MaxVision anti-fog thermal insert integration for heavy rain and cold conditions."
+        ],
+        tags: ["Waveguide AR", "110° FOV", "Electrochromic", "Anti-Fog"]
+      },
+      {
+        icon: "📽️",
+        number: "PART #05",
+        title: "Dual Micro-OLED Projectors",
+        badge: "PROJECTION ENGINE",
+        desc: "Ultra-compact twin Sony 0.71-inch Micro-OLED engines mounted inside the upper brow cavity, beaming ultra-sharp telemetry and road hazards into the visor waveguides with infinite contrast.",
+        specs: [
+          { label: "Display Resolution", val: "3840 x 2160 pixels per eye" },
+          { label: "Peak Luminance", val: "4,000 Nits (daylight readable)" },
+          { label: "Contrast Ratio", val: "100,000:1 True Black" },
+          { label: "Refresh Rate", val: "90 Hz zero-lag motion smoothing" }
+        ],
+        points: [
+          "Micro-mirror collimator optics that eliminate eye fatigue on long rides.",
+          "Auto-brightness photodiode sensor matching display intensity to ambient ambient lighting.",
+          "Independent left/right eye focal diopter adjustment (+2.0D to -5.0D) for riders wearing prescription lenses."
+        ],
+        tags: ["4K Micro-OLED", "4,000 Nits", "90Hz", "Diopter Adjust"]
+      },
+      {
+        icon: "📡",
+        number: "PART #06",
+        title: "Solid-State LiDAR & 4K Camera",
+        badge: "PERCEPTION & DASHCAM",
+        desc: "A solid-state pulsed time-of-flight (ToF) LiDAR scanner paired with a 4K 60fps Sony Starvis 2 ultra-low-light HDR camera integrated seamlessly above the visor brow for automated hazard perception.",
+        specs: [
+          { label: "LiDAR Detection Range", val: "0.2m to 100m (±2cm precision)" },
+          { label: "LiDAR Angular Span", val: "120° horizontal x 30° vertical" },
+          { label: "Camera Sensor", val: "Sony Starvis 2 1/1.8\" 4K HDR 60fps" },
+          { label: "Video Stabilization", val: "Electronic RockSteady 3.0 EIS" }
+        ],
+        points: [
+          "Continuous looping black-box dashcam recording encrypted to onboard high-speed flash memory.",
+          "LiDAR measures opening speed of approaching obstacles and warns before a blind turn.",
+          "AI automated license plate recognition and distance-to-car calculation overlay."
+        ],
+        tags: ["100m LiDAR", "4K 60fps", "Starvis 2", "Dashcam EIS"]
+      },
+      {
+        icon: "🔋",
+        number: "PART #07",
+        title: "Curved Li-Polymer Smart Battery",
+        badge: "POWER SYSTEM",
+        desc: "Twin curved lithium-polymer battery packs custom molded to fit into the rear lower collar of the helmet. Serves as a perfect counter-weight to the front optics, ensuring balanced center of gravity.",
+        specs: [
+          { label: "Cell Chemistry", val: "High-Energy Density Lithium-Cobalt Polymer" },
+          { label: "Total Capacity", val: "6,200 mAh @ 3.85V (23.8 Wh)" },
+          { label: "Operating Runtime", val: "8.5 Hours Continuous Full HUD + Recording" },
+          { label: "Recharge Standard", val: "USB-C PD 3.0 (30W) & Qi 15W Wireless Dock" }
+        ],
+        points: [
+          "Charges from 0% to 80% in just 32 minutes via USB-C Power Delivery.",
+          "Integrated Battery Management System (BMS) with overcurrent, overvoltage, and cell-balancing protection.",
+          "Hot-swappable magnetic cartridge design for instant battery replacement on multi-day tours."
+        ],
+        tags: ["6,200 mAh", "8.5h Runtime", "USB-C PD 30W", "Qi Wireless"]
+      },
+      {
+        icon: "🔊",
+        number: "PART #08",
+        title: "Bone Conduction & Audio Transducers",
+        badge: "ACOUSTICS & COMMS",
+        desc: "Dual bone-conduction audio exciters contacting the temporal bone, coupled with 4 beamforming environmental noise-cancelling (ENC) microphones for crisp intercom speech even at 120 km/h.",
+        specs: [
+          { label: "Transducer Type", val: "Dual Magnetic Bone Conduction Transducers" },
+          { label: "Microphone Array", val: "4-mic Beamforming ENC Array" },
+          { label: "Frequency Response", val: "20 Hz – 20,000 Hz" },
+          { label: "Intercom Protocol", val: "Dynamic Mesh Intercom (up to 16 riders, 2km range)" }
+        ],
+        points: [
+          "Keeps rider's ear canals completely open to hear critical ambient road sirens and traffic sounds.",
+          "Wind-noise cancellation DSP algorithm filtering out up to 45dB of rushing air turbulence.",
+          "Native hands-free voice command engine ('Hey Helmet, zoom map', 'Answer call')."
+        ],
+        tags: ["Bone Conduction", "4-Mic ENC", "Mesh Intercom", "Voice Control"]
+      },
+      {
+        icon: "🚨",
+        number: "PART #09",
+        title: "Active Rear Warning LED Bar",
+        badge: "REAR ILLUMINATION",
+        desc: "High-output curved RGB LED light strip wrapped around the rear spoiler. Features smart deceleration sensing that triggers ultra-bright brake pulses without any physical connection to the motorcycle.",
+        specs: [
+          { label: "LED Emitters", val: "36 High-Lumen Addressable NeoPixel LEDs" },
+          { label: "Peak Luminosity", val: "850 Lumens (Visible from 1.2km away)" },
+          { label: "Braking Trigger", val: "Internal 9-axis accelerometer auto-detects deceleration" },
+          { label: "Lighting Modes", val: "Pulse, Solid Amber, Emergency Hazard Strobe" }
+        ],
+        points: [
+          "Brake light activates instantaneously on engine braking / downshifting even before manual brakes are touched.",
+          "Turn signal indicators synchronized with HUD GPS navigation instructions.",
+          "Emergency crash strobe automatically flashes SOS in high-visibility amber if a crash is registered."
+        ],
+        tags: ["850 Lumens", "Smart Brake Sensing", "Auto SOS", "Dynamic Turn Signal"]
+      },
+      {
+        icon: "🧲",
+        number: "PART #10",
+        title: "Fidlock Magnetic Chin Harness",
+        badge: "RETENTION & ERGONOMICS",
+        desc: "German engineered Fidlock magnetic mechanical quick-release chin strap buckle. Snaps shut effortlessly with one gloved hand and withstands over 2,000 Newtons of tensile crash force.",
+        specs: [
+          { label: "Mechanism", val: "Magnetic-Mechanical Interlocking Hook" },
+          { label: "Tensile Rating", val: "2,200 N (Exceeds FIA and SNELL criteria)" },
+          { label: "Strap Material", val: "High-Tenacity Tubular Nylon Webbing" },
+          { label: "Padding", val: "Soft Neoprene Chin Guard with Moisture Barrier" }
+        ],
+        points: [
+          "One-hand operation: simply bring the two buckle ends close and magnets snap and lock them mechanically.",
+          "Emergency quick-release red pull cord for first responders to swiftly remove helmet without neck strain.",
+          "Ergonomic chin curtain reducing wind draft and turbulence entering from underneath."
+        ],
+        tags: ["Fidlock Magnetic", "2,200N Strength", "One-Hand Lock", "EMT Quick-Pull"]
+      },
+      {
+        icon: "💨",
+        number: "PART #11",
+        title: "Active Airflow Cooling Channels",
+        badge: "CLIMATE & VENTILATION",
+        desc: "Internal computational fluid dynamics (CFD) engineered venturi conduits, front shutter gates, and exhaust diffusers that maintain optimum internal head temperature and prevent visor fogging.",
+        specs: [
+          { label: "Intake Ports", val: "2 Chin intakes, 2 Brow intakes with micro-mesh" },
+          { label: "Exhaust Ports", val: "3 Venturi low-pressure negative exhaust vents" },
+          { label: "Sealing Rating", val: "IP67 Dust & Water Ingress Protection" },
+          { label: "Temperature Drop", val: "Up to 5.5°C cooler than conventional helmets" }
+        ],
+        points: [
+          "Micro-mesh bug screens preventing foreign particles and insects from entering airflow ports.",
+          "Adjustable slider toggles operable with thick riding gloves.",
+          "Internal silicon gasket perimeter creating an airtight seal when visor is closed."
+        ],
+        tags: ["CFD Venturi", "IP67 Sealed", "Glove Friendly", "Anti-Mist"]
+      },
+      {
+        icon: "🧭",
+        number: "PART #12",
+        title: "Crash Sensor & SOS Telematics",
+        badge: "SAFETY & EMERGENCY",
+        desc: "High-G triaxial impact sensor coupled with real-time GPS/GLONASS/Galileo satellite transceiver that automatically detects accidents and transmits crash telemetry to emergency responders.",
+        specs: [
+          { label: "G-Force Threshold", val: "Up to ±64G impact detection" },
+          { label: "Satellite Constellation", val: "GPS L1/L5, GLONASS, Galileo, BeiDou" },
+          { label: "SOS Response Time", val: "Countdown timer (30s) before automated dispatch" },
+          { label: "Cloud Integration", val: "AETHER Cloud Emergency Dispatch Protocol" }
+        ],
+        points: [
+          "Distinguishes between dropping the helmet on the floor and a genuine vehicular accident.",
+          "Transmits rider's blood type, emergency contacts, GPS coordinates, and impact G-force to ambulance.",
+          "Manual cancel button on helmet side if rider is uninjured and does not require medical response."
+        ],
+        tags: ["64G Impact Sensor", "Multi-GNSS", "Emergency Cloud", "30s Cancel Timer"]
+      }
+    ];
+
+    // Populate components grid
+    const compContainer = document.getElementById('components-container');
+    components.forEach((c, index) => {
+      const card = document.createElement('div');
+      card.className = 'comp-card';
+      card.id = 'comp-card-' + index;
+      card.onclick = () => inspectComponent(index);
+
+      card.innerHTML = `
+        <div>
+          <div class="comp-top">
+            <div class="comp-icon-box">${c.icon}</div>
+            <div class="comp-number">${c.number}</div>
+          </div>
+          <h3 class="comp-title">${c.title}</h3>
+          <p class="comp-desc">${c.desc}</p>
+        </div>
+        <div class="comp-badge-row">
+          ${c.tags.map(t => `<span class="comp-mini-tag">${t}</span>`).join('')}
+        </div>
+      `;
+      compContainer.appendChild(card);
+    });
+
+    // View Switcher logic (3D WebGL vs Static Render vs Live HUD)
+    const viewMap = {
+      'real': {
+        img: 'assets/smart_helmet_real_render.jpg',
+        title: '🛡️ Real Studio Model Exterior View'
+      },
+      'cutaway': {
+        img: 'assets/smart_helmet_internal_cutaway.jpg',
+        title: '🔬 Internal Architectural Cutaway (Liner, Core & Electronics)'
+      },
+      'exploded': {
+        img: 'assets/digital_helmet_exploded.jpg',
+        title: '💥 2D Exploded Component Blueprint'
+      },
+      'audio': {
+        img: 'assets/smart_helmet_audio_comms.jpg',
+        title: '🎧 Audio & Comms Subsystem (Bone Conduction & 4-Mic ENC)'
+      },
+      'isometric': {
+        img: 'assets/render_isometric.png',
+        title: '📐 3D CAD Isometric Blueprint View'
+      },
+      'front': {
+        img: 'assets/render_front.png',
+        title: '👁️ 3D CAD Front Angle (Aerodynamics & Visor)'
+      },
+      'side': {
+        img: 'assets/render_side.png',
+        title: '🏎️ 3D CAD Side Profile View'
+      },
+      'top': {
+        img: 'assets/render_top.png',
+        title: '💨 3D CAD Top Aerodynamic Venting View'
+      }
+    };
+
+    let currentView = '3d';
+
+    function switchView(view) {
+      currentView = view;
+      document.querySelectorAll('.switch-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById('btn-' + view);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Update thumbnails active state
+      document.querySelectorAll('.thumb-item').forEach(th => th.classList.remove('active'));
+      const activeThumb = Array.from(document.querySelectorAll('.thumb-item')).find(th => 
+        th.getAttribute('onclick') && th.getAttribute('onclick').includes(view)
+      );
+      if (activeThumb) activeThumb.classList.add('active');
+
+      const stage3D = document.getElementById('stage-3d');
+      const stageImg = document.getElementById('stage-img');
+      const hudStage = document.getElementById('hud-stage');
+      const mainImg = document.getElementById('main-display-img');
+      const titleEl = document.getElementById('stage-title-text');
+
+      if (view === '3d') {
+        stage3D.style.display = 'block';
+        stageImg.style.display = 'none';
+        hudStage.classList.remove('active');
+        if (titleEl) titleEl.innerHTML = '🌐 Real-Time 3D Interactive Model (Click &amp; Drag to Rotate 360°)';
+        onWindowResize();
+      } else if (view === 'hud') {
+        stage3D.style.display = 'none';
+        stageImg.style.display = 'none';
+        hudStage.classList.add('active');
+        if (titleEl) titleEl.innerHTML = '⚡ Live Interactive Cyberpunk Visor HUD Simulator';
+      } else {
+        stage3D.style.display = 'none';
+        hudStage.classList.remove('active');
+        stageImg.style.display = 'flex';
+        const vData = viewMap[view];
+        if (vData) {
+          mainImg.src = vData.img;
+          mainImg.alt = vData.title;
+          if (titleEl) titleEl.innerHTML = vData.title;
+        }
+      }
+    }
+
+    // Inspector function
+    function inspectComponent(index) {
+      const data = components[index];
+      const panel = document.getElementById('inspector');
+      panel.style.display = 'block';
+
+      document.getElementById('insp-badge').innerText = data.badge;
+      document.getElementById('insp-title').innerHTML = `${data.icon} ${data.title}`;
+      document.getElementById('insp-desc').innerText = data.desc;
+
+      const specsTable = document.getElementById('insp-specs');
+      specsTable.innerHTML = '';
+      data.specs.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="label">${s.label}</td><td class="val">${s.val}</td>`;
+        specsTable.appendChild(tr);
+      });
+
+      const pointsContainer = document.getElementById('insp-points');
+      pointsContainer.innerHTML = '';
+      data.points.forEach(p => {
+        const li = document.createElement('li');
+        li.innerText = p;
+        pointsContainer.appendChild(li);
+      });
+
+      document.querySelectorAll('.comp-card').forEach((card, idx) => {
+        if (idx === index) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      });
+
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Speedometer dynamic ticker
+    let speed = 74;
+    setInterval(() => {
+      const delta = (Math.random() - 0.49) * 3;
+      speed = Math.max(65, Math.min(88, speed + delta));
+      const el = document.getElementById('hud-speed-val');
+      if (el) el.innerText = Math.round(speed);
+    }, 1100);
+
+    // Fullscreen toggle
+    function openFullscreen() {
+      const stage = document.querySelector('.showcase-stage');
+      if (!document.fullscreenElement) {
+        stage.requestFullscreen().catch(err => alert('Fullscreen unavailable: ' + err.message));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // HUD Mode changer
+    function setHudMode(mode, btn) {
+      document.querySelectorAll('.hud-mode-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const hud = document.getElementById('hud-stage');
+      if (mode === 'night') {
+        hud.style.background = 'radial-gradient(circle at center, rgba(0, 255, 136, 0.15) 0%, rgba(2, 15, 6, 0.96) 85%)';
+        hud.style.color = '#00ff88';
+      } else if (mode === 'city') {
+        hud.style.background = 'radial-gradient(circle at center, rgba(79, 172, 254, 0.12) 0%, rgba(4, 9, 20, 0.95) 85%)';
+        hud.style.color = '#4facfe';
+      } else {
+        hud.style.background = 'radial-gradient(circle at center, rgba(0, 242, 254, 0.05) 0%, rgba(5, 7, 12, 0.95) 85%)';
+        hud.style.color = '#00f2fe';
+      }
+    }
+
+    /* =========================================================================
+       3D REAL-TIME WEBGL THREE.JS VIEWER ENGINE
+       ========================================================================= */
+    let scene, camera, renderer, controls;
+    let helmetModel = null;
+    let allMeshes = [];
+    let autoRotateEnabled = true;
+
+    // Explode offsets mapping for the 22 meshes (-Z is front, +Z is rear, +Y is up, -X is left)
+    const explodeVectors = {
+      'Digital_Helmet_Visor_Mesh': new THREE.Vector3(0, 30, -90),
+      'HUD_Waveguide_Module_Mesh': new THREE.Vector3(0, 20, -75),
+      'Forehead_Vent_Scoop_Mesh': new THREE.Vector3(0, 60, -45),
+      'Chin_Bar_Vent_Mesh': new THREE.Vector3(0, -35, -70),
+      'Chin_Honeycomb_Grille_Mesh': new THREE.Vector3(0, -38, -72),
+      'EyePort_Gasket_Mesh': new THREE.Vector3(0, 10, -30),
+      'Aero_Ducktail_Spoiler_Mesh': new THREE.Vector3(0, 35, 80),
+      'Rear_Radar_Sensor_Mesh': new THREE.Vector3(0, 15, 85),
+      'Rear_Decel_LED_Strip_Mesh': new THREE.Vector3(0, 0, 75),
+      'Battery_Pack_System_Mesh': new THREE.Vector3(0, -45, 80),
+      'Intercom_Pod_Body_Mesh': new THREE.Vector3(-80, -5, 0),
+      'Intercom_Jog_Dial_Mesh': new THREE.Vector3(-95, -5, 0),
+      'Intercom_Buttons_Mesh': new THREE.Vector3(-88, -5, 0),
+      'Intercom_Halo_Ring_Mesh': new THREE.Vector3(-90, -5, 0),
+      'Spatial_Speakers_Mesh': new THREE.Vector3(50, 0, 0),
+      'Speech_Boom_Arm_Mesh': new THREE.Vector3(-45, -30, -50),
+      'Speech_Boom_Microphone_Mesh': new THREE.Vector3(-25, -40, -65),
+      'Pivot_Mechanism_Left_Mesh': new THREE.Vector3(-60, 10, 0),
+      'Pivot_Mechanism_Right_Mesh': new THREE.Vector3(60, 10, 0),
+      'Emergency_Release_Tabs_Mesh': new THREE.Vector3(0, -60, 0),
+      'MPU_IMU_Sensor_Mesh': new THREE.Vector3(0, 70, 0),
+      'Digital_Helmet_Shell_Mesh': new THREE.Vector3(0, 0, 0)
+    };
+
+    // 3D Hotspot coordinate definitions (world space relative to helmet center)
+    const hotspots3D = [
+      { id: 'visor', pos: new THREE.Vector3(0, 20, -110), label: "👓 Waveguide Visor", compIdx: 3 },
+      { id: 'lidar', pos: new THREE.Vector3(0, 68, -115), label: "📡 4K LiDAR Camera", compIdx: 5 },
+      { id: 'shell', pos: new THREE.Vector3(0, 125, -10), label: "🛡️ Carbon Fiber Shell", compIdx: 0 },
+      { id: 'battery', pos: new THREE.Vector3(0, -85, 115), label: "🔋 Li-Polymer Battery", compIdx: 6 },
+      { id: 'audio', pos: new THREE.Vector3(-125, -35, -30), label: "🔊 Bone Conduction Audio", compIdx: 7 },
+      { id: 'brake', pos: new THREE.Vector3(0, 5, 148), label: "🚨 Rear LED Warning Bar", compIdx: 8 }
+    ];
+
+    function init3D() {
+      const container = document.getElementById('stage-3d');
+      const canvas = document.getElementById('webgl-canvas');
+
+      // 1. Scene
+      scene = new THREE.Scene();
+
+      // 2. Camera - Positioned for front 3/4 isometric perspective
+      const aspect = container.clientWidth / container.clientHeight;
+      camera = new THREE.PerspectiveCamera(40, aspect, 1, 3000);
+      camera.position.set(-340, 160, -420);
+
+      // 3. Renderer
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.25;
+      renderer.outputEncoding = THREE.sRGBEncoding;
+
+      // 4. OrbitControls
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.06;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 1.4;
+      controls.minDistance = 220;
+      controls.maxDistance = 1200;
+      controls.target.set(0, 0, 0);
+
+      // 5. Lighting Setup
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.85);
+      scene.add(ambientLight);
+
+      const keyLight = new THREE.DirectionalLight(0xffffff, 1.4);
+      keyLight.position.set(-180, 240, -200);
+      scene.add(keyLight);
+
+      const fillLight = new THREE.DirectionalLight(0x4facfe, 0.7);
+      fillLight.position.set(200, 140, 200);
+      scene.add(fillLight);
+
+      const cyanRim = new THREE.PointLight(0x00f2fe, 1.8, 600);
+      cyanRim.position.set(0, 10, -220);
+      scene.add(cyanRim);
+
+      const rearLed = new THREE.PointLight(0xff3366, 1.5, 500);
+      rearLed.position.set(0, 10, 220);
+      scene.add(rearLed);
+
+      // 6. Load 3D Model
+      loadHelmetModel();
+
+      // 7. Event listeners
+      window.addEventListener('resize', onWindowResize);
+      container.addEventListener('pointerdown', () => {
+        document.getElementById('hint-3d').style.opacity = '0.3';
+      });
+
+      // 8. Animation Loop
+      animate3D();
+    }
+
+    function loadHelmetModel() {
+      const loader = new THREE.GLTFLoader();
+
+      const onModelLoaded = (gltf) => {
+        helmetModel = gltf.scene;
+
+        // Automatically center the helmet model at (0, 0, 0)
+        const box = new THREE.Box3().setFromObject(helmetModel);
+        const center = box.getCenter(new THREE.Vector3());
+        helmetModel.position.set(-center.x, -center.y, -center.z);
+
+        // Apply rich PBR materials
+        helmetModel.traverse((child) => {
+          if (child.isMesh) {
+            allMeshes.push(child);
+            child.userData.origPos = child.position.clone();
+
+            const name = child.name;
+
+            // Transparent Optical Visor
+            if (name.includes('Visor')) {
+              child.material = new THREE.MeshPhysicalMaterial({
+                color: 0x00f2fe,
+                roughness: 0.05,
+                metalness: 0.1,
+                transmission: 0.82,
+                transparent: true,
+                opacity: 0.75,
+                reflectivity: 0.9,
+                side: THREE.DoubleSide
+              });
+            } 
+            // Cyan Emissive HUD & Ring
+            else if (name.includes('HUD') || name.includes('Halo')) {
+              child.material = new THREE.MeshStandardMaterial({
+                color: 0x00f2fe,
+                emissive: 0x00f2fe,
+                emissiveIntensity: 0.8,
+                roughness: 0.2,
+                metalness: 0.4
+              });
+            }
+            // Warning Red Deceleration LED Strip
+            else if (name.includes('LED')) {
+              child.material = new THREE.MeshStandardMaterial({
+                color: 0xff1e00,
+                emissive: 0xff1e00,
+                emissiveIntensity: 1.1,
+                roughness: 0.1
+              });
+            }
+            // Speakers & Contacts (Gold/Copper)
+            else if (name.includes('Speaker')) {
+              child.material = new THREE.MeshStandardMaterial({
+                color: 0xd97706,
+                metalness: 0.85,
+                roughness: 0.2
+              });
+            }
+            // Shell - Carbon Finish
+            else if (name.includes('Shell')) {
+              child.material = new THREE.MeshStandardMaterial({
+                color: 0x111624,
+                roughness: 0.35,
+                metalness: 0.3
+              });
+            }
+            // Default dark tech components
+            else {
+              child.material = new THREE.MeshStandardMaterial({
+                color: 0x1e293b,
+                roughness: 0.5,
+                metalness: 0.2
+              });
+            }
+          }
+        });
+
+        scene.add(helmetModel);
+        create3DHotspots();
+      };
+
+      // Load from local asset GLB, or fallback to base64
+      loader.load(
+        'assets/digital_helmet.glb',
+        onModelLoaded,
+        undefined,
+        (err) => {
+          console.warn("Falling back to embedded base64 3D data", err);
+          if (typeof HELMET_GLB_BASE64 !== 'undefined' && HELMET_GLB_BASE64.length > 100) {
+            try {
+              const binary = atob(HELMET_GLB_BASE64);
+              const bytes = new Uint8Array(binary.length);
+              for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+              loader.parse(bytes.buffer, '', onModelLoaded);
+            } catch (e) {
+              console.error("3D Load error:", e);
+            }
+          }
+        }
+      );
+    }
+
+    // 3D Hotspot Creation
+    function create3DHotspots() {
+      const layer = document.getElementById('hotspots-layer');
+      layer.innerHTML = '';
+
+      hotspots3D.forEach((h, idx) => {
+        const dot = document.createElement('div');
+        dot.className = 'hotspot-point';
+        dot.id = 'hotspot-' + h.id;
+        dot.innerHTML = `
+          <div class="hotspot-dot"></div>
+          <div class="hotspot-bubble">${h.label}</div>
+        `;
+        dot.onclick = (e) => {
+          e.stopPropagation();
+          focusHotspot(h);
+        };
+        layer.appendChild(dot);
+        h.domEl = dot;
+      });
+    }
+
+    // Update 2D screen positions of 3D hotspots each frame
+    function updateHotspotsPosition() {
+      if (!camera || !renderer) return;
+      const container = document.getElementById('stage-3d');
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+
+      hotspots3D.forEach(h => {
+        if (!h.domEl) return;
+        const wp = h.pos.clone();
+        if (helmetModel) wp.applyMatrix4(helmetModel.matrixWorld);
+
+        // Project 3D coordinate into screen 2D space
+        wp.project(camera);
+
+        // Check if behind camera
+        if (wp.z > 1) {
+          h.domEl.style.display = 'none';
+          return;
+        }
+
+        h.domEl.style.display = 'flex';
+        const x = (wp.x * 0.5 + 0.5) * width;
+        const y = (-(wp.y * 0.5) + 0.5) * height;
+        h.domEl.style.left = `${x}px`;
+        h.domEl.style.top = `${y}px`;
+      });
+    }
+
+    function focusHotspot(h) {
+      controls.autoRotate = false;
+      autoRotateEnabled = false;
+      document.getElementById('btn-autorotate-toggle').innerText = '🔄 Auto-Rotate: OFF';
+
+      const dir = h.pos.clone().normalize();
+      const targetPos = dir.multiplyScalar(400);
+      tweenCameraTo(targetPos.x, targetPos.y + 20, targetPos.z);
+
+      inspectComponent(h.compIdx);
+    }
+
+    // 3D Explode Parts Slider
+    function handleExplodeSlider(val) {
+      const factor = val / 100.0;
+      document.getElementById('explode-val-txt').innerText = `${val}%`;
+
+      allMeshes.forEach(mesh => {
+        const orig = mesh.userData.origPos;
+        if (!orig) return;
+        const offset = explodeVectors[mesh.name] || new THREE.Vector3(0, 0, 0);
+        mesh.position.lerpVectors(orig, orig.clone().add(offset), factor);
+      });
+    }
+
+    // 3D Material Finish Customizer
+    function setFinish(finish, btn) {
+      document.querySelectorAll('.tool-btn').forEach(b => {
+        if (b.id && b.id.startsWith('fbtn-')) b.classList.remove('active');
+      });
+      if (btn) btn.classList.add('active');
+
+      allMeshes.forEach(mesh => {
+        if (mesh.name.includes('Shell')) {
+          if (finish === 'carbon') {
+            mesh.material.color.setHex(0x111624);
+            mesh.material.roughness = 0.35;
+            mesh.material.metalness = 0.3;
+          } else if (finish === 'black') {
+            mesh.material.color.setHex(0x05070a);
+            mesh.material.roughness = 0.08;
+            mesh.material.metalness = 0.4;
+          } else if (finish === 'cyan') {
+            mesh.material.color.setHex(0x00384d);
+            mesh.material.roughness = 0.25;
+            mesh.material.metalness = 0.6;
+          } else if (finish === 'titanium') {
+            mesh.material.color.setHex(0x475569);
+            mesh.material.roughness = 0.3;
+            mesh.material.metalness = 0.75;
+          }
+        }
+      });
+    }
+
+    // Camera Angle Shortcuts
+    function setCameraAngle(angle) {
+      controls.autoRotate = false;
+      autoRotateEnabled = false;
+      document.getElementById('btn-autorotate-toggle').innerText = '🔄 Auto-Rotate: OFF';
+
+      if (angle === 'front') tweenCameraTo(0, 10, -500);
+      else if (angle === 'side') tweenCameraTo(-520, 0, 0);
+      else if (angle === 'top') tweenCameraTo(0, 520, -10);
+      else if (angle === 'iso') tweenCameraTo(-340, 160, -420);
+    }
+
+    function reset3DCamera() {
+      tweenCameraTo(-340, 160, -420);
+      controls.target.set(0, 0, 0);
+      autoRotateEnabled = true;
+      controls.autoRotate = true;
+      document.getElementById('btn-autorotate-toggle').innerText = '🔄 Auto-Rotate: ON';
+      document.getElementById('explode-slider').value = 0;
+      handleExplodeSlider(0);
+    }
+
+    function toggleAutoRotate() {
+      autoRotateEnabled = !autoRotateEnabled;
+      controls.autoRotate = autoRotateEnabled;
+      document.getElementById('btn-autorotate-toggle').innerText = 
+        autoRotateEnabled ? '🔄 Auto-Rotate: ON' : '🔄 Auto-Rotate: OFF';
+    }
+
+    function tweenCameraTo(x, y, z) {
+      const startPos = camera.position.clone();
+      const endPos = new THREE.Vector3(x, y, z);
+      let t = 0;
+
+      function step() {
+        t += 0.05;
+        camera.position.lerpVectors(startPos, endPos, Math.min(t, 1));
+        controls.update();
+        if (t < 1) requestAnimationFrame(step);
+      }
+      step();
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('stage-3d');
+      if (!container || !camera || !renderer) return;
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }
+
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+      if (controls) controls.update();
+      if (renderer && scene && camera) {
+        renderer.render(scene, camera);
+        updateHotspotsPosition();
+      }
+    }
+
+    // Initialize 3D when page loads
+    window.addEventListener('DOMContentLoaded', () => {
+      init3D();
+    });
+  </script>
+</body>
+</html>
