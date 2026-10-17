@@ -1677,8 +1677,67 @@
     }
 
     /* =========================================================================
-       RESPONSIVE BREAKPOINTS
+       RESPONSIVE BREAKPOINTS (MOBILE & TABLET OPTIMIZATION)
        ========================================================================= */
+    .mobile-header-right {
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mobile-preorder-cta {
+      display: none;
+      background: linear-gradient(135deg, var(--veloran-azure), #0072ff);
+      color: #020712;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-family: var(--font-heading);
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 0 12px rgba(0, 166, 251, 0.4);
+      white-space: nowrap;
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+    }
+    .hamburger-bar {
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    .mobile-nav-toggle.active {
+      background: rgba(0, 166, 251, 0.15);
+      border-color: var(--veloran-azure);
+    }
+    .mobile-nav-toggle.active .hamburger-bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .mobile-nav-toggle.active .hamburger-bar:nth-child(2) {
+      opacity: 0;
+    }
+    .mobile-nav-toggle.active .hamburger-bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
     @media (max-width: 1200px) {
       header { padding: 0.9rem 1.8rem; }
       .container { padding: 2rem 1.5rem 3.5rem; }
@@ -1686,93 +1745,188 @@
     }
 
     @media (max-width: 992px) {
+      /* Lock mobile header to a clean 60px height so it never blocks page content */
       header {
-        padding: 0.8rem 1.2rem;
-        flex-wrap: wrap;
-        gap: 12px;
+        padding: 0 1.2rem;
+        min-height: 60px;
+        max-height: 60px;
+        height: 60px;
+        flex-wrap: nowrap;
+        overflow: visible;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
+      .brand-logo-img { height: 34px; max-height: 34px; }
+      .brand-sub { display: none; }
+      .brand-divider { display: none; }
+
+      .mobile-header-right {
+        display: flex;
+      }
+      .mobile-preorder-cta {
+        display: inline-flex;
+      }
+      .mobile-nav-toggle {
+        display: flex;
+      }
+      .desktop-only {
+        display: none !important;
+      }
+
+      /* Slide-down Mobile Navigation Drawer */
       .nav-links {
-        width: 100%;
-        overflow-x: auto;
-        padding-bottom: 4px;
-        -webkit-overflow-scrolling: touch;
-      }
-      .nav-links::-webkit-scrollbar { display: none; }
-      .inspector-grid { grid-template-columns: 1fr; }
-      .viewport-3d-wrapper { height: 480px; }
-      .floating-3d-toolbar {
-        width: 96%;
-        padding: 8px 12px;
-        gap: 8px;
-      }
-      .table-swipe-hint { display: block; }
-      .store-cta {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(3, 8, 20, 0.98);
+        border-bottom: 1px solid var(--border-glow);
+        backdrop-filter: blur(28px);
+        padding: 1.5rem 1.2rem 2.5rem;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 12px;
+        overflow-y: auto;
+        z-index: 999;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9);
       }
+      .nav-links.mobile-open {
+        display: flex;
+        animation: mobileDrawerSlide 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      @keyframes mobileDrawerSlide {
+        from { opacity: 0; transform: translateY(-12px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .nav-links a {
+        padding: 13px 18px;
+        font-size: 1rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .backend-status-pill {
+        justify-content: center;
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 0.8rem;
+        margin-bottom: 0.4rem;
+      }
+
+      .inspector-grid { grid-template-columns: 1fr; }
+      .viewport-3d-wrapper { height: 460px; }
+      .table-swipe-hint { display: block; }
     }
 
     @media (max-width: 768px) {
-      .container { padding: 1.5rem 1rem 3rem; }
-      .viewport-3d-wrapper { height: 440px; }
+      .container { padding: 1.2rem 0.8rem 3rem; }
+      .viewport-3d-wrapper { height: 420px; }
       
-      .brand-tagline { font-size: 0.6rem; }
-      .brand-sub { display: none; }
-      .brand-logo-img { height: 32px; }
+      .brand-status-tag { font-size: 0.62rem; }
 
-      .view-switcher-bar {
-        justify-content: flex-start;
+      /* Mobile 3D Stage Header & Pills */
+      .showcase-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+      .stage-view-pills {
         overflow-x: auto;
-        padding-bottom: 6px;
         flex-wrap: nowrap;
         -webkit-overflow-scrolling: touch;
+        padding-bottom: 6px;
       }
-      .view-switcher-bar::-webkit-scrollbar { display: none; }
-      .switch-btn { flex-shrink: 0; padding: 7px 13px; font-size: 0.78rem; }
+      .stage-view-pills::-webkit-scrollbar { display: none; }
+      .stage-view-pill {
+        flex-shrink: 0;
+        padding: 7px 13px;
+        font-size: 0.78rem;
+      }
+      .stage-actions {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 4px;
+      }
+      .stage-actions::-webkit-scrollbar { display: none; }
+      .stage-btn {
+        flex-shrink: 0;
+        padding: 5px 10px;
+        font-size: 0.72rem;
+      }
 
-      .hint-pill { font-size: 0.68rem; padding: 4px 10px; width: 90%; justify-content: center; }
-
+      /* Compact Floating 3D Toolbar */
       .floating-3d-toolbar {
-        bottom: 10px;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 16px);
+        max-width: 440px;
         padding: 6px 10px;
         gap: 6px;
+        font-size: 0.72rem;
       }
+      .toolbar-divider { display: none; }
       .tool-label { font-size: 0.65rem; }
-      .tool-btn { padding: 4px 8px; font-size: 0.68rem; }
-      .slider-range { width: 80px; }
+      .tool-btn { padding: 4px 7px; font-size: 0.68rem; }
+      .slider-range { width: 65px; }
 
+      .hint-pill { font-size: 0.68rem; padding: 4px 10px; width: 92%; justify-content: center; }
       .hotspot-bubble { font-size: 0.65rem; padding: 3px 6px; }
 
-      .components-grid { grid-template-columns: 1fr; }
+      .inno-grid { grid-template-columns: 1fr; }
+      .innovations-tab-nav {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        padding-bottom: 6px;
+      }
+      .innovations-tab-nav::-webkit-scrollbar { display: none; }
+      .inno-tab-btn { flex-shrink: 0; padding: 9px 16px; font-size: 0.85rem; }
+
       .alarm-dashboard-grid { grid-template-columns: 1fr; }
       .alarm-actions-grid { grid-template-columns: 1fr 1fr; }
+
+      .hero-specs-strip {
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+      }
+      .spec-pill {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .hero-actions-row {
+        flex-direction: column;
+        width: 100%;
+      }
+      .hero-primary-btn, .hero-secondary-btn, .hero-ghost-btn {
+        width: 100%;
+        justify-content: center;
+      }
     }
 
     @media (max-width: 480px) {
-      .brand-divider { display: none; }
-      .brand-logo-img { height: 28px; }
+      .viewport-3d-wrapper { height: 380px; }
+      .stage-title { font-size: 0.82rem; }
       
-      .viewport-3d-wrapper { height: 390px; }
-      .stage-title { font-size: 0.8rem; }
-      .stage-btn { padding: 4px 8px; font-size: 0.68rem; }
-      
-      .floating-3d-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 6px;
-        width: 95%;
-        padding: 8px 10px;
-      }
-      .tool-group { justify-content: center; }
-      .slider-container { width: 100%; justify-content: space-between; }
-      .slider-range { flex-grow: 1; width: auto; }
-
-      .alarm-section { padding: 1.5rem 1rem; }
-      .alarm-title { font-size: 1.4rem; }
+      .alarm-section { padding: 1.4rem 0.9rem; }
+      .alarm-title { font-size: 1.35rem; }
       .alarm-actions-grid { grid-template-columns: 1fr; }
 
-      .sos-modal-card { padding: 1.5rem 1rem; }
-      .sos-timer-circle { font-size: 2.8rem; }
+      .sos-modal-card { padding: 1.4rem 0.9rem; }
+      .sos-timer-circle { font-size: 2.6rem; }
+
+      .preorder-modal-card { padding: 1.4rem 1rem; }
+      .preorder-title { font-size: 1.3rem; }
     }
 
     /* =========================================================================
@@ -2089,7 +2243,7 @@
 <body>
 
   <!-- Top Navigation Bar with Official Veloran Brand Logo & Live Cloud API Status -->
-  <header>
+  <header id="main-header">
     <a href="digital-helmet.html" class="brand">
       <div class="brand-logo-container">
         <img src="assets/veloran_logo_white.png" alt="VELORAN • Ride Smarter. Go Further." class="brand-logo-img" />
@@ -2100,17 +2254,29 @@
         <span class="brand-sub">CYBERNETIC DIGITAL HELMET</span>
       </div>
     </a>
-    <nav class="nav-links">
+
+    <!-- Mobile Quick CTA & Animated Hamburger Button -->
+    <div class="mobile-header-right">
+      <button class="mobile-preorder-cta" onclick="openPreorderModal()"><span>🚀</span> Pre-Order</button>
+      <button class="mobile-nav-toggle" id="mobile-nav-toggle" onclick="toggleMobileNav()" aria-label="Toggle Navigation Menu">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+    </div>
+
+    <!-- Desktop Navigation / Mobile Full-Screen Drawer -->
+    <nav class="nav-links" id="main-nav-links">
       <div class="backend-status-pill" id="backend-status-pill" title="IoT Cloud Backend Status">
         <span class="status-dot-pulse" id="status-dot-pulse"></span>
         <span id="backend-status-txt">API: CONNECTING...</span>
       </div>
-      <a href="#showcase" class="active">3D Studio</a>
-      <a href="#innovations">Innovations</a>
-      <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="scrollToAlarm()">🚨 Alarm: <span id="nav-alarm-status">ARMED</span></a>
-      <a href="#matrix">Specs Matrix</a>
-      <button class="nav-preorder-btn" onclick="openPreorderModal()"><span>🚀</span> Pre-Order Alpha</button>
-      <a href="#showcase" onclick="switchView('hud'); scrollToStage();" class="nav-btn-highlight">⚡ Visor HUD</a>
+      <a href="#showcase" class="active" onclick="closeMobileNav()"><span>🌐</span> 3D Studio</a>
+      <a href="#innovations" onclick="closeMobileNav()"><span>🔬</span> Innovations</a>
+      <a href="#alarm-center" id="nav-alarm-pill" class="alarm-pill-nav" onclick="closeMobileNav(); scrollToAlarm();">🚨 Alarm: <span id="nav-alarm-status">ARMED</span></a>
+      <a href="#matrix" onclick="closeMobileNav()"><span>📊</span> Specs Matrix</a>
+      <button class="nav-preorder-btn desktop-only" onclick="openPreorderModal()"><span>🚀</span> Pre-Order Alpha</button>
+      <a href="#showcase" onclick="closeMobileNav(); switchView('hud'); scrollToStage();" class="nav-btn-highlight"><span>⚡</span> Visor HUD</a>
     </nav>
   </header>
 
@@ -4021,6 +4187,28 @@
         btn.disabled = false;
         btn.innerText = "⚡ Confirm Alpha Reservation ➔";
       }
+    }
+
+    function toggleMobileNav() {
+      const toggle = document.getElementById('mobile-nav-toggle');
+      const nav = document.getElementById('main-nav-links');
+      if (!toggle || !nav) return;
+      const isOpen = nav.classList.contains('mobile-open');
+      if (isOpen) {
+        closeMobileNav();
+      } else {
+        nav.classList.add('mobile-open');
+        toggle.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling when menu open
+      }
+    }
+
+    function closeMobileNav() {
+      const toggle = document.getElementById('mobile-nav-toggle');
+      const nav = document.getElementById('main-nav-links');
+      if (toggle) toggle.classList.remove('active');
+      if (nav) nav.classList.remove('mobile-open');
+      document.body.style.overflow = '';
     }
 
     window.addEventListener('DOMContentLoaded', () => {
