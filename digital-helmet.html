@@ -10,7 +10,7 @@
   <!-- Premium Modern Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
   
   <!-- Local Three.js 3D Engine -->
   <script src="assets/three.min.js"></script>
@@ -2244,6 +2244,21 @@
       background: rgba(239, 68, 68, 0.3);
       border-color: var(--accent-red);
     }
+  
+    /* Premium Khmer Typography styling */
+    :root {
+      --font-khmer: 'Kantumruy Pro', 'Siemreap', 'Battambang', -apple-system, sans-serif;
+    }
+    html[lang="km"] body {
+      font-family: var(--font-khmer), var(--font-body);
+    }
+    html[lang="km"] h1, html[lang="km"] h2, html[lang="km"] h3, html[lang="km"] h4, html[lang="km"] .hero-tagline-callout, html[lang="km"] .section-title, html[lang="km"] .stage-title {
+      font-family: var(--font-khmer), var(--font-heading);
+    }
+    html[lang="km"] .tool-btn, html[lang="km"] .stage-btn, html[lang="km"] .inno-action-btn, html[lang="km"] .alarm-btn, html[lang="km"] .btn-gallery-zoom, html[lang="km"] .btn-primary, html[lang="km"] .btn-secondary, html[lang="km"] .hero-primary-btn, html[lang="km"] .hero-secondary-btn, html[lang="km"] .hero-ghost-btn {
+      font-family: var(--font-khmer), var(--font-display);
+    }
+
   </style>
 </head>
 <body>
@@ -2256,8 +2271,8 @@
       </div>
       <div class="brand-divider"></div>
       <div class="brand-info">
-        <span class="brand-status-tag"><span class="badge-pulse"></span> SYSTEM ARMED</span>
-        <span class="brand-sub">CYBERNETIC DIGITAL HELMET</span>
+        <span class="brand-status-tag"><span class="badge-pulse"></span> <span id="brand-status-txt">SYSTEM ARMED</span></span>
+        <span class="brand-sub" id="brand-sub-txt">CYBERNETIC DIGITAL HELMET</span>
       </div>
     </a>
 
@@ -2356,8 +2371,8 @@
           <button class="stage-btn" id="btn-hotspots-toggle" onclick="toggleHotspots()">📍 Hotspots: ON</button>
           <button class="stage-btn" id="btn-sound-toggle" onclick="toggleAudioMute()">🔊 Sound: ON</button>
           <button class="stage-btn" id="btn-autorotate-toggle" onclick="toggleAutoRotate()">🔄 Auto-Rotate: ON</button>
-          <button class="stage-btn" onclick="reset3DCamera()">🎯 Reset</button>
-          <button class="stage-btn" onclick="openFullscreen()">⛶ Fullscreen</button>
+          <button class="stage-btn" id="btn-reset-cam" onclick="reset3DCamera()">🎯 Reset</button>
+          <button class="stage-btn" id="btn-fullscreen" onclick="openFullscreen()">⛶ Fullscreen</button>
         </div>
       </div>
 
@@ -2368,7 +2383,7 @@
         <!-- Floating Holographic Veloran Brand Watermark -->
         <div class="stage-brand-watermark">
           <img src="assets/veloran_logo_white.png" alt="Veloran 3D" class="stage-watermark-logo" />
-          <span class="stage-watermark-label"><span class="badge-pulse"></span> 3D DIGITAL TWIN • 1:1 CAD</span>
+          <span class="stage-watermark-label" id="stage-watermark-label"><span class="badge-pulse"></span> 3D DIGITAL TWIN • 1:1 CAD</span>
         </div>
 
         <!-- Interactive Drag Hint -->
@@ -2383,18 +2398,18 @@
         <div class="floating-3d-toolbar">
           <!-- Color Finish Customizer -->
           <div class="tool-group">
-            <span class="tool-label">Finish:</span>
+            <span class="tool-label" id="label-finish">Finish:</span>
             <button class="tool-btn finish-swatch active" id="fbtn-veloran" onclick="setFinish('veloran', this)" title="Veloran Navy">
-              <span class="swatch-dot dot-navy"></span> Navy
+              <span class="swatch-dot dot-navy"></span> <span id="fbtn-txt-veloran">Navy</span>
             </button>
             <button class="tool-btn finish-swatch" id="fbtn-carbon" onclick="setFinish('carbon', this)" title="3K Carbon">
-              <span class="swatch-dot dot-carbon"></span> Carbon
+              <span class="swatch-dot dot-carbon"></span> <span id="fbtn-txt-carbon">Carbon</span>
             </button>
             <button class="tool-btn finish-swatch" id="fbtn-black" onclick="setFinish('black', this)" title="Obsidian">
-              <span class="swatch-dot dot-obsidian"></span> Obsidian
+              <span class="swatch-dot dot-obsidian"></span> <span id="fbtn-txt-black">Obsidian</span>
             </button>
             <button class="tool-btn finish-swatch" id="fbtn-gold" onclick="setFinish('gold', this)" title="Solar Gold">
-              <span class="swatch-dot dot-gold"></span> Solar Gold
+              <span class="swatch-dot dot-gold"></span> <span id="fbtn-txt-gold">Solar Gold</span>
             </button>
           </div>
 
@@ -2402,7 +2417,7 @@
 
           <!-- 3D Explode Parts Slider -->
           <div class="tool-group slider-container">
-            <span class="tool-label">💥 Explode:</span>
+            <span class="tool-label" id="label-explode">💥 Explode:</span>
             <input 
               type="range" 
               class="slider-range" 
@@ -2419,11 +2434,11 @@
 
           <!-- Quick Camera Angles -->
           <div class="tool-group">
-            <span class="tool-label">Angle:</span>
-            <button class="tool-btn" onclick="setCameraAngle('front')">Front</button>
-            <button class="tool-btn" onclick="setCameraAngle('side')">Side</button>
-            <button class="tool-btn" onclick="setCameraAngle('top')">Top</button>
-            <button class="tool-btn" onclick="setCameraAngle('iso')">3D Iso</button>
+            <span class="tool-label" id="label-angle">Angle:</span>
+            <button class="tool-btn" id="btn-angle-front" onclick="setCameraAngle('front')">Front</button>
+            <button class="tool-btn" id="btn-angle-side" onclick="setCameraAngle('side')">Side</button>
+            <button class="tool-btn" id="btn-angle-top" onclick="setCameraAngle('top')">Top</button>
+            <button class="tool-btn" id="btn-angle-iso" onclick="setCameraAngle('iso')">3D Iso</button>
           </div>
         </div>
       </div>
@@ -2524,40 +2539,40 @@
         <div class="alarm-card">
           <div>
             <div class="alarm-status-header">
-              <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-silver); text-transform:uppercase;">Guardian Security Status</span>
+              <span id="alarm-status-header-lbl" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-silver); text-transform:uppercase;">Guardian Security Status</span>
               <span id="alarm-status-badge" class="alarm-status-badge status-safe">🛡️ ARMED (MONITORING)</span>
             </div>
 
             <div class="telemetry-row">
-              <span class="label">6-Axis Motion Sensor:</span>
+              <span class="label" id="lbl-telemetry-imu">6-Axis Motion Sensor:</span>
               <span class="val" id="telemetry-imu">MPU-6050 (0.2° Tilt)</span>
             </div>
             <div class="telemetry-row">
-              <span class="label">Impact Accelerometer:</span>
+              <span class="label" id="lbl-telemetry-gforce">Impact Accelerometer:</span>
               <span class="val" id="telemetry-gforce">1.02G (Baseline)</span>
             </div>
             <div class="telemetry-row">
-              <span class="label">GPS Geofence:</span>
+              <span class="label" id="lbl-telemetry-gps">GPS Geofence:</span>
               <span class="val" id="telemetry-gps">LOCKED (11.5564° N, 104.9282° E)</span>
             </div>
             <div class="telemetry-row">
-              <span class="label">Acoustic Piezo Siren:</span>
+              <span class="label" id="lbl-telemetry-siren">Acoustic Piezo Siren:</span>
               <span class="val" id="telemetry-siren" style="color:var(--accent-green);">110dB STANDBY</span>
             </div>
           </div>
 
           <div class="alarm-actions-grid">
             <button class="alarm-btn btn-arm" id="btn-toggle-arm" onclick="toggleGuardianArm()">
-              <span>🛡️</span> Disarm System
+              <span>🛡️</span> <span id="btn-toggle-arm-txt">Disarm System</span>
             </button>
-            <button class="alarm-btn btn-tamper" onclick="triggerAlarm('theft')">
-              <span>📳</span> Simulate Tamper
+            <button class="alarm-btn btn-tamper" id="btn-sim-tamper" onclick="triggerAlarm('theft')">
+              <span>📳</span> <span id="btn-sim-tamper-txt">Simulate Tamper</span>
             </button>
-            <button class="alarm-btn btn-crash" onclick="triggerAlarm('crash')">
-              <span>💥</span> Simulate Crash SOS
+            <button class="alarm-btn btn-crash" id="btn-sim-crash" onclick="triggerAlarm('crash')">
+              <span>💥</span> <span id="btn-sim-crash-txt">Simulate Crash SOS</span>
             </button>
-            <button class="alarm-btn btn-silence" onclick="silenceAlarm()">
-              <span>🔕</span> Silence / Reset
+            <button class="alarm-btn btn-silence" id="btn-silence-alarm" onclick="silenceAlarm()">
+              <span>🔕</span> <span id="btn-silence-alarm-txt">Silence / Reset</span>
             </button>
           </div>
         </div>
@@ -2565,8 +2580,8 @@
         <!-- Security Event Log Terminal -->
         <div class="alarm-card">
           <div class="alarm-status-header">
-            <span style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-azure); text-transform:uppercase;">Live Security Event Log</span>
-            <span style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-green);">● ENCRYPTED MESH</span>
+            <span id="alarm-log-header-lbl" style="font-family:var(--font-mono); font-size:0.75rem; color:var(--veloran-azure); text-transform:uppercase;">Live Security Event Log</span>
+            <span id="alarm-mesh-badge" style="font-family:var(--font-mono); font-size:0.72rem; color:var(--accent-green);">● ENCRYPTED MESH</span>
           </div>
 
           <div class="alarm-log-terminal" id="alarm-log-terminal">
@@ -2583,8 +2598,8 @@
     <div class="sos-modal-backdrop" id="sos-modal">
       <div class="sos-modal-card">
         <div class="sos-icon">⚠️</div>
-        <div class="sos-title">HIGH-G IMPACT DETECTED!</div>
-        <p style="color:var(--veloran-silver); font-size:0.85rem;">
+        <div class="sos-title" id="sos-title-txt">HIGH-G IMPACT DETECTED!</div>
+        <p id="sos-desc-txt" style="color:var(--veloran-silver); font-size:0.85rem;">
           Autonomous eCall emergency dispatch will broadcast rider coordinates, impact force (28.4G), and blood type (O+) to local emergency services in:
         </p>
 
@@ -2594,7 +2609,7 @@
           GPS: 11.5564° N, 104.9282° E • CADT Campus, Phnom Penh
         </p>
 
-        <button class="btn-abort-sos" onclick="abortCrashSOS()">
+        <button class="btn-abort-sos" id="btn-abort-sos" onclick="abortCrashSOS()">
           🛑 I AM OK — CANCEL SOS ALARM
         </button>
       </div>
@@ -2612,7 +2627,7 @@
           <ul class="points-list" id="insp-points"></ul>
         </div>
         <div>
-          <h4 style="font-family:var(--font-mono); color:var(--veloran-azure); font-size:0.85rem; letter-spacing:1px; margin-bottom:0.6rem;">ENGINEERING BENCHMARKS</h4>
+          <h4 id="insp-benchmarks-title" style="font-family:var(--font-mono); color:var(--veloran-azure); font-size:0.85rem; letter-spacing:1px; margin-bottom:0.6rem;">ENGINEERING BENCHMARKS</h4>
           <table class="spec-table" id="insp-specs"></table>
         </div>
       </div>
@@ -2623,9 +2638,9 @@
          ========================================================================= -->
     <section class="innovations-section" id="innovations">
       <div class="section-header">
-        <div class="section-tag">NEXT-GEN SYSTEM ARCHITECTURE</div>
-        <h2 class="section-title">Veloran Innovations</h2>
-        <p class="section-subtitle">
+        <div class="section-tag" data-i18n="inno_badge">NEXT-GEN SYSTEM ARCHITECTURE</div>
+        <h2 class="section-title" data-i18n="inno_title">Veloran Innovations</h2>
+        <p class="section-subtitle" data-i18n="inno_desc">
           Explore the 4 core engineering pillars powering the cybernetic smart helmet. Select a pillar to inspect specs, CAD tolerances, and view it highlighted on the 3D model.
         </p>
       </div>
@@ -2633,16 +2648,16 @@
       <!-- Innovation Category Tabs -->
       <div class="innovations-tab-nav">
         <button class="inno-tab-btn active" id="tab-btn-optics" onclick="switchInnoTab('optics')">
-          <span>🥽</span> Optics &amp; Waveguide HUD
+          <span>🥽</span> <span id="tab-txt-optics">Optics &amp; Waveguide HUD</span>
         </button>
         <button class="inno-tab-btn" id="tab-btn-armor" onclick="switchInnoTab('armor')">
-          <span>🛡️</span> Armor &amp; Aerodynamics
+          <span>🛡️</span> <span id="tab-txt-armor">Armor &amp; Aerodynamics</span>
         </button>
         <button class="inno-tab-btn" id="tab-btn-security" onclick="switchInnoTab('security')">
-          <span>🚨</span> Guardian Security &amp; SOS
+          <span>🚨</span> <span id="tab-txt-security">Guardian Security &amp; SOS</span>
         </button>
         <button class="inno-tab-btn" id="tab-btn-neural" onclick="switchInnoTab('neural')">
-          <span>⚡</span> Neural AI &amp; Spatial Audio
+          <span>⚡</span> <span id="tab-txt-neural">Neural AI &amp; Spatial Audio</span>
         </button>
       </div>
 
@@ -2828,16 +2843,16 @@
 
     <!-- Architecture Specs Matrix -->
     <section class="section-header" id="matrix">
-      <div class="section-tag">HARDWARE SPECIFICATIONS</div>
-      <h2 class="section-title">Engineering Specs Matrix</h2>
-      <p class="section-subtitle">Complete technical benchmarks across all safety, optical, computing, and security hardware.</p>
+      <div class="section-tag" data-i18n="matrix_badge">HARDWARE SPECIFICATIONS</div>
+      <h2 class="section-title" data-i18n="matrix_title">Engineering Specs Matrix</h2>
+      <p class="section-subtitle" data-i18n="matrix_desc">Complete technical benchmarks across all safety, optical, computing, and security hardware.</p>
     </section>
 
     <div class="table-responsive-wrapper">
-      <div class="table-swipe-hint">👉 Swipe horizontally to view full matrix ⇄</div>
+      <div class="table-swipe-hint" data-i18n="swipe_hint">👉 Swipe horizontally to view full matrix ⇄</div>
       <div class="specs-table-container">
-        <table class="matrix-table">
-          <thead>
+        <table class="matrix-table" id="specs-matrix-table">
+          <thead id="specs-matrix-thead">
             <tr>
               <th>Subsystem Name</th>
               <th>Hardware Component</th>
@@ -2846,7 +2861,7 @@
               <th>Certification / Status</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="specs-matrix-tbody">
             <tr>
               <td><strong>Outer Shell</strong></td>
               <td>3K Toray Carbon Fiber + Kevlar</td>
@@ -2911,13 +2926,13 @@
     <!-- Production Callout Banner -->
     <div class="store-cta">
       <div class="cta-text">
-        <div class="badge" style="margin-bottom:0.6rem;">VELORAN • NEXT-GEN PLATFORM</div>
-        <h2>RIDE SMARTER. GO FURTHER.</h2>
-        <p>Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, active Guardian anti-theft alarm, and 100m solid-state LiDAR perception.</p>
+        <div class="badge" id="banner-badge-tag" style="margin-bottom:0.6rem;">VELORAN • NEXT-GEN PLATFORM</div>
+        <h2 id="banner-title-txt">RIDE SMARTER. GO FURTHER.</h2>
+        <p id="banner-desc-txt">Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, active Guardian anti-theft alarm, and 100m solid-state LiDAR perception.</p>
       </div>
       <div class="cta-actions">
-        <button onclick="switchView('3d')" class="btn-primary">🌐 Launch 3D Explorer →</button>
-        <button onclick="scrollToAlarm()" class="btn-secondary">🚨 Test Guardian Alarm</button>
+        <button onclick="switchView('3d')" class="btn-primary" id="banner-btn-3d">🌐 Launch 3D Explorer →</button>
+        <button onclick="scrollToAlarm()" class="btn-secondary" id="banner-btn-alarm">🚨 Test Guardian Alarm</button>
       </div>
     </div>
   </main>
@@ -2928,8 +2943,8 @@
       <img src="assets/veloran_logo_white.png" alt="VELORAN • Ride Smarter. Go Further." class="footer-logo-img" />
     </div>
     <p style="font-weight:700; color:#fff; letter-spacing:1px; margin-bottom:6px;">VELORAN • RIDE SMARTER. GO FURTHER.</p>
-    <p style="font-size:0.75rem; color:var(--veloran-silver);">CADT Faculty of Digital Engineering • Cybernetic Digital Smart Helmet Project</p>
-    <p style="margin-top:6px; font-size:0.72rem; color:#475569;">Physics Simulation, WebGL 3D Interactive Telemetry &amp; Guardian Security Engine.</p>
+    <p style="font-size:0.75rem; color:var(--veloran-silver);" id="footer-sub-txt">CADT Faculty of Digital Engineering • Cybernetic Digital Smart Helmet Project</p>
+    <p style="margin-top:6px; font-size:0.72rem; color:#475569;" id="footer-note-txt">Physics Simulation, WebGL 3D Interactive Telemetry &amp; Guardian Security Engine.</p>
   </footer>
 
   <script>
@@ -3170,6 +3185,240 @@
     // =========================================================================
     // 🥽 4-PILLAR INNOVATIONS TAB ENGINE (APPLE / TESLA STREAMLINED UX)
     // =========================================================================
+    /* =========================================================================
+       12 COMPONENT SPECIFICATIONS (KHMER TRANSLATIONS 🇰🇭)
+       ========================================================================= */
+    const components_km = [
+      {
+        icon: "🛡️",
+        number: "គ្រឿងបន្លាស់ #០១",
+        title: "សំបកកាបូនហ្វៃបឺ 3K ខាងក្រៅ",
+        badge: "ការការពាររចនាសម្ព័ន្ធរឹងមាំ",
+        desc: "សំបកមួកផលិតពីសរសៃកាបូនកម្រិតអាកាសចរណ៍ 3K ត្បាញជាមួយសរសៃកែវការពារគ្រាប់កាំភ្លើង Kevlar។ រចនាឡើងដើម្បីទម្ងន់ស្រាលបំផុត ការពារការបែកបាក់ និងកាត់បន្ថយកម្លាំងខ្យល់បានយ៉ាងល្អនៅពេលបើកបរក្នុងល្បឿនលឿន។",
+        specs: [
+          { label: "សមាសធាតុផ្សំ", val: "សរសៃកាបូន Toray 3K + សរសៃការពារ Kevlar" },
+          { label: "ទម្ងន់សំបកមួក", val: "៤២០ ក្រាម (±១០ ក្រាម)" },
+          { label: "កម្លាំងទ្រាំទ្រ", val: "៤,៩០០ MPa" },
+          { label: "ស្រទាប់ការពារខាងក្រៅ", val: "ថ្នាំកូត Matte ការពារឆ្កូត និងកាំរស្មី UV" }
+        ],
+        points: [
+          "រចនាតាមក្បួនខ្យល់អាកាសចរណ៍ (Aerodynamic) មិនធ្វើឱ្យក្បាលរលាក់ពេលបើកបរល្បឿនលឿន។",
+          "មានរន្ធបង្កប់សេនស័រ LiDAR និងកាមេរ៉ាខាងមុខបានស្មើស្អាតដោយមិនទើសខ្យល់។",
+          "សមត្ថភាពបញ្ចេញកម្ដៅបានលឿន ជួយឱ្យគ្រឿងអេឡិចត្រូនិចខាងក្នុងមិនក្តៅ។"
+        ],
+        tags: ["កាបូន 3K", "៤២០ក្រាម", "សរសៃ Kevlar", "កាត់ខ្យល់ Aero"]
+      },
+      {
+        icon: "🪖",
+        number: "គ្រឿងបន្លាស់ #០២",
+        title: "ស្រទាប់ស្នោរ EPS ដង់ស៊ីតេពីរ & MIPS",
+        badge: "ស្រូបកម្លាំងទង្គិចសុវត្ថិភាព",
+        desc: "ស្នូលសុវត្ថិភាពខាងក្នុងផលិតពីស្នោរ EPS កម្រាស់ពីរជាន់ រួមជាមួយបន្ទះរអិលការពារការរមួលខួរក្បាល MIPS C2។ ជួយស្រូបទាញទាំងកម្លាំងបុកចំៗពីមុខ និងកម្លាំងប៉ះទង្គិចវិលវល់ពីចំហៀង។",
+        specs: [
+          { label: "កម្រិតដង់ស៊ីតេស្នោរ", val: "ដង់ស៊ីតេពីរជាន់ (៤៥g/L ក្រៅ, ៣០g/L ក្នុង)" },
+          { label: "ស្ដង់ដារសុវត្ថិភាព", val: "ECE 22.06, DOT FMVSS 218 & Snell M2025" },
+          { label: "ចលនារអិល MIPS", val: "រអិលបត់បែន ១០-១៥ ម.ម គ្រប់ទិសដៅ" },
+          { label: "ក្រណាត់ស្រទាប់ក្នុង", val: "ស្រូបញើស & កម្ចាត់បាក់តេរី Silver-Ion" }
+        ],
+        points: [
+          "កាត់បន្ថយកម្លាំងរមួលដែលប៉ះពាល់ដល់ខួរក្បាលបានជាង ៣៨% ពេលមានគ្រោះថ្នាក់។",
+          "មានរន្ធខ្យល់កាត់តាមឡាស៊ែរនាំខ្យល់ត្រជាក់កាត់ស្បែកក្បាលជាប់ជានិច្ច។",
+          "ទ្រនាប់ថ្ពាល់ខាងក្នុងធ្វើពី Memory Foam អាចដោះចេញបោកគក់បានយ៉ាងងាយ។"
+        ],
+        tags: ["ស្នោរ EPS ពីរជាន់", "បច្ចេកវិទ្យា MIPS", "ស្ដង់ដារ ECE 22.06", "Memory Foam"]
+      },
+      {
+        icon: "🧠",
+        number: "គ្រឿងបន្លាស់ #០៣",
+        title: "បន្ទះឈីប Motherboard & ខួរក្បាល AI",
+        badge: "ប្រព័ន្ធកុំព្យូទ័រ & សេនស័រ",
+        desc: "ជាខួរក្បាលបញ្ជាកណ្តាលរបស់មួកសុវត្ថិភាព។ បំពាក់បន្ទះឈីបសន្សំថាមពល Quad-Core ARM, បន្ទះគណនាបញ្ញាសិប្បនិម្មិត 8 TOPS NPU, បណ្ដាញ 5G ល្បឿនលឿន និងក្បួនដោះស្រាយរួមបញ្ចូលសេនស័រ។",
+        specs: [
+          { label: "បន្ទះឈីបកណ្តាល", val: "Quad-Core ARM Cortex-A78 + 8 TOPS NPU" },
+          { label: "អង្គចងចាំ / ទំហំផ្ទុក", val: "8GB LPDDR5 RAM + 128GB UFS 3.1" },
+          { label: "ប្រព័ន្ធឥតខ្សែ", val: "5G Sub-6GHz, Wi-Fi 6E, Bluetooth 5.4, UWB" },
+          { label: "សេនស័រវាស់ចលនា", val: "IMU 9-Axis (Gyro + Accelerometer + Magnetometer)" }
+        ],
+        points: [
+          "ដំណើរការម៉ូឌែល AI កាមេរ៉ាស្កេនរកមនុស្សដើរ និងយានជំនិះគ្រោះថ្នាក់ក្នុងរយៈពេលត្រឹម ៣ មិល្លីវិនាទី។",
+          "ចាប់ដឹងពេលមានគ្រោះថ្នាក់ដួលភ្លាម បញ្ជូនសារសង្គ្រោះបន្ទាន់ SOS និងទីតាំង GPS តាម 5G ស្វ័យប្រវត្តិ។",
+          "អាចអាប់ដេតមុខងារថ្មីៗតាមរយៈប្រព័ន្ធ OTA (Over-The-Air) ដោយឥតខ្សែ។"
+        ],
+        tags: ["បន្ទះឈីប 8 TOPS NPU", "បណ្ដាញ 5G", "សេនស័រ 9-Axis IMU", "ប្រព័ន្ធចាប់គ្រោះថ្នាក់"]
+      },
+      {
+        icon: "👓",
+        number: "គ្រឿងបន្លាស់ #០៤",
+        title: "កញ្ចក់ឆ្លុះ Holographic Waveguide",
+        badge: "អេក្រង់អុបទិកឆ្លុះទិន្នន័យ",
+        desc: "កញ្ចក់ឆ្លុះការពារ Polycarbonate កោងបង្កប់បច្ចេកវិទ្យាបញ្ចាំង Geometric Waveguide និងស្រទាប់គ្រីស្តាល់រាវ electrochromic ដែលអាចប្ដូរពណ៌ពីថ្លាទៅខ្មៅការពារភ្នែកក្នុងរយៈពេលត្រឹម 0.1 វិនាទី។",
+        specs: [
+          { label: "មុំមើលទូលាយ (FOV)", val: "មុំមើលទូលាយ ១១០ ដឺក្រេ (110° FOV)" },
+          { label: "កម្រិតពន្លឺឆ្លងកាត់", val: "ប្រែប្រួលពី ៨% ដល់ ៨៥%" },
+          { label: "ល្បឿនប្ដូរពណ៌", val: "១០០ មិល្លីវិនាទី (0.1 វិនាទី)" },
+          { label: "ស្រទាប់ការពារខាងក្រៅ", val: "កូត Diamond-Carbon ការពារឆ្កូត & ការពារស្រអាប់" }
+        ],
+        points: [
+          "មិនធ្វើឱ្យរវើរវាយភ្នែក: សញ្ញាព្រួញផែនទីបង្ហាញដូចជាជាប់នៅលើផ្ទៃថ្នល់ផ្ទាល់នៅមុខភ្នែកអ្នកបើកបរ។",
+          "បន្ថយចំណាំងពន្លឺស្វ័យប្រវត្តិនៅពេលជួបចង្កៀងហ្វាឡានចាំងចំ ឬពន្លឺថ្ងៃពេលថ្ងៃលិច។",
+          "បំពាក់ស្រទាប់ Pinlock 120 MaxVision ការពារកញ្ចក់ស្រអាប់ពេលជិះកាត់ភ្លៀង និងអាកាសធាតុត្រជាក់។"
+        ],
+        tags: ["កញ្ចក់ AR Waveguide", "មុំមើល 110°", "ប្ដូរពណ៌ស្វ័យប្រវត្តិ", "ការពារស្រអាប់"]
+      },
+      {
+        icon: "📽️",
+        number: "គ្រឿងបន្លាស់ #០៥",
+        title: "ម៉ាស៊ីនបញ្ចាំង Dual Micro-OLED",
+        badge: "ម៉ាស៊ីនបញ្ចាំងរូបភាព",
+        desc: "ម៉ាស៊ីនបញ្ចាំង Sony Micro-OLED ភ្លោះទំហំតូច 0.71 អ៊ីញ បង្កប់ខាងក្នុងមួកផ្នែកខាងលើ ជះរូបភាពទិន្នន័យច្បាស់ត្រជាក់ភ្នែកចូលក្នុងកញ្ចក់ឆ្លុះ ជាមួយនឹងពណ៌ខ្មៅដិតពិតៗ។",
+        specs: [
+          { label: "កម្រិតច្បាស់", val: "3840 x 2160 ភិចសែលក្នុងមួយភ្នែក (4K Dual)" },
+          { label: "ពន្លឺអតិបរមា", val: "4,000 Nits (មើលឃើញច្បាស់ទោះត្រូវពន្លឺថ្ងៃខ្លាំង)" },
+          { label: "កម្រិតពណ៌ខ្មៅ Contrast", val: "100,000:1 True Black" },
+          { label: "ល្បឿន Refresh Rate", val: "90 Hz រូបភាពរលូនឥតទាក់" }
+        ],
+        points: [
+          "បច្ចេកវិទ្យាកញ្ចក់ Micro-mirror ជួយកាត់បន្ថយការចុករោយភ្នែកពេលជិះផ្លូវឆ្ងាយ។",
+          "សេនស័រវាស់ពន្លឺបរិយាកាស កែសម្រួលពន្លឺអេក្រង់ស្វ័យប្រវត្តិតាមពេលថ្ងៃ ឬពេលយប់។",
+          "អាចសារ៉េកម្រិតកែវភ្នែកឆ្វេង-ស្ដាំ (+2.0D ដល់ -5.0D) សម្រាប់អ្នកពាក់វ៉ែនតាភ្នែក។"
+        ],
+        tags: ["4K Micro-OLED", "ពន្លឺ 4,000 Nits", "ល្បឿន 90Hz", "សារ៉េកែវភ្នែក"]
+      },
+      {
+        icon: "📡",
+        number: "គ្រឿងបន្លាស់ #០៦",
+        title: "សេនស័រ LiDAR & កាមេរ៉ា 4K HDR",
+        badge: "ប្រព័ន្ធស្កេនឧបសគ្គ & កាមេរ៉ា",
+        desc: "ឧបករណ៍ស្កេនឡាស៊ែរ Solid-State ToF LiDAR រួមជាមួយកាមេរ៉ា Sony Starvis 2 4K 60fps ចាប់រូបភាពពេលយប់ច្បាស់ បង្កប់នៅចិញ្ចើមមួកសម្រាប់ចាប់ឧបសគ្គ និងថតវីដេអូធ្វើដំណើរ។",
+        specs: [
+          { label: "ចម្ងាយចាប់ LiDAR", val: "០.២ ម៉ែត្រ ដល់ ១០០ ម៉ែត្រ (កម្រិតលម្អិត ±២ ស.ម)" },
+          { label: "មុំស្កេន LiDAR", val: "១២០° ផ្ដេក x ៣០° បញ្ឈរ" },
+          { label: "សេនស័រកាមេរ៉ា", val: 'Sony Starvis 2 1/1.8" 4K HDR 60fps' },
+          { label: "ប្រព័ន្ធទប់លំនឹងវីដេអូ", val: "Electronic RockSteady 3.0 EIS" }
+        ],
+        points: [
+          "ថតវីដេអូ Dashcam វិលជុំជាប្រចាំ និងរក្សាទុកក្នុងអង្គចងចាំដែលមានសុវត្ថិភាពខ្ពស់។",
+          "LiDAR គណនាល្បឿនយានជំនិះខាងមុខ និងផ្ដល់ដំណឹងមុនពេលបត់ផ្លូវកោងមើលមិនឃើញ។",
+          "AI ស្គាល់ផ្លាកលេខឡាន និងវាស់ចម្ងាយពីឡានខាងមុខបង្ហាញលើកញ្ចក់ឆ្លុះ។"
+        ],
+        tags: ["LiDAR ១០០ម", "វីដេអូ 4K 60fps", "Sony Starvis 2", "ទប់លំនឹង EIS"]
+      },
+      {
+        icon: "🔋",
+        number: "គ្រឿងបន្លាស់ #០៧",
+        title: "ថាមពលថ្មឆ្លាតវៃ Curved Li-Po",
+        badge: "ប្រព័ន្ធថាមពល",
+        desc: "កញ្ចប់ថ្ម Lithium-Polymer ដង់ស៊ីតេខ្ពស់ 3,800mAh ភ្លោះរាងកោងតាមកញ្ចឹងកមួក ជួយរក្សាលំនឹងទម្ងន់ស្មើល្អ មិនធ្ងន់ក គាំទ្រការសាកឥតខ្សែ Qi និងសាកលឿន USB-C PD។",
+        specs: [
+          { label: "ទំហំផ្ទុកថាមពល", val: "7.4V 4,800mAh (35.52 Wh)" },
+          { label: "រយៈពេលប្រើប្រាស់", val: "៨ ទៅ ១០ ម៉ោងដំណើរការ HUD ជាប់" },
+          { label: "ល្បឿនសាកថ្ម", val: "សាកលឿន ០-៨០% ក្នុង ៤៥ នាទី (USB-C 30W PD)" },
+          { label: "ប្រព័ន្ធសុវត្ថិភាពថ្ម", val: "ការពារលើសភ្លើង លើសកម្ដៅ និងការពារការឆ្លងចរន្ត" }
+        ],
+        points: [
+          "ការបែងចែកទម្ងន់ស្មើល្អលើស្មាអ្នកជិះ មិនធ្វើឱ្យចុកកពេលធ្វើដំណើរផ្លូវឆ្ងាយ។",
+          "ប្រព័ន្ធសន្សំថាមពលស្វ័យប្រវត្តិ រក្សាថ្មបានរហូតដល់ ៩០ ថ្ងៃពេលទុកចោលមិនប្រើ។",
+          "ខ្សែសាកជាប្រភេទមេដែកស្រូប (Magnetic Quick-Snap) ការពារកុំឱ្យទាក់ជ្រុះមួក។"
+        ],
+        tags: ["ទំហំ 4800mAh", "ប្រើបាន ១០ម៉ោង", "សាកលឿន 30W", "លំនឹងស្មើល្អ"]
+      },
+      {
+        icon: "🔊",
+        number: "គ្រឿងបន្លាស់ #០៨",
+        title: "ប្រព័ន្ធសំឡេងតាមឆ្អឹង & មីក្រូហ្វូនកាត់ខ្យល់",
+        badge: "ឧបករណ៍បំពងសំឡេង",
+        desc: "ឧបករណ៍បញ្ជូនសំឡេងតាមឆ្អឹងក្បាល (Bone Conduction) ប៉ះផ្ទាល់សៀតផ្កា រួមជាមួយមីក្រូហ្វូន 4 គ្រាប់កាត់បន្ថយសំឡេងរំខាន។ ស្ដាប់ចម្រៀង និយាយទូរស័ព្ទ និងសន្ទនាក្រុមដោយមិនបាច់ញាត់ត្រចៀក។",
+        specs: [
+          { label: "ប្រភេទឧបករណ៍សំឡេង", val: "Dual Temporal Bone Conduction Actuators" },
+          { label: "កម្រិតប្រេកង់", val: "២០ Hz ដល់ ២០,០០០ Hz" },
+          { label: "ប្រព័ន្ធមីក្រូហ្វូន", val: "មីក្រូហ្វូន ៤ គ្រាប់កាត់សំឡេងរំខាន ENC" },
+          { label: "ការកាត់សំឡេងខ្យល់", val: "និយាយឮច្បាស់ទោះជិះល្បឿន ១៤០ គ.ម/ម៉" }
+        ],
+        points: [
+          "ត្រចៀកបើកចំហ ១០០% អាចស្ដាប់ឮស៊ីរ៉ែនឡានពេទ្យ ស៊ីប្លេឡាន និងចរាចរណ៍ជុំវិញបានសុវត្ថិភាព។",
+          "សំឡេង Spatial 3D Audio: សំឡេងណែនាំផ្លូវឮចេញពីទិសដៅផ្លូវដែលត្រូវបត់។",
+          "ប្រព័ន្ធ Intercom និយាយគ្នារវាងអ្នកបើកបរ និងអ្នករួមដំណើរ ឬជាក្រុមចម្ងាយ ១.៦ គ.ម។"
+        ],
+        tags: ["សំឡេងតាមឆ្អឹង", "កាត់សំឡេង ENC", "បើកត្រចៀក Open-Ear", "សំឡេង 3D"]
+      },
+      {
+        icon: "🚨",
+        number: "គ្រឿងបន្លាស់ #០៩",
+        title: "ភ្លើងហ្វ្រាំង LED ក្រោយ & រ៉ាដា 77GHz",
+        badge: "ភ្លើងសញ្ញាសុវត្ថិភាពខាងក្រោយ",
+        desc: "ជួរភ្លើង LED ពណ៌ក្រហមដិតរាងកោងភ្ជាប់រ៉ាដា 77GHz មើលចំណុចខ្វាក់ខាងក្រោយ។ ភ្លើងនឹងព្រិចសញ្ញាសង្គ្រោះបន្ទាន់ស្វ័យប្រវត្តិនៅពេលចាប់ហ្វ្រាំងខ្លាំងភ្លាមៗ។",
+        specs: [
+          { label: "កម្រិតពន្លឺ", val: "២៤០ Lumens ពណ៌ក្រហមច្បាស់ត្រជាក់ភ្នែក" },
+          { label: "ការចាប់ហ្វ្រាំង", val: "សេនស័រ IMU ចាប់ការថយល្បឿនស្វ័យប្រវត្តិ (<៥ មិល្លីវិនាទី)" },
+          { label: "ចម្ងាយរ៉ាដាខាងក្រោយ", val: "៥០ ម៉ែត្រចាប់ល្បឿនឡានមកពីក្រោយ" },
+          { label: "ទម្រង់ភ្លើង", val: "ភ្លើងធម្មតា, ភ្លើងហ្វ្រាំងញាប់, ភ្លើងសង្គ្រោះ SOS" }
+        ],
+        points: [
+          "ភ្លើងហ្វ្រាំងស្ថិតនៅកម្ពស់ស្មើភ្នែកអ្នកបើកបរឡានខាងក្រោយ មើលឃើញច្បាស់ភ្លាមៗ។",
+          "ផ្ដល់សញ្ញាព្រមានលើកញ្ចក់ឆ្លុះ ប្រសិនបើមានឡានមកពីក្រោយលឿនពេកពេលឈប់ស្តុប។",
+          "សេនស័របន្ថយពន្លឺពេលយប់ ដើម្បីកុំឱ្យចាំងភ្នែកអ្នកបើកបរពីក្រោយ។"
+        ],
+        tags: ["ភ្លើងហ្វ្រាំងស្វ័យប្រវត្តិ", "រ៉ាដា 77GHz", "ចាប់ឡានពីក្រោយ", "ពន្លឺ ២៤០ Lumens"]
+      },
+      {
+        icon: "💨",
+        number: "គ្រឿងបន្លាស់ #១០",
+        title: "កង្ហារខ្យល់ត្រជាក់ & ចម្រោះ HEPA",
+        badge: "ប្រព័ន្ធខ្យល់ត្រជាក់ & ចម្រោះ",
+        desc: "ទួរប៊ីនខ្យល់ខ្នាតតូចកម្លាំងខ្លាំង គ្មានជក់ (Brushless) បង្កប់នៅចង្កា និងលើក្បាល រួមជាមួយតម្រងកាបូន HEPA ដើម្បីបូមបញ្ចេញកម្ដៅ សំណើម និងចំហាយកាបូនិចចេញក្រៅ។",
+        specs: [
+          { label: "ប្រភេទកង្ហារ", val: "កង្ហារ Twin 12V Brushless Mag-Lev Micro-Fans" },
+          { label: "បរិមាណខ្យល់បក់", val: "៤.២ CFM កម្លាំងបូមខ្លាំងអតិបរមា" },
+          { label: "កម្រិតសំឡេង", val: "<១៨ dBA (ស្ងាត់បំផុត ស្ទើរតែមិនឮ)" },
+          { label: "ស្រទាប់ចម្រោះ", val: "តម្រងកាបូនសកម្ម N95/PM2.5 អាចដោះប្តូរបាន" }
+        ],
+        points: [
+          "សេនស័រវាស់កម្ដៅ និងសំណើម បើកដំណើរការកង្ហារស្វ័យប្រវត្តិនៅពេលឈប់ស្តុប។",
+          "កម្ចាត់ចំហាយស្រអាប់លើកញ្ចក់ក្នុងរយៈពេលត្រឹម ១.៥ វិនាទីដោយមិនបាច់បើកកញ្ចក់មួក។",
+          "ចម្រោះផ្សែងពុល និងធូលីល្អិត PM2.5 ពេលជិះក្នុងទីក្រុងដែលមានការកកស្ទះចរាចរណ៍។"
+        ],
+        tags: ["កង្ហារខ្យល់សកម្ម", "ចម្រោះ N95", "កម្ចាត់ស្រអាប់", "កង្ហារស្ងាត់ Mag-Lev"]
+      },
+      {
+        icon: "🎛️",
+        number: "គ្រឿងបន្លាស់ #១១",
+        title: "កូនកង់បញ្ជា Multi-Jog & ប៊ូតុងចុច",
+        badge: "ការបញ្ជាដោយដៃផ្ទាល់",
+        desc: "កូនកង់បង្វិលម៉ាញេទិកទំហំធំ និងប៊ូតុងចុចការពារទឹកបំពាក់នៅថ្គាមខាងឆ្វេងមួក រចនាឡើងជាពិសេសដើម្បីងាយស្រួលបង្វិល និងចុចទោះបីជាកំពុងពាក់ស្រោមដៃស្បែកក្រាស់ក៏ដោយ។",
+        specs: [
+          { label: "យន្តការបញ្ជា", val: "កូនកង់បង្វិល Hall-Effect + ប៊ូតុងចុច ៣" },
+          { label: "កម្រិតការពារទឹក", val: "IP68 ការពារធូលី និងធន់នឹងការជ្រាបទឹកទាំងស្រុង" },
+          { label: "កម្លាំងតម្រូវការចុច", val: "កម្លាំងចុចច្បាស់ ១៥០ ក្រាម (Tactile Detent)" },
+          { label: "ការបញ្ជាជំនួយ", val: "ប្រព័ន្ធបញ្ជាដោយសំឡេង Voice Command" }
+        ],
+        points: [
+          "មានសំឡេងចុចរាល់ពេលបង្វិល ងាយស្រួលសារ៉េកម្រិតសំឡេង និងម៉ឺនុយដោយមិនបាច់ដកភ្នែកពីផ្លូវ។",
+          "ប៊ូតុងចុចរហ័សចុចមួយភ្លែតដើម្បីប្ដូរកញ្ចក់ឱ្យថ្លា ១០០% ភ្លាមៗពេលជិះចូលផ្លូវរូងក្រោមដីងងឹត។",
+          "អាចកំណត់ផ្លូវកាត់ផ្ទាល់ខ្លួនសម្រាប់ប៉ុស្តិ៍វិទ្យុដែលចូលចិត្ត ឬក្រុម Intercom។"
+        ],
+        tags: ["ពាក់ស្រោមដៃចុចបាន", "ការពារទឹក IP68", "កូនកង់ Hall-Effect", "ប៊ូតុងចុចច្បាស់"]
+      },
+      {
+        icon: "🆘",
+        number: "គ្រឿងបន្លាស់ #១២",
+        title: "ប្រព័ន្ធសង្គ្រោះបន្ទាន់ eCall SOS & Blackbox",
+        badge: "ខ្សែជីវិតសង្គ្រោះបន្ទាន់",
+        desc: "ម៉ូឌុលសុវត្ថិភាពដាច់ដោយឡែករឹងមាំ បំពាក់ប្រព័ន្ធផ្កាយរណប GNSS សន្សំថាមពល សេនស័រវាស់កម្លាំងបុកទង្គិចកម្រិត 64G និងប្រព័ន្ធបញ្ជូនសារសង្គ្រោះបន្ទាន់ស្វ័យប្រវត្តិតាមទូរស័ព្ទ។",
+        specs: [
+          { label: "សេនស័រប៉ះទង្គិច", val: "រង្វាស់កម្លាំងប៉ះទង្គិចខ្ពស់ 64G Crash Accelerometer" },
+          { label: "ផ្កាយរណបទីតាំង", val: "GPS L1/L5, GLONASS, Galileo, BeiDou" },
+          { label: "ពេលវេលារង់ចាំ SOS", val: "រាប់ថយក្រោយ ១០ វិនាទីមុនពេលបញ្ជូនសារស្វ័យប្រវត្តិ" },
+          { label: "ការតភ្ជាប់ Cloud", val: "ប្រព័ន្ធសង្គ្រោះបន្ទាន់ VELORAN Cloud Emergency Dispatch" }
+        ],
+        points: [
+          "អាចញែកដាច់រវាងការជ្រុះមួកលើការ៉ូធម្មតា និងគ្រោះថ្នាក់ចរាចរណ៍ពិតប្រាកដ។",
+          "បញ្ជូនប្រភេទឈាមរបស់អ្នកបើកបរ លេខទូរស័ព្ទសាច់ញាតិ កូអរដោនេ GPS និងកម្លាំងប៉ះទង្គិចទៅកាន់ឡានសង្គ្រោះ។",
+          "មានប៊ូតុងចុចបោះបង់លើមួក ប្រសិនបើអ្នកបើកបរមិនមានរបួស និងមិនត្រូវការជំនួយវេជ្ជសាស្ត្រ។"
+        ],
+        tags: ["សេនស័រប៉ះទង្គិច 64G", "ប្រព័ន្ធផ្កាយរណប Multi-GNSS", "សង្គ្រោះបន្ទាន់ Cloud", "រាប់ថយក្រោយ ១០វិ"]
+      }
+    ];
+
     const innovationPillars = {
       optics: {
         indices: [3, 4, 5],
@@ -3190,6 +3439,9 @@
     };
 
     function populateInnovationTabs() {
+      const compList = (currentLang === 'km' && typeof components_km !== 'undefined') ? components_km : components;
+      const btnLabel = currentLang === 'km' ? '<span>🔬</span> ពិនិត្យលម្អិតគ្រឿងបន្លាស់' : '<span>🔬</span> Inspect Subsystem Specs';
+
       Object.keys(innovationPillars).forEach(pillarKey => {
         const pillar = innovationPillars[pillarKey];
         const grid = document.getElementById(pillar.gridId);
@@ -3197,7 +3449,7 @@
         grid.innerHTML = '';
 
         pillar.indices.forEach(compIdx => {
-          const c = components[compIdx];
+          const c = compList[compIdx];
           if (!c) return;
 
           const card = document.createElement('div');
@@ -3218,7 +3470,7 @@
               </div>
             </div>
             <button class="inno-action-btn" onclick="event.stopPropagation(); inspectComponentIn3D(${compIdx})">
-              <span>🔬</span> Inspect Subsystem Specs
+              ${btnLabel}
             </button>
           `;
 
@@ -3266,7 +3518,13 @@
       const layer = document.getElementById('hotspots-layer');
       if (layer) layer.style.display = hotspotsVisible ? 'block' : 'none';
       const btn = document.getElementById('btn-hotspots-toggle');
-      if (btn) btn.innerText = hotspotsVisible ? '📍 Hotspots: ON' : '📍 Hotspots: OFF';
+      if (btn) {
+        if (currentLang === 'km') {
+          btn.innerText = hotspotsVisible ? '📍 ចំណុចពន្យល់: បើក' : '📍 ចំណុចពន្យល់: បិទ';
+        } else {
+          btn.innerText = hotspotsVisible ? '📍 Hotspots: ON' : '📍 Hotspots: OFF';
+        }
+      }
     }
 
     // View Switcher logic (3D WebGL vs Static Render vs Live HUD)
@@ -3345,16 +3603,25 @@
       }
     }
 
+    let currentInspectedIndex = -1;
     function inspectComponent(index) {
-      const data = components[index];
+      currentInspectedIndex = index;
+      const compList = (currentLang === 'km' && typeof components_km !== 'undefined') ? components_km : components;
+      const data = compList[index];
       if (!data) return;
       const panel = document.getElementById('inspector');
       if (!panel) return;
       panel.style.display = 'block';
 
-      document.getElementById('insp-badge').innerText = data.badge;
+      const badgeEl = document.getElementById('insp-badge');
+      if (badgeEl) badgeEl.innerText = data.badge;
       document.getElementById('insp-title').innerHTML = `${data.icon} ${data.title}`;
       document.getElementById('insp-desc').innerText = data.desc;
+
+      const benchTitle = document.getElementById('insp-benchmarks-title');
+      if (benchTitle) {
+        benchTitle.innerText = currentLang === 'km' ? 'កម្រិតស្ដង់ដារបច្ចេកទេសវិស្វកម្ម' : 'ENGINEERING BENCHMARKS';
+      }
 
       const specsTable = document.getElementById('insp-specs');
       specsTable.innerHTML = '';
@@ -3472,7 +3739,11 @@
       isAudioMuted = !isAudioMuted;
       const btn = document.getElementById('btn-sound-toggle');
       if (btn) {
-        btn.innerText = isAudioMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+        if (currentLang === 'km') {
+          btn.innerText = isAudioMuted ? '🔇 សំឡេង: បិទ' : '🔊 សំឡេង: បើក';
+        } else {
+          btn.innerText = isAudioMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON';
+        }
       }
       if (isAudioMuted) stopSirenSound();
       else if (isAlarmActive) startSirenSound();
@@ -3507,10 +3778,10 @@
         playTone(880, 0.12, 'sine');
         setTimeout(() => playTone(1320, 0.16, 'sine'), 130);
         badge.className = 'alarm-status-badge status-safe';
-        badge.innerText = '🛡️ ARMED (MONITORING)';
-        navBadge.innerText = 'ARMED';
-        armBtn.innerHTML = '<span>🛡️</span> Disarm System';
-        appendAlarmLog("Guardian Theft Monitoring ARMED. Motion threshold set to 15°.", "log-warn");
+        badge.innerText = currentLang === 'km' ? '🛡️ បានបើកដំណើរការ (កំពុងតាមដាន)' : '🛡️ ARMED (MONITORING)';
+        navBadge.innerText = currentLang === 'km' ? 'បានបើក' : 'ARMED';
+        armBtn.innerHTML = currentLang === 'km' ? '<span>🛡️</span> <span id="btn-toggle-arm-txt">បិទប្រព័ន្ធរោទ៍</span>' : '<span>🛡️</span> <span id="btn-toggle-arm-txt">Disarm System</span>';
+        appendAlarmLog(currentLang === 'km' ? "ប្រព័ន្ធតាមដានការពារចោរកម្ម Guardian បានបើកដំណើរការ។ កម្រិតបម្លាស់ទី ១៥°។" : "Guardian Theft Monitoring ARMED. Motion threshold set to 15°.", "log-warn");
       } else {
         playTone(1320, 0.12, 'sine');
         setTimeout(() => playTone(660, 0.16, 'sine'), 130);
@@ -3518,10 +3789,10 @@
         badge.className = 'alarm-status-badge';
         badge.style.background = 'rgba(255,255,255,0.06)';
         badge.style.color = 'var(--veloran-silver)';
-        badge.innerText = '⚪ DISARMED';
-        navBadge.innerText = 'DISARMED';
-        armBtn.innerHTML = '<span>🛡️</span> Arm Guardian';
-        appendAlarmLog("Guardian Security DISARMED by user.");
+        badge.innerText = currentLang === 'km' ? '⚪ បានបិទដំណើរការ' : '⚪ DISARMED';
+        navBadge.innerText = currentLang === 'km' ? 'បានបិទ' : 'DISARMED';
+        armBtn.innerHTML = currentLang === 'km' ? '<span>🛡️</span> <span id="btn-toggle-arm-txt">បើកប្រព័ន្ធរោទ៍</span>' : '<span>🛡️</span> <span id="btn-toggle-arm-txt">Arm Guardian</span>';
+        appendAlarmLog(currentLang === 'km' ? "ប្រព័ន្ធការពារចោរកម្ម Guardian ត្រូវបានបិទដោយអ្នកប្រើប្រាស់។" : "Guardian Security DISARMED by user.");
       }
     }
 
@@ -3544,19 +3815,19 @@
       sirenTelemetry.style.color = 'var(--alarm-danger)';
 
       if (type === 'theft') {
-        badge.innerText = '🚨 THEFT ALERT (TAMPER DETECTED)';
-        navBadge.innerText = 'THEFT ALARM!';
-        document.getElementById('telemetry-imu').innerText = 'TAMPER TILT 38.6° (UNAUTHORIZED)';
+        badge.innerText = currentLang === 'km' ? '🚨 អាសន្នចោរលួចប៉ះពាល់ (រកឃើញចលនា)!' : '🚨 THEFT ALERT (TAMPER DETECTED)';
+        navBadge.innerText = currentLang === 'km' ? 'អាសន្នចោរ!' : 'THEFT ALARM!';
+        document.getElementById('telemetry-imu').innerText = currentLang === 'km' ? 'ផ្អៀង ៣៨.៦° (គ្មានការអនុញ្ញាត)' : 'TAMPER TILT 38.6° (UNAUTHORIZED)';
         document.getElementById('telemetry-imu').style.color = 'var(--alarm-danger)';
-        appendAlarmLog("⚠️ MOVEMENT TRIGGER: Accelerometer spike >38°. Piezo siren engaged!", "log-alert");
-        appendAlarmLog("📡 Cloud SOS: Transmitted GPS coords (11.5564° N, 104.9282° E) to rider smartphone.", "log-alert");
+        appendAlarmLog(currentLang === 'km' ? "⚠️ រកឃើញចលនា: បម្លាស់ទីលើស ៣៨°។ ស៊ីរ៉ែនបន្លឺឡើង!" : "⚠️ MOVEMENT TRIGGER: Accelerometer spike >38°. Piezo siren engaged!", "log-alert");
+        appendAlarmLog(currentLang === 'km' ? "📡 Cloud SOS: បានបញ្ជូនទីតាំង GPS ទៅកាន់ទូរស័ព្ទម្ចាស់មួក។" : "📡 Cloud SOS: Transmitted GPS coords (11.5564° N, 104.9282° E) to rider smartphone.", "log-alert");
       } else if (type === 'crash') {
-        badge.innerText = '🚨 HIGH-G IMPACT (eCall SOS ACTIVE)';
-        navBadge.innerText = 'CRASH SOS!';
-        document.getElementById('telemetry-gforce').innerText = '28.4G PEAK IMPACT';
+        badge.innerText = currentLang === 'km' ? '🚨 គ្រោះថ្នាក់បុកទង្គិចកម្លាំងខ្លាំង (eCall SOS ដំណើរការ)' : '🚨 HIGH-G IMPACT (eCall SOS ACTIVE)';
+        navBadge.innerText = currentLang === 'km' ? 'គ្រោះថ្នាក់ SOS!' : 'CRASH SOS!';
+        document.getElementById('telemetry-gforce').innerText = currentLang === 'km' ? 'កម្លាំងប៉ះទង្គិច ២៨.៤G' : '28.4G PEAK IMPACT';
         document.getElementById('telemetry-gforce').style.color = 'var(--alarm-danger)';
-        appendAlarmLog("🚨 CRASH DETECTED: 28.4G Deceleration threshold exceeded!", "log-alert");
-        appendAlarmLog("🚑 Autonomous eCall SOS sequence triggered. 10s cancellation window open.", "log-alert");
+        appendAlarmLog(currentLang === 'km' ? "🚨 រកឃើញការបុកទង្គិច: កម្លាំងបន្ថយល្បឿនលើស ២៨.៤G!" : "🚨 CRASH DETECTED: 28.4G Deceleration threshold exceeded!", "log-alert");
+        appendAlarmLog(currentLang === 'km' ? "🚑 ប្រព័ន្ធសង្គ្រោះបន្ទាន់ eCall ស្វ័យប្រវត្តិកំពុងដំណើរការ។" : "🚑 Autonomous eCall SOS sequence triggered. 10s cancellation window open.", "log-alert");
         openCrashModal();
       }
     }
@@ -3687,12 +3958,12 @@
 
     // 3D Hotspot coordinate definitions (world space relative to helmet center)
     const hotspots3D = [
-      { id: 'visor', pos: new THREE.Vector3(0, 20, -110), label: "👓 Waveguide Visor", compIdx: 3 },
-      { id: 'lidar', pos: new THREE.Vector3(0, 68, -115), label: "📡 4K LiDAR Camera", compIdx: 5 },
-      { id: 'shell', pos: new THREE.Vector3(0, 125, -10), label: "🛡️ Carbon Fiber Shell", compIdx: 0 },
-      { id: 'battery', pos: new THREE.Vector3(0, -85, 115), label: "🔋 Li-Polymer Battery", compIdx: 6 },
-      { id: 'audio', pos: new THREE.Vector3(-125, -35, -30), label: "🔊 Bone Conduction Audio", compIdx: 7 },
-      { id: 'brake', pos: new THREE.Vector3(0, 5, 148), label: "🚨 Rear LED Warning Bar", compIdx: 8 }
+      { id: 'visor', pos: new THREE.Vector3(0, 20, -110), label: "👓 Waveguide Visor", label_km: "👓 កញ្ចក់ឆ្លុះ Waveguide", compIdx: 3 },
+      { id: 'lidar', pos: new THREE.Vector3(0, 68, -115), label: "📡 4K LiDAR Camera", label_km: "📡 កាមេរ៉ា & សេនស័រ LiDAR", compIdx: 5 },
+      { id: 'shell', pos: new THREE.Vector3(0, 125, -10), label: "🛡️ Carbon Fiber Shell", label_km: "🛡️ សំបកការពារកាបូន 3K", compIdx: 0 },
+      { id: 'battery', pos: new THREE.Vector3(0, -85, 115), label: "🔋 Li-Polymer Battery", label_km: "🔋 ថាមពលថ្មឆ្លាតវៃ Li-Po", compIdx: 6 },
+      { id: 'audio', pos: new THREE.Vector3(-125, -35, -30), label: "🔊 Bone Conduction Audio", label_km: "🔊 ប្រព័ន្ធសំឡេងតាមឆ្អឹង", compIdx: 7 },
+      { id: 'brake', pos: new THREE.Vector3(0, 5, 148), label: "🚨 Rear LED Warning Bar", label_km: "🚨 ភ្លើងហ្វ្រាំង LED ក្រោយ", compIdx: 8 }
     ];
 
     function init3D() {
@@ -3890,15 +4161,17 @@
 
     function create3DHotspots() {
       const layer = document.getElementById('hotspots-layer');
+      if (!layer) return;
       layer.innerHTML = '';
 
       hotspots3D.forEach((h, idx) => {
         const dot = document.createElement('div');
         dot.className = 'hotspot-point';
         dot.id = 'hotspot-' + h.id;
+        const bubbleTxt = (currentLang === 'km' && h.label_km) ? h.label_km : h.label;
         dot.innerHTML = `
           <div class="hotspot-dot"></div>
-          <div class="hotspot-bubble">${h.label}</div>
+          <div class="hotspot-bubble">${bubbleTxt}</div>
         `;
         dot.onclick = (e) => {
           e.stopPropagation();
@@ -4012,8 +4285,14 @@
     function toggleAutoRotate() {
       autoRotateEnabled = !autoRotateEnabled;
       controls.autoRotate = autoRotateEnabled;
-      document.getElementById('btn-autorotate-toggle').innerText = 
-        autoRotateEnabled ? '🔄 Auto-Rotate: ON' : '🔄 Auto-Rotate: OFF';
+      const btn = document.getElementById('btn-autorotate-toggle');
+      if (btn) {
+        if (currentLang === 'km') {
+          btn.innerText = autoRotateEnabled ? '🔄 បង្វិលស្វ័យប្រវត្តិ: បើក' : '🔄 បង្វិលស្វ័យប្រវត្តិ: បិទ';
+        } else {
+          btn.innerText = autoRotateEnabled ? '🔄 Auto-Rotate: ON' : '🔄 Auto-Rotate: OFF';
+        }
+      }
     }
 
     function tweenCameraTo(x, y, z) {
@@ -4205,6 +4484,498 @@
     // =========================================================================
     // 🌐 BILINGUAL TRANSLATION SYSTEM (ENGLISH 🇬🇧 ⇄ ខ្មែរ 🇰🇭)
     // =========================================================================
+    /* =========================================================================
+       📸 GALLERY & SPECS MATRIX BILINGUAL DATA & SYSTEM UTILITIES
+       ========================================================================= */
+    const GALLERY_ITEMS_I18N = {
+      en: [
+        {
+          tag: "AERODYNAMIC PROFILE",
+          title: "Aerodynamic Toray 3K Shell & Brow LiDAR",
+          desc: "Ultra-lightweight aerospace carbon fiber composite with integrated front brow solid-state LiDAR perception and signature Angkor Wat emblem.",
+          cert: "ECE 22.06 / DOT CERTIFIED",
+          inspect: "Inspect Full HD",
+          lightbox_cap: "VELORAN 3K Carbon Shell • Brow LiDAR & Angkor Wat Insignia"
+        },
+        {
+          tag: "COCKPIT TELEMETRY (POV)",
+          title: "Holographic Visor Heads-Up Display (POV)",
+          desc: "Real-time optical waveguide projection with 4,000 Nits micro-OLED, AI road hazard scanning, live speed, and turn-by-turn routing directly in rider field-of-view.",
+          cert: "4,000 NITS MICRO-OLED",
+          inspect: "Inspect Full HD",
+          lightbox_cap: "Holographic Optical Visor • Live Speed, Navigation & AI Road Hazard Perception"
+        },
+        {
+          tag: "ACTIVE VEHICLE LIGHTING",
+          title: "Smart LED Brake Bar & Strobe Warning Strips",
+          desc: "High-mounted active deceleration light bar synchronized with helmet 6-axis IMU, sequential amber turn strobes, and magnetic quick-snap charge port.",
+          cert: "IMU-SYNCED DECELERATION",
+          inspect: "Inspect Full HD",
+          lightbox_cap: "Rear Active Dynamic LED Brake Bar & Sequential Warning Strobes"
+        },
+        {
+          tag: "SAFETY ENGINEERING",
+          title: "Multi-Tier Energy Dissipation Core",
+          desc: "Dual-density multi-directional EPS foam core paired with MIPS rotational slip plane to absorb up to 64G oblique and angular impacts.",
+          cert: "64G MULTI-AXIS ABSORPTION",
+          inspect: "Inspect Full HD",
+          lightbox_cap: "Internal Multi-Layer Energy Dissipation Core & MIPS Slip Plane"
+        },
+        {
+          tag: "CAD TWIN BREAKDOWN",
+          title: "Precision Modular Sub-Assemblies",
+          desc: "Independent modular replacement architecture enabling individual upgrades to the optical waveguide visor, Li-Po curved battery pack, and motherboard.",
+          cert: "1:1 CAD TOLERANCE",
+          inspect: "Inspect Full HD",
+          lightbox_cap: "Exploded Sub-Assemblies • Modular Optical, Battery & Sensor Architecture"
+        },
+        {
+          tag: "AEROSPACE SIDE PROFILE",
+          title: "Dual Bone Conduction & Wind Isolation",
+          desc: "Integrated low-profile acoustic drivers with beamforming noise-cancelling microphones tuned for clear intercom communication up to 140 km/h.",
+          cert: "BEAMFORMING NOISE REDUCTION",
+          inspect: "Inspect Full HD",
+          lightbox_cap: "Aerospace Side Profile • Bone Conduction Transducers & Acoustic Ducts"
+        }
+      ],
+      km: [
+        {
+          tag: "ទម្រង់អាកាសចរណ៍វិទ្យា",
+          title: "សំបកកាបូន Toray 3K & សេនស័រ LiDAR",
+          desc: "សំបកកាបូនហ្វៃបឺកម្រិតអាកាសចរណ៍ទម្ងន់ស្រាលបំផុត ភ្ជាប់មកជាមួយសេនស័រ LiDAR ចាប់ឧបសគ្គខាងមុខ និងឡូហ្គោប្រាសាទអង្គរវត្តដ៏ប្រណិត។",
+          cert: "ស្ដង់ដារ ECE 22.06 / DOT",
+          inspect: "ពង្រីកមើល Full HD",
+          lightbox_cap: "សំបកកាបូន VELORAN 3K • សេនស័រ LiDAR និងឡូហ្គោប្រាសាទអង្គរវត្ត"
+        },
+        {
+          tag: "ទិដ្ឋភាពកញ្ចក់ឆ្លុះ POV",
+          title: "កញ្ចក់ឆ្លុះ Holographic HUD (POV)",
+          desc: "កញ្ចក់ឆ្លុះឆ្លាតវៃបំពាក់បច្ចេកវិទ្យា micro-OLED ពន្លឺ 4,000 Nits បង្ហាញល្បឿន ផែនទីចង្អុលផ្លូវ និងការព្រមានគ្រោះថ្នាក់លើថ្នល់ច្បាស់ៗនៅពីមុខភ្នែក។",
+          cert: "ពន្លឺ 4,000 NITS MICRO-OLED",
+          inspect: "ពង្រីកមើល Full HD",
+          lightbox_cap: "កញ្ចក់ឆ្លុះ Holographic • ល្បឿនផ្ទាល់ ផែនទីចង្អុលផ្លូវ និងការចាប់គ្រោះថ្នាក់ AI"
+        },
+        {
+          tag: "ភ្លើងសញ្ញាសុវត្ថិភាពសកម្ម",
+          title: "ភ្លើងហ្វ្រាំង LED ឆ្លាតវៃ & ភ្លើងសញ្ញាសង្គ្រោះ",
+          desc: "ភ្លើងហ្វ្រាំង LED ផ្នែកខាងក្រោយកម្ពស់ស្មើភ្នែកអ្នកបើកបរ ដំណើរការស៊ីគ្នានឹងសេនស័របន្ថយល្បឿន IMU និងភ្លើងស៊ីញ៉ូសង្គ្រោះបន្ទាន់។",
+          cert: "ចាប់ការបន្ថយល្បឿនតាម IMU",
+          inspect: "ពង្រីកមើល Full HD",
+          lightbox_cap: "ភ្លើងហ្វ្រាំង LED សកម្មខាងក្រោយ & ភ្លើងព្រិចសញ្ញាព្រមានស្វ័យប្រវត្តិ"
+        },
+        {
+          tag: "វិស្វកម្មសុវត្ថិភាព",
+          title: "ស្រទាប់ស្នោរស្រូបកម្លាំងទង្គិចពហុកម្រិត",
+          desc: "ស្រទាប់ស្នោរ EPS ដង់ស៊ីតេពីរស្រទាប់ រួមផ្សំជាមួយបច្ចេកវិទ្យារអិល MIPS ការពារការកន្ត្រាក់ខួរក្បាល និងស្រូបកម្លាំងទង្គិចបានរហូតដល់ 64G។",
+          cert: "ស្រូបកម្លាំងទង្គិចពហុទិស 64G",
+          inspect: "ពង្រីកមើល Full HD",
+          lightbox_cap: "ស្រទាប់ស្នោរស្រូបកម្លាំងទង្គិចពហុកម្រិត & បន្ទះរអិលការពារខួរក្បាល MIPS"
+        },
+        {
+          tag: "ការញែកប្លង់ CAD 3D",
+          title: "គ្រឿងបង្គុំម៉ូឌុលច្បាស់លាស់កម្រិត CAD",
+          desc: "រចនាសម្ព័ន្ធម៉ូឌុលដាច់ដោយឡែកពីគ្នា ងាយស្រួលដោះដូរ ឬអាប់ហ្គ្រេដកញ្ចក់ឆ្លុះ ថ្ម Li-Po និងបន្ទះឈីបកុំព្យូទ័រដោយឡែកៗពីគ្នា។",
+          cert: "កម្រិតភាពជាក់លាក់ CAD 1:1",
+          inspect: "ពង្រីកមើល Full HD",
+          lightbox_cap: "ការញែកគ្រឿងបន្លាស់ CAD • រចនាសម្ព័ន្ធកញ្ចក់ឆ្លុះ ថ្ម និងសេនស័រម៉ូឌុល"
+        },
+        {
+          tag: "រូបរាងចំហៀងកម្រិតខ្ពស់",
+          title: "ប្រព័ន្ធសំឡេងតាមឆ្អឹង & កាត់បន្ថយសំឡេងខ្យល់",
+          desc: "ឧបករណ៍បញ្ជូនសំឡេងតាមឆ្អឹងក្បាលដោយមិនបាច់ញាត់ក្នុងត្រចៀក រួមជាមួយមីក្រូហ្វូនកាត់បន្ថយសំឡេងខ្យល់ អាចសន្ទនាបានច្បាស់រហូតដល់ល្បឿន 140 km/h។",
+          cert: "កាត់បន្ថយសំឡេងរំខាន BEAMFORMING",
+          inspect: "ពង្រីកមើល Full HD",
+          lightbox_cap: "រូបរាងចំហៀងកម្រិតខ្ពស់ • ឧបករណ៍បញ្ជូនសំឡេងតាមឆ្អឹង & រន្ធបញ្ចេញខ្យល់"
+        }
+      ]
+    };
+
+    const SPECS_MATRIX_I18N = {
+      en: {
+        headers: ["Subsystem Name", "Hardware Component", "Function / Benchmark", "Weight & Power", "Certification / Status"],
+        rows: [
+          ["Outer Shell", "3K Toray Carbon Fiber + Kevlar", "Structural impact resistance & aero stability", "420g / Passive", "ECE 22.06 / DOT"],
+          ["Impact Core", "Dual-Density EPS + MIPS C2", "Multi-directional rotational concussion reduction", "280g / Passive", "Snell M2025"],
+          ["Optical Visor", "Geometric Optical Waveguide", "110° FOV, 0.1s electrochromic variable tint", "160g / 0.8W", "ANSI Z87.1+ Optical"],
+          ["Projection Engine", "Dual Sony 4K Micro-OLED", "4,000 Nits peak daylight luminance, 90Hz", "45g / 2.2W", "HDR10 Certified"],
+          ["LiDAR & Vision", "Solid-State ToF LiDAR + Sony Starvis 2", "100m obstacle detection, 4K 60fps EIS dashcam", "85g / 3.4W", "Class 1 Eye-Safe"],
+          ["Guardian Alarm & IMU", "MPU-6050 6-Axis IMU + 110dB Piezo Siren", "Anti-theft movement detection & 64G crash alarm", "25g / 0.4W", "GUARDIAN ARMED"],
+          ["Smart Battery", "Curved Lithium-Polymer (7.4V 4,800mAh)", "Up to 10 hours continuous HUD & dashcam life", "185g / 35.5Wh", "UN38.3 Safe Transport"],
+          ["Audio Transducers", "Dual Bone Conduction + Beamforming Mics", "Open-ear spatial comms & voice commands", "25g / 0.5W", "ENC NOISE CANCEL"]
+        ]
+      },
+      km: {
+        headers: ["ឈ្មោះប្រព័ន្ធរង", "គ្រឿងបន្លាស់ផ្នែករឹង", "មុខងារ / ស្ដង់ដារបច្ចេកទេស", "ទម្ងន់ & ថាមពលភ្លើង", "វិញ្ញាបនបត្រ / ស្ថានភាព"],
+        rows: [
+          ["សំបកខាងក្រៅ", "កាបូនហ្វៃបឺ Toray 3K + សរសៃកែវ Kevlar", "ការពារការបែកបាក់ & លំនឹងខ្យល់តាមក្បួនអាកាសចរណ៍", "៤២០ ក្រាម / មិនប្រើភ្លើង", "ECE 22.06 / DOT"],
+          ["ស្នោរស្រូបកម្លាំងទង្គិច", "ស្នោរ EPS ដង់ស៊ីតេពីរ + ប្រព័ន្ធ MIPS C2", "កាត់បន្ថយការប៉ះទង្គិចវិលវល់ និងការប៉ះទង្គិចខួរក្បាល", "២៨០ ក្រាម / មិនប្រើភ្លើង", "Snell M2025"],
+          ["កញ្ចក់ឆ្លុះអុបទិក", "កញ្ចក់ឆ្លុះ Geometric Optical Waveguide", "មុំមើលទូលាយ 110°, ប្ដូរពណ៌ងងឹត/ភ្លឺក្នុង 0.1 វិនាទី", "១៦០ ក្រាម / 0.8 វ៉ាត់", "ស្ដង់ដារ ANSI Z87.1+ Optical"],
+          ["ម៉ាស៊ីនបញ្ចាំងរូបភាព", "បន្ទះបញ្ចាំង Sony 4K Micro-OLED ភ្លោះ", "ពន្លឺច្បាស់ 4,000 Nits មើលឃើញច្បាស់ពេលថ្ងៃ, 90Hz", "៤៥ ក្រាម / 2.2 វ៉ាត់", "វិញ្ញាបនបត្រ HDR10"],
+          ["សេនស័រ LiDAR & កាមេរ៉ា", "Solid-State ToF LiDAR + Sony Starvis 2", "ចាប់ឧបសគ្គចម្ងាយ ១០០ ម៉ែត្រ, វីដេអូ 4K 60fps EIS", "៨៥ ក្រាម / 3.4 វ៉ាត់", "Class 1 Eye-Safe"],
+          ["សំឡេងរោទ៍ Guardian & IMU", "សេនស័រ 6-Axis IMU + ស៊ីរ៉ែន Piezo 110dB", "ចាប់ចោរប៉ះពាល់ & បន្លឺសំឡេងរោទ៍សង្គ្រោះបន្ទាន់ 64G", "២៥ ក្រាម / 0.4 វ៉ាត់", "បានបើកដំណើរការ"],
+          ["ថាមពលថ្មឆ្លាតវៃ", "Lithium-Polymer កោងរាងមួក (7.4V 4,800mAh)", "ប្រើប្រាស់កញ្ចក់ HUD & កាមេរ៉ាជាប់រហូតដល់ ១០ ម៉ោង", "១៨៥ ក្រាម / 35.5Wh", "ដឹកជញ្ជូនសុវត្ថិភាព UN38.3"],
+          ["ប្រព័ន្ធសំឡេងឆ្លាតវៃ", "ឧបករណ៍បំពងសំឡេងតាមឆ្អឹង + មីក្រូហ្វូនកាត់ខ្យល់", "ស្ដាប់ឮច្បាស់ដោយមិនបិទត្រចៀក & បញ្ជាដោយសំឡេង", "២៥ ក្រាម / 0.5 វ៉ាត់", "កាត់បន្ថយសំឡេងរំខាន ENC"]
+        ]
+      }
+    };
+
+    const UI_STRINGS = {
+      en: {
+        brand_status: "SYSTEM ARMED",
+        brand_sub: "CYBERNETIC DIGITAL HELMET",
+        finish_label: "Finish:",
+        explode_label: "💥 Explode:",
+        angle_label: "Angle:",
+        swatch_navy: "Navy",
+        swatch_carbon: "Carbon",
+        swatch_obsidian: "Obsidian",
+        swatch_gold: "Solar Gold",
+        angle_front: "Front",
+        angle_side: "Side",
+        angle_top: "Top",
+        angle_iso: "3D Iso",
+        btn_hotspots: hotspotsVisible ? "📍 Hotspots: ON" : "📍 Hotspots: OFF",
+        btn_sound: isAudioMuted ? "🔇 Sound: OFF" : "🔊 Sound: ON",
+        btn_rotate: autoRotateEnabled ? "🔄 Auto-Rotate: ON" : "🔄 Auto-Rotate: OFF",
+        btn_reset: "🎯 Reset",
+        btn_fullscreen: "⛶ Fullscreen",
+        watermark_label: "3D DIGITAL TWIN • 1:1 CAD",
+        
+        // Guardian Alarm Card
+        alarm_status_header: "Guardian Security Status",
+        alarm_badge_armed: "🛡️ ARMED (MONITORING)",
+        alarm_badge_disarmed: "⚪ DISARMED",
+        alarm_badge_theft: "🚨 THEFT ALERT (TAMPER DETECTED)",
+        alarm_badge_crash: "🚨 HIGH-G IMPACT (eCall SOS ACTIVE)",
+        nav_alarm_armed: "ARMED",
+        nav_alarm_disarmed: "DISARMED",
+        nav_alarm_theft: "THEFT ALARM!",
+        nav_alarm_crash: "CRASH SOS!",
+        telemetry_label_imu: "6-Axis Motion Sensor:",
+        telemetry_label_gforce: "Impact Accelerometer:",
+        telemetry_label_gps: "GPS Geofence:",
+        telemetry_label_siren: "Acoustic Piezo Siren:",
+        telemetry_siren_standby: "110dB STANDBY",
+        telemetry_siren_blaring: "110dB WARBLE SIREN ACTIVE",
+        btn_arm_disarm: "Disarm System",
+        btn_arm_enable: "Arm Guardian",
+        btn_sim_tamper: "Simulate Tamper",
+        btn_sim_crash: "Simulate Crash SOS",
+        btn_silence: "Silence / Reset",
+        alarm_log_title: "Live Security Event Log",
+        alarm_mesh_badge: "● ENCRYPTED MESH",
+        
+        // SOS Modal
+        sos_title: "HIGH-G IMPACT DETECTED!",
+        sos_desc: "Autonomous eCall emergency dispatch will broadcast rider coordinates, impact force (28.4G), and blood type (O+) to local emergency services in:",
+        sos_cancel_btn: "🛑 I AM OK — CANCEL SOS ALARM",
+        
+        // Inspector Header
+        insp_badge: "SUBSYSTEM SPECIFICATIONS",
+        insp_benchmarks: "ENGINEERING BENCHMARKS",
+
+        // Pillar Nav Buttons
+        pillar_optics: "Optics & Waveguide HUD",
+        pillar_armor: "Armor & Aerodynamics",
+        pillar_security: "Guardian Security & SOS",
+        pillar_neural: "Neural AI & Spatial Audio",
+
+        // Visor HUD simulator
+        hud_speed_title: "VEHICLE TELEMETRY",
+        hud_gear: "GEAR 4",
+        hud_radar_title: "360° LIDAR PERIMETER",
+        hud_clear: "ALL CLEAR",
+        hud_front_radar: "▸ FRONT RADAR: 38.4m [TRUCK]",
+        hud_rear_blind: "▸ REAR BLIND SPOT: CLEAR",
+        hud_friction: "▸ ROAD FRICTION: OPTIMAL (DRY)",
+        hud_nav_title: "VELORAN AR NAV",
+        hud_next_turn: "IN 250M ➔ RIGHT TURN",
+        hud_street: "MONIVONG BLVD • ETA 14 MIN (7.8 KM)",
+        hud_mode_urban: "Urban Cruise",
+        hud_mode_night: "Night Vision FLIR",
+        hud_mode_track: "Track Apex",
+        hud_mode_alert: "🚨 Security Hazard Alert",
+
+        // Footer & Callout Banner
+        banner_badge: "VELORAN • NEXT-GEN PLATFORM",
+        banner_title: "RIDE SMARTER. GO FURTHER.",
+        banner_desc: "Engineered with aerospace-grade 3K carbon composite, active dual micro-OLED heads-up display, active Guardian anti-theft alarm, and 100m solid-state LiDAR perception.",
+        banner_btn_3d: "🌐 Launch 3D Explorer →",
+        banner_btn_alarm: "🚨 Test Guardian Alarm",
+        footer_sub: "CADT Faculty of Digital Engineering • Cybernetic Digital Smart Helmet Project",
+        footer_note: "Physics Simulation, WebGL 3D Interactive Telemetry & Guardian Security Engine."
+      },
+      km: {
+        brand_status: "ប្រព័ន្ធបើកដំណើរការ",
+        brand_sub: "មួកសុវត្ថិភាពឌីជីថលឆ្លាតវៃ",
+        finish_label: "ពណ៌សំបក:",
+        explode_label: "💥 ញែកគ្រឿងបន្លាស់:",
+        angle_label: "ជ្រុងមើល:",
+        swatch_navy: "Navy (ខៀវ)",
+        swatch_carbon: "Carbon (កាបូន)",
+        swatch_obsidian: "Obsidian (ខ្មៅ)",
+        swatch_gold: "Solar Gold (មាស)",
+        angle_front: "ខាងមុខ",
+        angle_side: "ចំហៀង",
+        angle_top: "ពីលើ",
+        angle_iso: "ទិដ្ឋភាព 3D",
+        btn_hotspots: hotspotsVisible ? "📍 ចំណុចពន្យល់: បើក" : "📍 ចំណុចពន្យល់: បិទ",
+        btn_sound: isAudioMuted ? "🔇 សំឡេង: បិទ" : "🔊 សំឡេង: បើក",
+        btn_rotate: autoRotateEnabled ? "🔄 បង្វិលស្វ័យប្រវត្តិ: បើក" : "🔄 បង្វិលស្វ័យប្រវត្តិ: បិទ",
+        btn_reset: "🎯 កំណត់ឡើងវិញ",
+        btn_fullscreen: "⛶ ពេញអេក្រង់",
+        watermark_label: "គំរូឌីជីថល 3D • ស្ដង់ដារ CAD 1:1",
+        
+        // Guardian Alarm Card
+        alarm_status_header: "ស្ថានភាពប្រព័ន្ធសុវត្ថិភាព Guardian",
+        alarm_badge_armed: "🛡️ បានបើកដំណើរការ (កំពុងតាមដាន)",
+        alarm_badge_disarmed: "⚪ បានបិទដំណើរការ",
+        alarm_badge_theft: "🚨 អាសន្នចោរលួចប៉ះពាល់ (រកឃើញចលនា)!",
+        alarm_badge_crash: "🚨 គ្រោះថ្នាក់បុកទង្គិចកម្លាំងខ្លាំង (eCall SOS ដំណើរការ)",
+        nav_alarm_armed: "បានបើក",
+        nav_alarm_disarmed: "បានបិទ",
+        nav_alarm_theft: "អាសន្នចោរ!",
+        nav_alarm_crash: "គ្រោះថ្នាក់ SOS!",
+        telemetry_label_imu: "សេនស័របម្លាស់ទី 6-Axis:",
+        telemetry_label_gforce: "រង្វាស់កម្លាំងប៉ះទង្គិច:",
+        telemetry_label_gps: "កំណត់ទីតាំង GPS:",
+        telemetry_label_siren: "ស៊ីរ៉ែនបន្លឺសំឡេង:",
+        telemetry_siren_standby: "110dB រង់ចាំ",
+        telemetry_siren_blaring: "110dB កំពុងបន្លឺឡើង!",
+        btn_arm_disarm: "បិទប្រព័ន្ធរោទ៍",
+        btn_arm_enable: "បើកប្រព័ន្ធរោទ៍",
+        btn_sim_tamper: "តេស្តចោរប៉ះពាល់",
+        btn_sim_crash: "តេស្តគ្រោះថ្នាក់ SOS",
+        btn_silence: "បិទសំឡេង / កំណត់ឡើងវិញ",
+        alarm_log_title: "កំណត់ហេតុព្រឹត្តិការណ៍សុវត្ថិភាពផ្ទាល់",
+        alarm_mesh_badge: "● បណ្ដាញសុវត្ថិភាព MESH",
+        
+        // SOS Modal
+        sos_title: "បានរកឃើញការប៉ះទង្គិចកម្លាំងខ្លាំង!",
+        sos_desc: "ប្រព័ន្ធហៅសង្គ្រោះបន្ទាន់ eCall ស្វ័យប្រវត្តិនឹងបញ្ជូនកូអរដោនេទីតាំង កម្លាំងប៉ះទង្គិច (28.4G) និងប្រភេទឈាម (O+) ទៅកាន់ផ្នែកសង្គ្រោះបន្ទាន់ក្នុងរយៈពេល:",
+        sos_cancel_btn: "🛑 ខ្ញុំមិនអីទេ — បោះបង់ការហៅសង្គ្រោះបន្ទាន់",
+        
+        // Inspector Header
+        insp_badge: "លក្ខណៈបច្ចេកទេសគ្រឿងបន្លាស់",
+        insp_benchmarks: "កម្រិតស្ដង់ដារបច្ចេកទេសវិស្វកម្ម",
+
+        // Pillar Nav Buttons
+        pillar_optics: "កញ្ចក់ឆ្លុះ Optics & Waveguide HUD",
+        pillar_armor: "សំបកការពារ & អាកាសចរណ៍វិទ្យា",
+        pillar_security: "ប្រព័ន្ធសុវត្ថិភាព Guardian & SOS",
+        pillar_neural: "បញ្ញាសិប្បនិម្មិត AI & សំឡេង 3D",
+
+        // Visor HUD simulator
+        hud_speed_title: "ទិន្នន័យម៉ូតូពេលបើកបរ",
+        hud_gear: "លេខ ៤",
+        hud_radar_title: "រ៉ាដា LIDAR ជុំវិញ 360°",
+        hud_clear: "ផ្លូវសុវត្ថិភាព",
+        hud_front_radar: "▸ រ៉ាដាខាងមុខ: ៣៨.៤ម [ឡានធំ]",
+        hud_rear_blind: "▸ កន្លែងងងឹតខាងក្រោយ: សុវត្ថិភាព",
+        hud_friction: "▸ កម្រិតកកិតថ្នល់: ល្អឥតខ្ចោះ (ផ្លូវស្ងួត)",
+        hud_nav_title: "ផែនទីចង្អុលផ្លូវ AR",
+        hud_next_turn: "២៥០ ម៉ែត្រទៀត ➔ បត់ស្ដាំ",
+        hud_street: "មហាវិថីព្រះមុនីវង្ស • រយៈពេល ១៤ នាទី (៧.៨ គ.ម)",
+        hud_mode_urban: "បើកបរក្នុងក្រុង",
+        hud_mode_night: "មើលពេលយប់ FLIR",
+        hud_mode_track: "ប្រណាំងល្បឿន Track",
+        hud_mode_alert: "🚨 សញ្ញាអាសន្នគ្រោះថ្នាក់",
+
+        // Footer & Callout Banner
+        banner_badge: "VELORAN • វេទិកាបច្ចេកវិទ្យាជំនាន់ថ្មី",
+        banner_title: "បើកបរកាន់តែឆ្លាតវៃ។ ធ្វើដំណើរកាន់តែឆ្ងាយ។",
+        banner_desc: "ផលិតឡើងពីកាបូនកម្រិតអាកាសចរណ៍ 3K, កញ្ចក់ឆ្លុះ dual micro-OLED, សំឡេងរោទ៍ការពារចោរកម្ម Guardian, និងសេនស័រ LiDAR ចម្ងាយ ១០០ ម៉ែត្រ។",
+        banner_btn_3d: "🌐 បើកស្ទូឌីយោ 3D →",
+        banner_btn_alarm: "🚨 តេស្តសំឡេងរោទ៍ Guardian",
+        footer_sub: "CADT មហាវិទ្យាល័យវិស្វកម្មឌីជីថល • គម្រោងមួកសុវត្ថិភាពឆ្លាតវៃ Cybernetic Smart Helmet",
+        footer_note: "ប្រព័ន្ធក្លែងធ្វើរូបវន្ត 3D WebGL អន្តរកម្ម និងប្រព័ន្ធសុវត្ថិភាព Guardian។"
+      }
+    };
+
+    function updateSpecsMatrixLanguage(lang) {
+      const data = SPECS_MATRIX_I18N[lang] || SPECS_MATRIX_I18N.en;
+      const thead = document.getElementById('specs-matrix-thead');
+      const tbody = document.getElementById('specs-matrix-tbody');
+      if (thead) {
+        thead.innerHTML = `<tr>${data.headers.map(h => `<th>${h}</th>`).join('')}</tr>`;
+      }
+      if (tbody) {
+        tbody.innerHTML = data.rows.map(r => `
+          <tr>
+            <td><strong>${r[0]}</strong></td>
+            <td>${r[1]}</td>
+            <td>${r[2]}</td>
+            <td>${r[3]}</td>
+            <td><span class="status-active">${r[4]}</span></td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function updateGalleryCardsLanguage(lang) {
+      const items = GALLERY_ITEMS_I18N[lang] || GALLERY_ITEMS_I18N.en;
+      const cards = document.querySelectorAll('.gallery-card');
+      cards.forEach((card, idx) => {
+        const item = items[idx];
+        if (!item) return;
+
+        const tag = card.querySelector('.gallery-img-tag');
+        if (tag) tag.innerText = item.tag;
+
+        const title = card.querySelector('.gallery-card-title');
+        if (title) title.innerText = item.title;
+
+        const desc = card.querySelector('.gallery-card-desc');
+        if (desc) desc.innerText = item.desc;
+
+        const cert = card.querySelector('.gallery-card-actions > span');
+        if (cert) cert.innerText = item.cert;
+
+        const zoomBtn = card.querySelector('.btn-gallery-zoom');
+        if (zoomBtn) {
+          zoomBtn.innerHTML = `<span>🔍</span> <span>${item.inspect}</span>`;
+          const wrap = card.querySelector('.gallery-img-wrap');
+          const imgSrc = wrap ? wrap.querySelector('img').getAttribute('src') : '';
+          zoomBtn.onclick = () => openLightbox(imgSrc, item.lightbox_cap);
+          if (wrap) wrap.onclick = () => openLightbox(imgSrc, item.lightbox_cap);
+        }
+      });
+    }
+
+    function updateToolbarAndControlsLanguage(lang) {
+      const s = UI_STRINGS[lang] || UI_STRINGS.en;
+
+      // Brand
+      const brandStatus = document.getElementById('brand-status-txt');
+      if (brandStatus) brandStatus.innerText = s.brand_status;
+      const brandSub = document.getElementById('brand-sub-txt');
+      if (brandSub) brandSub.innerText = s.brand_sub;
+
+      // Stage Action Buttons
+      const btnHotspots = document.getElementById('btn-hotspots-toggle');
+      if (btnHotspots) {
+        btnHotspots.innerText = lang === 'km' ? (hotspotsVisible ? '📍 ចំណុចពន្យល់: បើក' : '📍 ចំណុចពន្យល់: បិទ') : (hotspotsVisible ? '📍 Hotspots: ON' : '📍 Hotspots: OFF');
+      }
+      const btnSound = document.getElementById('btn-sound-toggle');
+      if (btnSound) {
+        btnSound.innerText = lang === 'km' ? (isAudioMuted ? '🔇 សំឡេង: បិទ' : '🔊 សំឡេង: បើក') : (isAudioMuted ? '🔇 Sound: OFF' : '🔊 Sound: ON');
+      }
+      const btnRotate = document.getElementById('btn-autorotate-toggle');
+      if (btnRotate) {
+        btnRotate.innerText = lang === 'km' ? (autoRotateEnabled ? '🔄 បង្វិលស្វ័យប្រវត្តិ: បើក' : '🔄 បង្វិលស្វ័យប្រវត្តិ: បិទ') : (autoRotateEnabled ? '🔄 Auto-Rotate: ON' : '🔄 Auto-Rotate: OFF');
+      }
+      const btnReset = document.getElementById('btn-reset-cam');
+      if (btnReset) btnReset.innerText = s.btn_reset;
+      const btnFullscreen = document.getElementById('btn-fullscreen');
+      if (btnFullscreen) btnFullscreen.innerText = s.btn_fullscreen;
+
+      // 3D Watermark
+      const watermark = document.getElementById('stage-watermark-label');
+      if (watermark) watermark.innerHTML = `<span class="badge-pulse"></span> ${s.watermark_label}`;
+
+      // 3D Floating Toolbar
+      const lblFinish = document.getElementById('label-finish');
+      if (lblFinish) lblFinish.innerText = s.finish_label;
+      const fNavy = document.getElementById('fbtn-txt-veloran');
+      if (fNavy) fNavy.innerText = s.swatch_navy;
+      const fCarbon = document.getElementById('fbtn-txt-carbon');
+      if (fCarbon) fCarbon.innerText = s.swatch_carbon;
+      const fObsidian = document.getElementById('fbtn-txt-black');
+      if (fObsidian) fObsidian.innerText = s.swatch_obsidian;
+      const fGold = document.getElementById('fbtn-txt-gold');
+      if (fGold) fGold.innerText = s.swatch_gold;
+
+      const lblExplode = document.getElementById('label-explode');
+      if (lblExplode) lblExplode.innerText = s.explode_label;
+
+      const lblAngle = document.getElementById('label-angle');
+      if (lblAngle) lblAngle.innerText = s.angle_label;
+      const bFront = document.getElementById('btn-angle-front');
+      if (bFront) bFront.innerText = s.angle_front;
+      const bSide = document.getElementById('btn-angle-side');
+      if (bSide) bSide.innerText = s.angle_side;
+      const bTop = document.getElementById('btn-angle-top');
+      if (bTop) bTop.innerText = s.angle_top;
+      const bIso = document.getElementById('btn-angle-iso');
+      if (bIso) bIso.innerText = s.angle_iso;
+
+      // Innovation Tab Nav Buttons
+      const tabOptics = document.getElementById('tab-txt-optics');
+      if (tabOptics) tabOptics.innerText = s.pillar_optics;
+      const tabArmor = document.getElementById('tab-txt-armor');
+      if (tabArmor) tabArmor.innerText = s.pillar_armor;
+      const tabSec = document.getElementById('tab-txt-security');
+      if (tabSec) tabSec.innerText = s.pillar_security;
+      const tabNeu = document.getElementById('tab-txt-neural');
+      if (tabNeu) tabNeu.innerText = s.pillar_neural;
+
+      // Guardian Alarm Card
+      const alarmHeader = document.getElementById('alarm-status-header-lbl');
+      if (alarmHeader) alarmHeader.innerText = s.alarm_status_header;
+
+      const badge = document.getElementById('alarm-status-badge');
+      const navBadge = document.getElementById('nav-alarm-status');
+      if (badge && navBadge) {
+        if (isAlarmActive) {
+          // Keep active alarm alert
+        } else if (isArmed) {
+          badge.innerText = s.alarm_badge_armed;
+          navBadge.innerText = s.nav_alarm_armed;
+        } else {
+          badge.innerText = s.alarm_badge_disarmed;
+          navBadge.innerText = s.nav_alarm_disarmed;
+        }
+      }
+
+      const lImu = document.getElementById('lbl-telemetry-imu');
+      if (lImu) lImu.innerText = s.telemetry_label_imu;
+      const lGforce = document.getElementById('lbl-telemetry-gforce');
+      if (lGforce) lGforce.innerText = s.telemetry_label_gforce;
+      const lGps = document.getElementById('lbl-telemetry-gps');
+      if (lGps) lGps.innerText = s.telemetry_label_gps;
+      const lSiren = document.getElementById('lbl-telemetry-siren');
+      if (lSiren) lSiren.innerText = s.telemetry_label_siren;
+
+      const armTxt = document.getElementById('btn-toggle-arm-txt');
+      if (armTxt) armTxt.innerText = isArmed ? s.btn_arm_disarm : s.btn_arm_enable;
+      const tamperTxt = document.getElementById('btn-sim-tamper-txt');
+      if (tamperTxt) tamperTxt.innerText = s.btn_sim_tamper;
+      const crashTxt = document.getElementById('btn-sim-crash-txt');
+      if (crashTxt) crashTxt.innerText = s.btn_sim_crash;
+      const silenceTxt = document.getElementById('btn-silence-alarm-txt');
+      if (silenceTxt) silenceTxt.innerText = s.btn_silence;
+
+      const logHeader = document.getElementById('alarm-log-header-lbl');
+      if (logHeader) logHeader.innerText = s.alarm_log_title;
+      const meshBadge = document.getElementById('alarm-mesh-badge');
+      if (meshBadge) meshBadge.innerText = s.alarm_mesh_badge;
+
+      // SOS Modal
+      const sosTitle = document.getElementById('sos-title-txt');
+      if (sosTitle) sosTitle.innerText = s.sos_title;
+      const sosDesc = document.getElementById('sos-desc-txt');
+      if (sosDesc) sosDesc.innerText = s.sos_desc;
+      const sosCancel = document.getElementById('btn-abort-sos');
+      if (sosCancel) sosCancel.innerText = s.sos_cancel_btn;
+
+      // Bottom CTA Banner & Footer
+      const bBadge = document.getElementById('banner-badge-tag');
+      if (bBadge) bBadge.innerText = s.banner_badge;
+      const bTitle = document.getElementById('banner-title-txt');
+      if (bTitle) bTitle.innerText = s.banner_title;
+      const bDesc = document.getElementById('banner-desc-txt');
+      if (bDesc) bDesc.innerText = s.banner_desc;
+      const b3d = document.getElementById('banner-btn-3d');
+      if (b3d) b3d.innerText = s.banner_btn_3d;
+      const bAlarm = document.getElementById('banner-btn-alarm');
+      if (bAlarm) bAlarm.innerText = s.banner_btn_alarm;
+
+      const fSub = document.getElementById('footer-sub-txt');
+      if (fSub) fSub.innerText = s.footer_sub;
+      const fNote = document.getElementById('footer-note-txt');
+      if (fNote) fNote.innerText = s.footer_note;
+    }
+
     const VELORAN_I18N = {
       en: {
         nav_studio: "3D Studio",
@@ -4317,6 +5088,7 @@
     function setLanguage(lang) {
       currentLang = lang;
       localStorage.setItem('veloran_lang', lang);
+      document.documentElement.lang = lang;
 
       // Update button active state
       ['btn-lang-en', 'btn-lang-en-m'].forEach(id => {
@@ -4357,6 +5129,29 @@
 
       const hint3d = document.getElementById('hint-3d');
       if (hint3d) hint3d.innerHTML = dict.drag_hint;
+
+      // Re-populate innovation cards with full translated data
+      populateInnovationTabs();
+
+      // Re-render 3D hotspot labels
+      create3DHotspots();
+
+      // Update Specs Matrix Table
+      updateSpecsMatrixLanguage(lang);
+
+      // Update Ultra-HD Visual Gallery
+      updateGalleryCardsLanguage(lang);
+
+      // Update Toolbar, Alarm Dashboard, and Footer strings
+      updateToolbarAndControlsLanguage(lang);
+
+      // If a component is actively inspected, re-render its details in the new language
+      if (currentInspectedIndex >= 0) {
+        const insp = document.getElementById('inspector');
+        if (insp && insp.style.display !== 'none') {
+          inspectComponent(currentInspectedIndex);
+        }
+      }
     }
 
     function toggleMobileNav() {
